@@ -20,6 +20,7 @@ public class GameWindow extends JFrame implements KeyListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         setVisible(true);
+        gamePanel.startGame();
     }
 
     private void initFullScreen() {
@@ -59,10 +60,32 @@ public class GameWindow extends JFrame implements KeyListener{
             device.setFullScreenWindow(null);
             System.exit(0);
         }
+
+        if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) 
+            gamePanel.setKeys(0, true);
+        if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) 
+            gamePanel.setKeys(1, true);
+        if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) 
+            gamePanel.setKeys(2, true);
+        if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) 
+            gamePanel.setKeys(3, true);
+        if (keyCode == KeyEvent.VK_SPACE) 
+            gamePanel.setKeys(4, true);
     }
 
     
     public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
 
+        if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) 
+            gamePanel.setKeys(0, false);
+        if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) 
+            gamePanel.setKeys(1, false);
+        if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) 
+            gamePanel.setKeys(2, false);
+        if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) 
+            gamePanel.setKeys(3, false);
+        if (keyCode == KeyEvent.VK_SPACE) 
+            gamePanel.setKeys(4, false);
     }
 }
