@@ -7,11 +7,13 @@ public abstract class Player extends Character{
     Player(int x, int y, int width, int height, int health, int damage, int dx, int dy) {
         super(x, y, width, height, health, damage, dx, dy);
         isBonusDamageActive = false;
+        damageBonusTimer = -1;
     }
 
 
     public void heal() {
         health += healAmount;
+        // System.out.println("Healed");
     }
 
 
@@ -23,6 +25,7 @@ public abstract class Player extends Character{
             isBonusDamageActive = true;
             damageBonusTimer = 0;
             damage *= bonusDamageMultiplier;
+            // System.out.println("Bonus damage applied");
         }
     }
 
@@ -30,14 +33,15 @@ public abstract class Player extends Character{
     public void removeBonusDamage() {
         isBonusDamageActive = false;
         damage /= bonusDamageMultiplier;
-        damageBonusTimer = 0;
+        damageBonusTimer = -1;
+        // System.out.println("Bonus damage removed");
     }
 
 
     public void update() {
         if(damageBonusTimer == bonusDamageTime)
             removeBonusDamage();
-        else
+        else if (damageBonusTimer != -1)
             damageBonusTimer++;
     }
 }

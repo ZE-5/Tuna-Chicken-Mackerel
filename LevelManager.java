@@ -4,13 +4,19 @@ import java.util.Vector;
 public class LevelManager {
     private GamePanel gamePanel;
     private Vector<GameEntity> gameEntities;
-    private Character player;
+    private Player player;
+    private CollisionManager collisionManager;
     
 
     public LevelManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         gameEntities = new Vector<GameEntity>();
-        player = new ExampleCharacter(50, 50);
+        player = new ExamplePlayer(50, 50);
+        collisionManager = new CollisionManager(gameEntities, player);
+
+        //TODO: move into level-maker class or method
+        gameEntities.add(new HealthPickup(70, 70));
+        gameEntities.add(new StrengthPickup(100, 100));
     }
 
 
@@ -18,6 +24,9 @@ public class LevelManager {
         handlePlayerInput(keys);
         player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
         
+        //TODO collisoin manager
+        collisionManager.checkCollisions();
+
         for (int i = 0; i < gameEntities.size(); i++) {
             gameEntities.get(i).update();
         }
