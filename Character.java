@@ -41,19 +41,19 @@ public abstract class Character extends GameEntity {
     public void move(String direction) {
         switch (direction) {
             case "UP":
-                dy = -1;
+                y -= dy;
                 break;
 
             case "RIGHT":
-                dx = 1;
+                x += dx;
                 break;
 
             case "LEFT":
-                dy = 1;
+                x -= dx;
                 break;
 
             case "DOWN":
-                dx = -1;
+                y += dy;
                 break;
 
             default:
