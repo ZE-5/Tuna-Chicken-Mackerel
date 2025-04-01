@@ -27,6 +27,11 @@ public class CollisionManager {
                     player.applyBonusDamage();
                     gameEntities.remove(i);
                 }
+
+                //Enemy
+                else if (gameEntities.get(i) instanceof Enemy && player.isAttacking()) {
+                    ((Enemy) gameEntities.get(i)).gotHit(player.getDamage());
+                }
             }
         }
     }

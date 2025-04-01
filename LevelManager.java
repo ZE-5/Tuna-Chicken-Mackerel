@@ -76,8 +76,7 @@ public class LevelManager {
                 player.setY(gamePanel.getHeight() - player.getHeight());
         }
 
-        //TODO:Implement attacking
-        // if (keys[4])
-        //     levelManager.playerAttack();
+        //Player is attacking if space is pressed
+        player.setAttacking(keys[4]);
     }
 }

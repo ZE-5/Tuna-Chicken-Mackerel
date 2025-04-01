@@ -1,6 +1,7 @@
 public abstract class Player extends Character{
     private boolean isBonusDamageActive;
     private int damageBonusTimer;
+    private boolean isAttacking;
 
     private static final int bonusDamageMultiplier = 1+1/3, bonusDamageTime = 15, healAmount = 20;
 
@@ -43,5 +44,15 @@ public abstract class Player extends Character{
             removeBonusDamage();
         else if (damageBonusTimer != -1)
             damageBonusTimer++;
+    }
+
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+
+    public void setAttacking(boolean isAttacking) {
+        this.isAttacking = isAttacking;
     }
 }
