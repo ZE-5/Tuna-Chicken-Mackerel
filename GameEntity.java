@@ -24,7 +24,43 @@ public abstract class GameEntity {
     }
 
 
-    public void setPosition(int x, int y) {
+    public int getWidth() {
+        return width;
+    }
+
+
+    public int getHeight() {
+        return height;
+    }
+
+
+    public int getX() {
+        return x;
+    }
+
+
+    public int getY() {
+        return y;
+    }
+
+
+    public int setX(int x) {
+        return this.x = x;
+    }
+
+
+    public int setY(int y) {
+        return this.y = y;
+    }
+    
+    
+    public int[] getLocation() {
+        int[] loc = {x, y};
+        return loc;
+    }
+    
+    
+    public void setLocation(int x, int y) {
         this.x = x;
         this.y = y;
     }

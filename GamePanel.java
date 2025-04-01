@@ -11,13 +11,15 @@ public class GamePanel extends JPanel implements Runnable {
     private LevelManager levelManager;
     private BufferedImage bufferedImage;
     private boolean[] keys;
+    private GameWindow gameWindow;
 
 
     public GamePanel(GameWindow gameWindow) {
+        this.gameWindow = gameWindow;
         bufferedImage = new BufferedImage(gameWindow.getWidth(), gameWindow.getHeight(), BufferedImage.TYPE_INT_RGB);
         isRunning = false;
         // bufferedImage.createGraphics();
-        levelManager = new LevelManager();
+        levelManager = new LevelManager(this);
         keys = new boolean[5];
     }
 
@@ -41,6 +43,11 @@ public class GamePanel extends JPanel implements Runnable {
                 
             }
         }
+    }
+
+
+    public GameWindow getGameWindow() {
+        return gameWindow;
     }
 
 
