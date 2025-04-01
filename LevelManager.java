@@ -17,6 +17,8 @@ public class LevelManager {
         //TODO: move into level-maker class or method
         gameEntities.add(new HealthPickup(70, 70));
         gameEntities.add(new StrengthPickup(100, 100));
+        gameEntities.add(new ExampleEnemy(player, 5000, 5000, 0));
+        gameEntities.add(new ExampleEnemy(player, 500, 500, 100));
     }
 
 
@@ -28,7 +30,10 @@ public class LevelManager {
         collisionManager.checkCollisions();
 
         for (int i = 0; i < gameEntities.size(); i++) {
-            gameEntities.get(i).update();
+            if (gameEntities.get(i) instanceof Enemy && ((Enemy) gameEntities.get(i)).isDead())
+                gameEntities.remove(i);
+            else
+                gameEntities.get(i).update();
         }
     }
 

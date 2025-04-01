@@ -1,5 +1,5 @@
 public abstract class Character extends GameEntity {
-    protected int dx, dy, health, damage, time;
+    protected int dx, dy, health, damage;
     // protected Vector<> attackString //TODO: implement attackString
 
 
