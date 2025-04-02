@@ -1,4 +1,5 @@
 import java.awt.Graphics2D;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class LevelManager {
@@ -17,23 +18,31 @@ public class LevelManager {
         //TODO: move into level-maker class or method
         gameEntities.add(new HealthPickup(70, 70));
         gameEntities.add(new StrengthPickup(100, 100));
-        gameEntities.add(new ExampleEnemy(player, 5000, 5000, 0));
+        // gameEntities.add(new ExampleEnemy(player, 5000, 5000, 0));
         gameEntities.add(new ExampleEnemy(player, 500, 500, 100));
     }
 
 
     public void update(boolean[] keys) {
+        if (player.isDead()){
+            // gamePanel.startGame(); //Uncomment this for a good time ;)
+            return;
+        }
         handlePlayerInput(keys);
         player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
         
         //TODO collisoin manager
         collisionManager.checkCollisions();
 
-        for (int i = 0; i < gameEntities.size(); i++) {
-            if (gameEntities.get(i) instanceof Enemy && ((Enemy) gameEntities.get(i)).isDead())
-                gameEntities.remove(i);
+        // for (int i = 0; i < gameEntities.size(); i++) {
+        // for (GameEntity entity : gameEntities) {
+        Iterator<GameEntity> iterator = gameEntities.iterator();
+        while (iterator.hasNext()) {
+            GameEntity entity = iterator.next();
+            if (entity instanceof Enemy && ((Enemy) entity).isDead())
+                iterator.remove();
             else
-                gameEntities.get(i).update();
+                entity.update();
         }
     }
 
@@ -77,6 +86,9 @@ public class LevelManager {
         }
 
         //Player is attacking if space is pressed
-        player.setAttacking(keys[4]);
+        if (keys[4]) 
+            player.attack();
+        else if (player.isAttacking() && !keys[4])
+            player.stopAttack();
     }
 }
