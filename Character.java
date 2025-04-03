@@ -1,5 +1,9 @@
+import java.awt.geom.Rectangle2D;
+
 public abstract class Character extends GameEntity {
-    protected int dx, dy, health, damage, time;
+    protected int dx, dy, health, damage;
+    protected boolean isAttacking;
+    protected boolean isFacingRight;
     // protected Vector<> attackString //TODO: implement attackString
 
 
@@ -9,6 +13,7 @@ public abstract class Character extends GameEntity {
         this.damage = damage;
         this.dx = dx;
         this.dy = dy;
+        this.isAttacking = false;
     }
 
 
@@ -22,9 +27,28 @@ public abstract class Character extends GameEntity {
     }
 
 
-    public boolean gotHit(int damage) { //return true if dead
+    public void attack(){
+        isAttacking = true;
+    }
+
+
+    public void stopAttack(){
+        isAttacking = false;
+    }
+
+
+    public boolean isAttacking(){
+        return isAttacking;
+    }
+
+
+    public void damaged(int damage) { //return true if dead
         health -= damage;
-        return health <= 0;
+    }
+
+
+    public boolean isFacingRight() {
+        return isFacingRight;
     }
 
 
@@ -45,11 +69,17 @@ public abstract class Character extends GameEntity {
                 break;
 
             case "RIGHT":
-                x += dx;
+                if (isFacingRight)
+                    x += dx;
+                else
+                    isFacingRight = true;
                 break;
 
             case "LEFT":
-                x -= dx;
+                if (!isFacingRight)
+                    x -= dx;
+                else
+                    isFacingRight = false;
                 break;
 
             case "DOWN":
@@ -63,4 +93,16 @@ public abstract class Character extends GameEntity {
 
 
     public abstract void update();
+
+
+    public Rectangle2D getAttackBoundingBox()
+    {
+        if (!isAttacking)
+            return null;
+        else
+            return generateAttackBoundingBox();
+    }
+
+
+    protected abstract Rectangle2D generateAttackBoundingBox();
 }
