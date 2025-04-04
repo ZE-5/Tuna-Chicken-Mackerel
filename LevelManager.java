@@ -53,7 +53,6 @@ public class LevelManager {
         handlePlayerInput(keys);
         player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
         
-        //TODO collision manager
         collisionManager.checkCollisions(keys);
 
         // for (int i = 0; i < gameEntities.size(); i++) {

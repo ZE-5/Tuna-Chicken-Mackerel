@@ -9,28 +9,13 @@ public abstract class Enemy extends Character {
     }
 
 
-    // public void update() {
-    //     //TODO: implement update method
-    //     // if (!inRange())
-    //     // {
-    //     //     moveToPlayer();
-    //     // }
-    // }
-
-
     public int getPoints() {
         return points;
     }
 
-    // public boolean inRange() {
-    //     //TODO: implement inRange method
-    //     return (player.getBoundingBox().intersects(getRangeBoundingBox()));
-    // }
-
 
     public void moveToPlayer() {
-        //TODO: implement moveToPlayer method
-
+        
         if (getX() < player.getX())
             move("RIGHT");
         else if (getX() > player.getX())

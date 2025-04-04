@@ -16,12 +16,7 @@ public abstract class Character extends GameEntity {
         this.isAttacking = false;
     }
 
-
-    //TODO:Changes from UML:
-    // NO SET HEALTH
-    //moved inRange to Enemy and it will be abstract in Enemy
-
-
+    
     public int getHealth() {
         return health;
     }
