@@ -62,6 +62,16 @@ public abstract class Character extends GameEntity {
     }
 
 
+    public int getDx() {
+        return dx;
+    }
+
+
+    public int getDy() {
+        return dy;
+    }
+
+
     public void move(String direction) {
         switch (direction) {
             case "UP":
