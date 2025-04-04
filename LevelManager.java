@@ -13,14 +13,21 @@ public class LevelManager {
         this.gamePanel = gamePanel;
         gameEntities = new Vector<GameEntity>();
         player = new ExamplePlayer(50, 50);
-        collisionManager = new CollisionManager(gameEntities, player);
+        collisionManager = new CollisionManager(player, gameEntities);
 
         //TODO: move into level-maker class or method
         gameEntities.add(new HealthPickup(70, 70));
         gameEntities.add(new StrengthPickup(100, 100));
         // gameEntities.add(new ExampleEnemy(player, 5000, 5000, 0));
         gameEntities.add(new ExampleEnemy(player, 500, 500, 100));
-        gameEntities.add(new Wall(200, 100, 50, 50));
+        // gameEntities.add(new Wall(200, 100, 50, 50));
+        gameEntities.add(new Wall(400, 100, 50, 50));
+        gameEntities.add(new ExampleEnemy(player, 200, 100, 10000));
+
+        gameEntities.add(new PlayerProjectile(0, 0, 400, 100, 0, 10, 10, 10, 1, 400));
+
+        for (int i = 0; i < 11; i++)
+            gameEntities.add(new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400));
     }
 
 
@@ -42,6 +49,10 @@ public class LevelManager {
             GameEntity entity = iterator.next();
             if (entity instanceof Enemy && ((Enemy) entity).isDead())
                 iterator.remove();
+            
+            else if (entity instanceof Projectile && ((Projectile) entity).timedOut())
+                iterator.remove();
+            
             else
                 entity.update();
         }
