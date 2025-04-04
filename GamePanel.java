@@ -26,7 +26,6 @@ public class GamePanel extends JPanel implements Runnable {
         keys = new boolean[5];
         x = 0;
         y = 0;
-        // drawingCoordinates = new int[]{0, 0};
     }
 
     public void startGame() {
@@ -73,7 +72,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) this.getGraphics();
        
-    //    updateDrawingCoordinates();
         if (!levelManager.holdScreenPositionX())
             x = levelManager.getBufferImageX();
 
@@ -91,19 +89,4 @@ public class GamePanel extends JPanel implements Runnable {
         //UP, RIGHT, LEFT, DOWN, ATTACK(SPACE)
         //0,  1,     2,    3,    4
     }
-
-
-    // public void updateDrawingCoordinates(){
-    //     if (levelManager.holdScreenPosition())
-    //         return;
-        
-    //     int[]  playerPosition = levelManager.getPlayerPosition();
-
-    //     if (playerPosition[0] > getWidth()/2)
-    //         drawingCoordinates[0] = -1 * (playerPosition[0] - getWidth()/2);
-        
-    //     if (playerPosition[1] > getHeight()/2)
-    //         drawingCoordinates[1] = -1 * (playerPosition[1] - getHeight()/2);
-
-    // }
 }

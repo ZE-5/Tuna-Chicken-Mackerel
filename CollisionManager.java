@@ -36,6 +36,9 @@ public class CollisionManager {
         while (entityIterator.hasNext()) {
             GameEntity entity = entityIterator.next();
 
+            if (!entity.isVisible())
+                continue;
+
             if (entity instanceof Enemy) { //Handling enemies
                 Enemy enemy = (Enemy) entity;
                 Rectangle2D enemyBoundingBox = enemy.getBoundingBox();

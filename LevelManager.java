@@ -62,6 +62,9 @@ public class LevelManager {
         while (iterator.hasNext()) {
             GameEntity entity = iterator.next();
 
+            if (!entity.isVisible())
+                continue;
+
             if (entity instanceof Enemy && ((Enemy) entity).isDead())
                 iterator.remove();
             
@@ -77,6 +80,8 @@ public class LevelManager {
     public void draw(Graphics2D buffer) {
         player.draw(buffer);
         for (int i = 0; i < gameEntities.size(); i++) {
+            if (!gameEntities.get(i).isVisible())
+                continue;
             gameEntities.get(i).draw(buffer);
         }
     }
@@ -87,29 +92,29 @@ public class LevelManager {
         if (keys[0])
         {
             player.move("UP");
-            // if (player.getY() < mapBoundaries[1])
-            //     player.setY(mapBoundaries[1]);
+            if (player.getY() < mapBoundaries[1])
+                player.setY(mapBoundaries[1]);
         }
 
         if (keys[1])
         {
             player.move("RIGHT");
-            // if (player.getX() >= mapBoundaries[2])
-            //     player.setX(mapBoundaries[2] - player.getWidth());
+            if (player.getX() >= mapBoundaries[2])
+                player.setX(mapBoundaries[2] - player.getWidth());
         }
 
         if (keys[2])
         {
             player.move("LEFT");
-            // if (player.getX() < mapBoundaries[0])
-            //     player.setX(mapBoundaries[0]);
+            if (player.getX() < mapBoundaries[0])
+                player.setX(mapBoundaries[0]);
         }
         
         if (keys[3])
         {
             player.move("DOWN");
-            // if (player.getY() >= mapBoundaries[3])
-            //     player.setY(mapBoundaries[3] - player.getHeight());
+            if (player.getY() >= mapBoundaries[3])
+                player.setY(mapBoundaries[3] - player.getHeight());
         }
 
         //Player is attacking if space is pressed
