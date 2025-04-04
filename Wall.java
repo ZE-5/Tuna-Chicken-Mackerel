@@ -5,8 +5,7 @@ import java.awt.geom.Rectangle2D;
 
 
 public class Wall extends GameEntity{
-    private Rectangle2D wall;
-
+    
     public Wall(int x, int y, int width, int height) {
         super(x, y, width, height);
     }

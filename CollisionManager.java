@@ -11,7 +11,7 @@ public class CollisionManager {
         this.player = player;
     }
 
-    public void checkCollisions() {
+    public void checkCollisions(boolean[] keys) {
         Rectangle2D playerBoundingBox = player.getBoundingBox();
         Rectangle2D playerAttackBoundingBox = player.getAttackBoundingBox();
         // for (int i = 0; i < gameEntities.size(); i++) {
@@ -50,16 +50,16 @@ public class CollisionManager {
                 else if (entity instanceof Wall) {
                     Wall wall = (Wall) entity;
                     
-                    if (wall.getTopLine().intersects(playerBoundingBox))
-                        player.setY(wall.getY() - player.getHeight());
+                    if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
+                        player.setY(wall.getY() - player.getHeight() - 1);
                     
-                    else if (wall.getBottomLine().intersects(playerBoundingBox))
+                    else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
                         player.setY(wall.getY() + wall.getHeight());
                     
-                    else if (wall.getLeftLine().intersects(playerBoundingBox))
-                        player.setX(wall.getX() - player.getWidth());
+                    else if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
+                        player.setX(wall.getX() - player.getWidth() - 1);
                     
-                    else if (wall.getRightLine().intersects(playerBoundingBox))
+                    else if (keys[2] && wall.getRightLine().intersects(playerBoundingBox))
                         player.setX(wall.getX() + wall.getWidth());
                 }
             }
