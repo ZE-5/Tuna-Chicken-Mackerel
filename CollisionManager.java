@@ -20,7 +20,7 @@ public class CollisionManager {
         while (iterator.hasNext()) {
             GameEntity entity = iterator.next();
 
-            if (entity instanceof Enemy) {
+            if (entity instanceof Enemy) { //Handling enemies
                 Enemy enemy = (Enemy) entity;
                 Rectangle2D enemyBoundingBox = enemy.getBoundingBox();
                 Rectangle2D enemyAttackBoundingBox = enemy.getAttackBoundingBox();
@@ -32,9 +32,8 @@ public class CollisionManager {
                     player.damaged(enemy.getDamage());
             }
             
-            else if (entity.getBoundingBox().intersects(playerBoundingBox)) {
-                // handle collision here
-
+            else if (entity.getBoundingBox().intersects(playerBoundingBox)) { //Non-enemy entities
+                
                 //Health
                 if (entity instanceof HealthPickup) {
                     player.heal();
@@ -47,10 +46,22 @@ public class CollisionManager {
                     iterator.remove();
                 }
 
-                // //Enemy
-                // else if (entity instanceof Enemy && player.isAttacking() ) {
-                //     ((Enemy) entity).gotHit(player.getDamage());
-                // }
+                //Wall
+                else if (entity instanceof Wall) {
+                    Wall wall = (Wall) entity;
+                    
+                    if (wall.getTopLine().intersects(playerBoundingBox))
+                        player.setY(wall.getY() - player.getHeight());
+                    
+                    else if (wall.getBottomLine().intersects(playerBoundingBox))
+                        player.setY(wall.getY() + wall.getHeight());
+                    
+                    else if (wall.getLeftLine().intersects(playerBoundingBox))
+                        player.setX(wall.getX() - player.getWidth());
+                    
+                    else if (wall.getRightLine().intersects(playerBoundingBox))
+                        player.setX(wall.getX() + wall.getWidth());
+                }
             }
         }
     }

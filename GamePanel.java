@@ -12,6 +12,7 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage bufferedImage;
     private boolean[] keys;
     private GameWindow gameWindow;
+    private static final long tickrate = 1000/60; 
 
 
     public GamePanel(GameWindow gameWindow) {
@@ -37,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
             render();
             
             try {
-                Thread.sleep(1000 / 60);
+                Thread.sleep(tickrate);
             } 
             catch (Exception e) {
                 
