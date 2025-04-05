@@ -6,7 +6,8 @@ public class LevelManager {
     private GamePanel gamePanel;
     private Vector<GameEntity> gameEntities;
     private Player player;
-    private boolean holdScreenPosition;
+    private boolean moveScreenPosition;
+    private int screenX, screenY;
     private CollisionManager collisionManager;
     // private int offsetX, offsetY, offsetDx, offsetDy;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
@@ -25,7 +26,8 @@ public class LevelManager {
         // this.offsetDy = player.getDy();
 
         
-        holdScreenPosition = false;
+        // moveScreenPosition = false;
+        moveScreenPosition = false;
 
 
         //TODO: move into level-maker class or method
@@ -132,12 +134,11 @@ public class LevelManager {
 
 
     public boolean holdScreenPositionX() {
-        if (holdScreenPosition)
-            return true;
-        
-        if (player.getX() + player.getWidth()/2 < mapBoundaries[0] + gamePanel.getWidth()/2)
-            return true;
-        if (player.getX() > mapBoundaries[2] - gamePanel.getWidth()/2)
+
+        if (moveScreenPosition)
+            return false;
+
+        if (player.getX() + player.getWidth()/2 < mapBoundaries[0] + gamePanel.getWidth()/2 || player.getX() > mapBoundaries[2] - gamePanel.getWidth()/2)
             return true;
         
         return false;        
@@ -145,8 +146,9 @@ public class LevelManager {
 
 
     public boolean holdScreenPositionY() {
-        if (holdScreenPosition)
-            return true;
+
+        if (moveScreenPosition)
+            return false;
         
         if (player.getY() + player.getHeight()/2 < mapBoundaries[1] + gamePanel.getHeight()/2 || player.getY() > mapBoundaries[3] - gamePanel.getHeight()/2)
             return true;
@@ -157,12 +159,85 @@ public class LevelManager {
 
     public int getBufferImageX()
     {
+        if (moveScreenPosition){
+            if (screenX != gamePanel.getX()){
+                int dx = 10;
+                if (Math.abs(gamePanel.getX() - screenX) < dx)
+                    return screenX;
+                return screenX > gamePanel.getX() ? gamePanel.getX() + dx : gamePanel.getX() - dx;
+            }
+            return gamePanel.getX();
+        }
         return -1 * (player.getX() + player.getWidth()/2 - gamePanel.getWidth()/2);
     }
 
 
     public int getBufferImageY()
     {
+        if (moveScreenPosition){
+            if (screenY != gamePanel.getY()){
+                int dy = 10;
+                if (Math.abs(gamePanel.getY() - screenY) < dy)
+                    return screenY;
+                return screenY > gamePanel.getY() ? gamePanel.getY() + dy : gamePanel.getY() - dy;
+            }
+            return gamePanel.getY();
+        }
         return -1 * (player.getY() + player.getHeight()/2 - gamePanel.getHeight()/2);
+    }
+
+
+    public void moveScreen(int x, int y) {
+        moveScreenPosition = true;
+
+        //Constraints the right corner associated edges have not been tested.
+        // if (x < mapBoundaries[0] + gamePanel.getWidth()/2)
+        //     x = mapBoundaries[0] + gamePanel.getWidth()/2;
+        // else if (x > mapBoundaries[2] - gamePanel.getWidth()/2)
+        //     x = mapBoundaries[2] - gamePanel.getWidth() * 3/2;
+        
+        // if (y < mapBoundaries[1] + gamePanel.getHeight()/2)
+        //     y = mapBoundaries[1] + gamePanel.getHeight()/2;
+        // else if (y > mapBoundaries[3] - gamePanel.getHeight()/2)
+        //     y = mapBoundaries[3] - gamePanel.getHeight()* 3/2;
+
+        screenX = -1*(x - gamePanel.getWidth()/2);
+        screenY = -1*(y - gamePanel.getHeight()/2);
+    }
+
+
+    public void releaseScreen()
+    {
+        moveScreenPosition = false;
+
+        int x, y;
+        if (player.getX() + player.getWidth()/2 < mapBoundaries[0] + gamePanel.getWidth()/2)
+            x = mapBoundaries[0] + gamePanel.getWidth()/2;
+        else if (player.getX() > mapBoundaries[2] - gamePanel.getWidth()/2)
+            x = mapBoundaries[2] - gamePanel.getWidth()/2;
+        else
+            x = player.getX() + player.getWidth()/2;
+        
+        if (player.getY() + player.getHeight()/2 < mapBoundaries[1] + gamePanel.getHeight()/2)
+            y = mapBoundaries[1] + gamePanel.getHeight()/2;
+        else if (player.getY() > mapBoundaries[3] - gamePanel.getHeight()/2)
+            y = mapBoundaries[3] - gamePanel.getHeight()/2;
+        else
+            y = player.getY() + player.getHeight()/2;
+
+
+        gamePanel.setX(-1*(x - gamePanel.getWidth()/2));
+        gamePanel.setY(-1*(y - gamePanel.getHeight()/2));
+    }
+
+
+    private boolean testing = true;
+    public void test()
+    {
+        if (testing)
+            moveScreen(578, 964);
+        else
+            releaseScreen();
+        testing = !testing;
     }
 }
