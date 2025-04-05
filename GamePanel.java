@@ -109,9 +109,4 @@ public class GamePanel extends JPanel implements Runnable {
     public void setY(int y) {
         this.y = y;
     }
-
-
-    public void test() {
-        levelManager.test();
-    }
 }

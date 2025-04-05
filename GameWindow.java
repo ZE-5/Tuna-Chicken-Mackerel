@@ -87,7 +87,7 @@ public class GameWindow extends JFrame implements KeyListener{
             gamePanel.setKeys(3, false);
         if (keyCode == KeyEvent.VK_SPACE) 
             gamePanel.setKeys(4, false);
-        if (keyCode == KeyEvent.VK_G)
-            gamePanel.test();
+        // if (keyCode == KeyEvent.VK_G)
+        //     gamePanel.test();
     }
 }

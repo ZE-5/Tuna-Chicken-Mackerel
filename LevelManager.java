@@ -229,15 +229,4 @@ public class LevelManager {
         gamePanel.setX(-1*(x - gamePanel.getWidth()/2));
         gamePanel.setY(-1*(y - gamePanel.getHeight()/2));
     }
-
-
-    private boolean testing = true;
-    public void test()
-    {
-        if (testing)
-            moveScreen(578, 964);
-        else
-            releaseScreen();
-        testing = !testing;
-    }
 }
