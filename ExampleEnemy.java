@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 
 public class ExampleEnemy extends Enemy{
     int time, maxTime;
-    // Color color;
 
     public ExampleEnemy(Player player, int x, int y, int maxTime) {
         super(player, x, y, 40, 40, 100, 10, 20, 20, 20);
@@ -12,6 +11,7 @@ public class ExampleEnemy extends Enemy{
         if (maxTime <= 0)
             maxTime = 1;
         this.maxTime = maxTime;
+        // isVisible = false; //true by default from GameEntity constructor
     }
 
 
