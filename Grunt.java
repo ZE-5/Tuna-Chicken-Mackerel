@@ -6,7 +6,7 @@ public class Grunt extends Enemy {
     private int t, atk_t;
     private final int CHARGE = 100, ATTACK_DUR = 20;
     public Grunt(Player player, int x, int y) {
-        super(player, x, y, 40, 40, 100, 50, 1, 1, 20);
+        super(player, x, y, 40, 40, 40, 5, 1, 1, 20);
         t = 0;
         atk_t = 0;
     }
