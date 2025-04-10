@@ -1,17 +1,22 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Grunt extends Enemy {
 
-    public Grunt(Player player, int x, int y, int width, int height, int health, int damage, int dx, int dy, int points) {
-        super(player, x, y, width, height, health, damage, dx, dy, points);
+    public Grunt(Player player, int x, int y) {
+        super(player, x, y, 40, 40, 100, 10, 1, 1, 20);
     }
 
-    @Override
     public void update() {
-        
+        moveToPlayer();
     }
 
-    @Override
+    public void draw(Graphics2D g2) {
+        g2.setColor(Color.GREEN);
+        g2.fillRect(x, y, width, height);
+    }
+
     protected Rectangle2D generateAttackBoundingBox() {
         return null;
     }
