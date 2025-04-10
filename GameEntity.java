@@ -5,6 +5,7 @@ import java.awt.geom.Rectangle2D;
 public abstract class GameEntity {
     protected int x, y, width, height;
     protected Drawable drawable;
+    protected boolean isVisible;
     //TODO: add sounds
 
     public GameEntity(int x, int y, int width, int height) {
@@ -13,6 +14,17 @@ public abstract class GameEntity {
         this.width = width;
         this.height = height;
         drawable = null;
+        isVisible = true;
+    }
+
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+
+    public boolean isVisible() {
+        return isVisible;
     }
 
 

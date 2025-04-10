@@ -6,21 +6,40 @@ public class CollisionManager {
     private Vector<GameEntity> gameEntities;
     private Player player;
 
-    public CollisionManager(Vector<GameEntity> gameEntities, Player player) {
+    public CollisionManager(Player player, Vector<GameEntity> gameEntities) {
         this.gameEntities = gameEntities;
         this.player = player;
     }
 
-    public void checkCollisions() {
+    public void checkCollisions(boolean[] keys) {
         Rectangle2D playerBoundingBox = player.getBoundingBox();
         Rectangle2D playerAttackBoundingBox = player.getAttackBoundingBox();
-        // for (int i = 0; i < gameEntities.size(); i++) {
-        // for (GameEntity entity : gameEntities) {
-        Iterator<GameEntity> iterator = gameEntities.iterator();
-        while (iterator.hasNext()) {
-            GameEntity entity = iterator.next();
 
-            if (entity instanceof Enemy) {
+
+        Vector<Projectile> projectiles = new Vector<Projectile>();
+        for (GameEntity entity : gameEntities) {
+            if (!(entity instanceof Projectile))
+                continue;
+
+            Projectile projectile = (Projectile) entity;
+            if (projectile instanceof EnemyProjectile && playerBoundingBox.intersects(projectile.getBoundingBox())){ //if projectile hits player
+                player.damaged(projectile.getDamage());
+                projectile.delete();
+            }
+            else
+                projectiles.add(projectile);
+        }
+
+
+        Iterator<Projectile> projectileIterator;
+        Iterator<GameEntity> entityIterator = gameEntities.iterator();
+        while (entityIterator.hasNext()) {
+            GameEntity entity = entityIterator.next();
+
+            if (!entity.isVisible())
+                continue;
+
+            if (entity instanceof Enemy) { //Handling enemies
                 Enemy enemy = (Enemy) entity;
                 Rectangle2D enemyBoundingBox = enemy.getBoundingBox();
                 Rectangle2D enemyAttackBoundingBox = enemy.getAttackBoundingBox();
@@ -30,27 +49,61 @@ public class CollisionManager {
 
                 if (enemyAttackBoundingBox != null && enemyAttackBoundingBox.intersects(playerBoundingBox))
                     player.damaged(enemy.getDamage());
+
+                //Check if player's projectile hits enemy
+                projectileIterator = projectiles.iterator();
+                while (projectileIterator.hasNext()) {
+                    Projectile projectile = projectileIterator.next();
+                    if (projectile instanceof PlayerProjectile && !enemy.isDead() && projectile.getBoundingBox().intersects(enemyBoundingBox)) {
+                        enemy.damaged(projectile.getDamage());
+                        projectile.delete();
+                        projectileIterator.remove();
+                    }
+                }
+            }
+
+            else if (entity instanceof Wall) { //Handling walls
+                Wall wall = (Wall) entity;
+
+                //Wall collision
+                if (wall.getBoundingBox().intersects(playerBoundingBox)) {
+                    if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
+                        player.setY(wall.getY() - player.getHeight() - 1);
+                    
+                    else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
+                        player.setY(wall.getY() + wall.getHeight());
+                    
+                    else if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
+                        player.setX(wall.getX() - player.getWidth() - 1);
+                    
+                    else if (keys[2] && wall.getRightLine().intersects(playerBoundingBox))
+                        player.setX(wall.getX() + wall.getWidth());
+                }                        
+                    
+                //Check if projectile hits a wall
+                projectileIterator = projectiles.iterator();
+                while (projectileIterator.hasNext()) {
+                    Projectile projectile = projectileIterator.next();
+                    if (wall.getBoundingBox().intersects(projectile.getBoundingBox())) {
+                        projectile.delete();
+                        projectileIterator.remove();
+                    }
+                }
             }
             
-            else if (entity.getBoundingBox().intersects(playerBoundingBox)) {
-                // handle collision here
-
+            else if (entity.getBoundingBox().intersects(playerBoundingBox)) { //Pickups
+                
                 //Health
                 if (entity instanceof HealthPickup) {
                     player.heal();
-                    iterator.remove();
+                    entityIterator.remove();
                 }
 
                 //Strength                
                 else if (entity instanceof StrengthPickup) {
                     player.applyBonusDamage();
-                    iterator.remove();
+                    entityIterator.remove();
                 }
-
-                // //Enemy
-                // else if (entity instanceof Enemy && player.isAttacking() ) {
-                //     ((Enemy) entity).gotHit(player.getDamage());
-                // }
             }
         }
     }
