@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Animation implements Drawable {
@@ -55,6 +57,10 @@ public class Animation implements Drawable {
                 BufferedImage frame = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D f2 = (Graphics2D) frame.getGraphics();
                 f2.drawImage(in, 0, 0, width, height, i * width, row * height, i * width + width, row * height + height, null);
+                AffineTransform af = new AffineTransform();
+                af.setToScale(owner.getWidth() * 1f / width, owner.getHeight() * 1f / height);
+                AffineTransformOp op = new AffineTransformOp(af, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                frame = op.filter(frame, null);
                 string.add(frame);
             }
         } catch (Exception e) {
