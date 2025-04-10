@@ -3,18 +3,46 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Grunt extends Enemy {
-
+    private int t, atk_t;
+    private final int CHARGE = 100, ATTACK_DUR = 20;
     public Grunt(Player player, int x, int y) {
         super(player, x, y, 40, 40, 100, 10, 1, 1, 20);
+        t = 0;
+        atk_t = 0;
     }
 
     public void update() {
-        moveToPlayer();
+        if (!inRange()) {
+            t = 0;
+            atk_t = 0;
+            moveToPlayer();
+        }
+        else {
+            t++;
+            if (t == CHARGE) {
+                t = 0;
+                attack();
+            }
+        }
+        if (isAttacking()) {
+            if (atk_t == ATTACK_DUR) {
+                atk_t = 0;
+                stopAttack();
+            }
+            atk_t++;
+        }
     }
 
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.GREEN);
+        if (isAttacking())
+            g2.setColor(Color.RED);
+        else
+            g2.setColor(Color.GREEN);
         g2.fillRect(x, y, width, height);
+    }
+
+    private boolean inRange() {
+        return getBoundingBox().intersects(player.getBoundingBox());
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
