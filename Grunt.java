@@ -8,7 +8,7 @@ public class Grunt extends Enemy {
     public Grunt(Player player, int x, int y) {
         super(player, x, y, 40, 40, 40, 5, 1, 1, 20);
         t = 0;
-        atk_t = 0;
+        atk_t = -1;
     }
 
     public void update() {
