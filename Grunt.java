@@ -33,7 +33,6 @@ public class Grunt extends Enemy {
             }
             atk_t++;
         }
-        System.out.println(atk_t);
     }
 
     public void draw(Graphics2D g2) {
