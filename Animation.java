@@ -17,7 +17,8 @@ public class Animation implements Drawable {
     public Animation(GameEntity owner, String path, int numRows, int numCols, long target, boolean loop) {
         animMap = new HashMap<>();
         this.target = target;
-        step = -1;
+        // step = -1;
+        step = 0;
         now = System.currentTimeMillis();
         this.owner = owner;
         this.path = path;
