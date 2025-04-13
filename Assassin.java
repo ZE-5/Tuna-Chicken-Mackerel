@@ -16,14 +16,12 @@ public class Assassin extends Enemy {
     }
 
     private State state;
-    private AssassinBehaviour behaviour;
 
     public Assassin(Player player, int x, int y) {
         super(player, x, y, 40, 60, 100, 20, 2, 2, 40);
         t = 0;
         atk_t = -1;
         state = State.STALK;
-        behaviour = new AssassinBehaviour();
         projectile = new EnemyProjectile(x, y, 10, 10, 1, 5, 50);
     }
 
@@ -48,7 +46,7 @@ public class Assassin extends Enemy {
                 }
             }
         }
-        behaviour.act(state);
+        act(state);
     }
 
     private boolean playerFacingMe() {
@@ -60,6 +58,50 @@ public class Assassin extends Enemy {
             move("RIGHT");
         } else {
             move("LEFT");
+        }
+    }
+
+    private void act(State current) {
+        switch (current) {
+            case STALK:
+                t = 0;
+                atk_t = -1;
+                moveToPlayer();
+                break;
+            case SHANK:
+                t++;
+                if (t == CLOSE_CHARGE) {
+                    t = 0;
+                    atk_t = 0;
+                    attack();
+                }
+                if (atk_t >= 0) {
+                    if (atk_t == ATTACK_DUR) {
+                        atk_t = -2;
+                    }
+                    atk_t++;
+                }
+                break;
+            case SCARED:
+                retreat();
+                t++;
+                if (t == RETREAT_DUR) {
+                    t = 0;
+                    state = State.STALK;
+                    System.out.println("HERE");
+                }
+                break;
+            case THROW:
+                t++;
+                if (t == THROW_CHARGE) {
+                    t = 0;
+                    if (!projectile.isActive()) {
+                        projectile.fire(projectileX, projectileY, isFacingRight);
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -87,51 +129,5 @@ public class Assassin extends Enemy {
 
     protected Rectangle2D generateAttackBoundingBox() {
         return getBoundingBox();
-    }
-
-    private class AssassinBehaviour {
-        private void act(State current) {
-            switch (current) {
-                case STALK:
-                    t = 0;
-                    atk_t = -1;
-                    moveToPlayer();
-                    break;
-                case SHANK:
-                    t++;
-                    if (t == CLOSE_CHARGE) {
-                        t = 0;
-                        atk_t = 0;
-                        attack();
-                    }
-                    if (atk_t >= 0) {
-                        if (atk_t == ATTACK_DUR) {
-                            atk_t = -2;
-                        }
-                        atk_t++;
-                    }
-                    break;
-                case SCARED:
-                    retreat();
-                    t++;
-                    if (t == RETREAT_DUR) {
-                        t = 0;
-                        state = State.STALK;
-                        System.out.println("HERE");
-                    }
-                    break;
-                case THROW:
-                    t++;
-                    if (t == THROW_CHARGE) {
-                        t = 0;
-                        if (!projectile.isActive()) {
-                            projectile.fire(projectileX, projectileY, isFacingRight);
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 }
