@@ -4,12 +4,22 @@ import java.awt.Color;
 
 public class Assassin extends Enemy {
     private int t, atk_t;
+    private int projectileY, projectileX;
+    private EnemyProjectile projectile;
     private final int CHARGE = 100, ATTACK_DUR = 20;
     public Assassin(Player player, int x, int y) {
         super(player, x, y, 40, 60, 100, 20, 2, 2, 40);
+        t = 0;
+        atk_t = -1;
+        projectile = new EnemyProjectile(x, y, 10, 10, 10, 5, 50);
     }
     
     public void update() {
+        projectileY = y;
+        if (isFacingRight)
+            projectileX = x + width;
+        else
+            projectileX = x;
         stopAttack();
         if (!inRange()) {
             t = 0;
@@ -22,7 +32,10 @@ public class Assassin extends Enemy {
             if (t == CHARGE) {
                 t = 0;
                 atk_t = 0;
-                attack();
+                if (!projectile.isActive()) {
+                    projectile.fire(projectileX, projectileY, isFacingRight);
+                }
+                    
             }
         }
         if (atk_t >= 0) {
