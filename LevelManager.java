@@ -36,6 +36,7 @@ public class LevelManager {
         gameEntities.add(new StrengthPickup(100, 100));
         // gameEntities.add(new ExampleEnemy(player, 5000, 5000, 0));
         gameEntities.add(new ExampleEnemy(player, 500, 500, 100));
+        gameEntities.add(new Grunt(player, 400, 400));
         // gameEntities.add(new Wall(200, 100, 50, 50));
         gameEntities.add(new Wall(400, 100, 50, 50));
         gameEntities.add(new ExampleEnemy(player, 200, 100, 10000));
