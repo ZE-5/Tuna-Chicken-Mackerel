@@ -73,7 +73,7 @@ public abstract class Projectile extends GameEntity{
         fire(x, y, direction);
     }
 
-    private void reset() {
+    public void reset() {
         active = false;
         time = 0;
     }
