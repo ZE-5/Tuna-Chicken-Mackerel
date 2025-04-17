@@ -6,6 +6,7 @@ public abstract class GameEntity {
     protected int x, y, width, height;
     protected Drawable drawable;
     protected boolean isVisible;
+    protected boolean drawBehindPlayer;
     //TODO: add sounds
 
     public GameEntity(int x, int y, int width, int height) {
@@ -15,6 +16,17 @@ public abstract class GameEntity {
         this.height = height;
         drawable = null;
         isVisible = true;
+        drawBehindPlayer = false;
+    }
+
+
+    public boolean getDrawBehindPlayer() {
+        return drawBehindPlayer;
+    }
+
+
+    public void setDrawBehindPlayer(boolean drawBehindPlayer) {
+        this.drawBehindPlayer = drawBehindPlayer;
     }
 
 

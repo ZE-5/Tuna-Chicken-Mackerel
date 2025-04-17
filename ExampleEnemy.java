@@ -18,6 +18,7 @@ public class ExampleEnemy extends Enemy{
         anim.rowAnim("Attack", 1);
         anim.setState("Walk");
         drawable = anim;
+        drawBehindPlayer = true;
         // isVisible = false; //true by default from GameEntity constructor
     }
 
