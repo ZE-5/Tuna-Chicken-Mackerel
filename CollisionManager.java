@@ -24,7 +24,7 @@ public class CollisionManager {
             Projectile projectile = (Projectile) entity;
             if (projectile instanceof EnemyProjectile && playerBoundingBox.intersects(projectile.getBoundingBox())){ //if projectile hits player
                 player.damaged(projectile.getDamage());
-                projectile.delete();
+                projectile.reset();
             }
             else
                 projectiles.add(projectile);
@@ -56,8 +56,7 @@ public class CollisionManager {
                     Projectile projectile = projectileIterator.next();
                     if (projectile instanceof PlayerProjectile && !enemy.isDead() && projectile.getBoundingBox().intersects(enemyBoundingBox)) {
                         enemy.damaged(projectile.getDamage());
-                        projectile.delete();
-                        projectileIterator.remove();
+                        projectile.reset();
                     }
                 }
             }
@@ -85,8 +84,7 @@ public class CollisionManager {
                 while (projectileIterator.hasNext()) {
                     Projectile projectile = projectileIterator.next();
                     if (wall.getBoundingBox().intersects(projectile.getBoundingBox())) {
-                        projectile.delete();
-                        projectileIterator.remove();
+                        projectile.reset();
                     }
                 }
             }
