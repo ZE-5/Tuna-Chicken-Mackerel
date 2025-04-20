@@ -18,8 +18,13 @@ public abstract class GameEntity {
         drawable = null;
         isVisible = true;
         levelManager = LevelManager.getInstance();
-        levelManager.register(this);
+        register();
         drawBehindPlayer = false;
+    }
+
+
+    protected void register() {
+        levelManager.register(this);
     }
 
 
