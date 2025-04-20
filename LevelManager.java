@@ -57,6 +57,8 @@ public class LevelManager {
 
         gameEntities.add(new EnemyProjectile(0, 0, 400, 0, 0, 10, 10, 10, 1, 400));
 
+        gameEntities.add(new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT"));
+
         for (int i = 0; i < 11; i++)
             gameEntities.add(new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400));
 
