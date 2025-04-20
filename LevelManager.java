@@ -36,31 +36,36 @@ public class LevelManager {
         return instance;
     }
 
-    public void register(GameEntity ge) {
+    public void register(GameEntity ge) { //each game entity calls this function to add itself to the gameEntity vector
         if (!gameEntities.contains(ge)) {
             gameEntities.add(ge);
         }
     }
 
+
+    public void registerPlayer(Player player) { //called by player
+        this.player = player;
+    }
+
     public void exampleLevel() {
         //TODO: Implement choices for character selection
-        player = new ExamplePlayer(500, 500);
-        gameEntities.add(new HealthPickup(70, 70));
-        gameEntities.add(new StrengthPickup(100, 100));
-        // gameEntities.add(new ExampleEnemy(player, 5000, 5000, 0));
-        gameEntities.add(new ExampleEnemy(player, 500, 500, 100));
-        gameEntities.add(new Grunt(player, 400, 400));
-        // gameEntities.add(new Wall(200, 100, 50, 50));
-        gameEntities.add(new Wall(400, 100, 50, 50));
-        gameEntities.add(new ExampleEnemy(player, 200, 100, 10000));
-        gameEntities.add(new Assassin(player, 300, 300));
+        new ExamplePlayer(500, 500);
+        new HealthPickup(70, 70);
+        new StrengthPickup(100, 100);
+        // new ExampleEnemy(player, 5000, 5000, 0);
+        new ExampleEnemy(player, 500, 500, 100);
+        new Grunt(player, 400, 400);
+        // new Wall(200, 100, 50, 50);
+        new Wall(400, 100, 50, 50);
+        new ExampleEnemy(player, 200, 100, 10000);
+        new Assassin(player, 300, 300);
 
-        gameEntities.add(new EnemyProjectile(0, 0, 400, 0, 0, 10, 10, 10, 1, 400));
+        new EnemyProjectile(0, 0, 400, 0, 0, 10, 10, 10, 1, 400);
 
-        gameEntities.add(new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT"));
+        new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
 
         for (int i = 0; i < 11; i++)
-            gameEntities.add(new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400));
+            new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400);
 
         collisionManager = new CollisionManager(player, gameEntities);
     }

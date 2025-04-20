@@ -11,6 +11,11 @@ public abstract class Player extends Character{
     }
 
 
+    protected void register() {
+        LevelManager.getInstance().registerPlayer(this);
+    }
+
+
     public void heal() {
         health += healAmount;
         // System.out.println("Healed");
