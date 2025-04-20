@@ -97,9 +97,16 @@ public class LevelManager {
 
 
     public void draw(Graphics2D buffer) {
-        player.draw(buffer);
         for (int i = 0; i < gameEntities.size(); i++) {
-            if (!gameEntities.get(i).isVisible())
+            if (!gameEntities.get(i).getDrawBehindPlayer() || !gameEntities.get(i).isVisible())
+                continue;
+            gameEntities.get(i).draw(buffer);
+        }
+
+        player.draw(buffer);
+
+        for (int i = 0; i < gameEntities.size(); i++) {
+            if (!gameEntities.get(i).isVisible() ||gameEntities.get(i).getDrawBehindPlayer())
                 continue;
             gameEntities.get(i).draw(buffer);
         }

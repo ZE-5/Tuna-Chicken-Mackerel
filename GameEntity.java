@@ -6,6 +6,7 @@ public abstract class GameEntity {
     protected int x, y, width, height;
     protected Drawable drawable;
     protected boolean isVisible;
+    protected boolean drawBehindPlayer;
     private LevelManager levelManager;
     //TODO: add sounds
 
@@ -18,6 +19,17 @@ public abstract class GameEntity {
         isVisible = true;
         levelManager = LevelManager.getInstance();
         levelManager.register(this);
+        drawBehindPlayer = false;
+    }
+
+
+    public boolean getDrawBehindPlayer() {
+        return drawBehindPlayer;
+    }
+
+
+    public void setDrawBehindPlayer(boolean drawBehindPlayer) {
+        this.drawBehindPlayer = drawBehindPlayer;
     }
 
 
