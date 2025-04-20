@@ -3,6 +3,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 public class LevelManager {
+    private static LevelManager instance = null;
     private GamePanel gamePanel;
     private Vector<GameEntity> gameEntities;
     private Player player;
@@ -13,25 +14,37 @@ public class LevelManager {
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     
 
-    public LevelManager(GamePanel gamePanel) {
+    private LevelManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-
-        //TODO: Implement choices for character selection
-        player = new ExamplePlayer(500, 500);
-
         gameEntities = new Vector<GameEntity>();
-
-        collisionManager = new CollisionManager(player, gameEntities);
         // this.offsetDx = player.getDx();
         // this.offsetDy = player.getDy();
-
-        
         // moveScreenPosition = false;
         moveScreenPosition = false;
-
-
         //TODO: move into level-maker class or method
         mapBoundaries = new int[]{0, 0, (int) (1920 * 1.5f), (int) (1080 * 1.5f)};
+    }
+
+    public static LevelManager getInstance(GamePanel gp) {
+        if (instance == null) {
+            instance = new LevelManager(gp);
+        }
+        return instance;
+    }
+
+    public static LevelManager getInstance() {
+        return instance;
+    }
+
+    public void register(GameEntity ge) {
+        if (!gameEntities.contains(ge)) {
+            gameEntities.add(ge);
+        }
+    }
+
+    public void exampleLevel() {
+        //TODO: Implement choices for character selection
+        player = new ExamplePlayer(500, 500);
         gameEntities.add(new HealthPickup(70, 70));
         gameEntities.add(new StrengthPickup(100, 100));
         // gameEntities.add(new ExampleEnemy(player, 5000, 5000, 0));
@@ -40,13 +53,17 @@ public class LevelManager {
         // gameEntities.add(new Wall(200, 100, 50, 50));
         gameEntities.add(new Wall(400, 100, 50, 50));
         gameEntities.add(new ExampleEnemy(player, 200, 100, 10000));
+        gameEntities.add(new Assassin(player, 300, 300));
 
-        gameEntities.add(new PlayerProjectile(0, 0, 400, 100, 0, 10, 10, 10, 1, 400));
+        gameEntities.add(new EnemyProjectile(0, 0, 400, 0, 0, 10, 10, 10, 1, 400));
+
+        gameEntities.add(new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT"));
 
         for (int i = 0; i < 11; i++)
             gameEntities.add(new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400));
-    }
 
+        collisionManager = new CollisionManager(player, gameEntities);
+    }
 
     public void update(boolean[] keys) {
         if (player.isDead()){

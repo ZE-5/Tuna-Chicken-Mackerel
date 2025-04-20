@@ -22,7 +22,8 @@ public class GamePanel extends JPanel implements Runnable {
         bufferedImage = new BufferedImage(gameWindow.getWidth()*3, gameWindow.getHeight()*3, BufferedImage.TYPE_INT_RGB);
         isRunning = false;
         // bufferedImage.createGraphics();
-        levelManager = new LevelManager(this);
+        levelManager = LevelManager.getInstance(this);
+        levelManager.exampleLevel();
         keys = new boolean[5];
         x = 0;
         y = 0;

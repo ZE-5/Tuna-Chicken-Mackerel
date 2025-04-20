@@ -12,10 +12,11 @@ public class CollisionManager {
     }
 
     public void checkCollisions(boolean[] keys) {
+        // Retrieve player information
         Rectangle2D playerBoundingBox = player.getBoundingBox();
         Rectangle2D playerAttackBoundingBox = player.getAttackBoundingBox();
 
-
+        //Sort out projectiles
         Vector<Projectile> projectiles = new Vector<Projectile>();
         for (GameEntity entity : gameEntities) {
             if (!(entity instanceof Projectile))
@@ -24,13 +25,14 @@ public class CollisionManager {
             Projectile projectile = (Projectile) entity;
             if (projectile instanceof EnemyProjectile && playerBoundingBox.intersects(projectile.getBoundingBox())){ //if projectile hits player
                 player.damaged(projectile.getDamage());
-                projectile.delete();
+                projectile.reset();
             }
             else
                 projectiles.add(projectile);
         }
 
 
+        //Loop through game entities
         Iterator<Projectile> projectileIterator;
         Iterator<GameEntity> entityIterator = gameEntities.iterator();
         while (entityIterator.hasNext()) {
@@ -56,13 +58,14 @@ public class CollisionManager {
                     Projectile projectile = projectileIterator.next();
                     if (projectile instanceof PlayerProjectile && !enemy.isDead() && projectile.getBoundingBox().intersects(enemyBoundingBox)) {
                         enemy.damaged(projectile.getDamage());
-                        projectile.delete();
-                        projectileIterator.remove();
+                        projectile.reset();
                     }
                 }
+                continue;
             }
 
-            else if (entity instanceof Wall) { //Handling walls
+            //Handling walls (player and projectile collisions)
+            else if (entity instanceof Wall) { 
                 Wall wall = (Wall) entity;
 
                 //Wall collision
@@ -85,24 +88,37 @@ public class CollisionManager {
                 while (projectileIterator.hasNext()) {
                     Projectile projectile = projectileIterator.next();
                     if (wall.getBoundingBox().intersects(projectile.getBoundingBox())) {
-                        projectile.delete();
-                        projectileIterator.remove();
+                        projectile.reset();
                     }
                 }
             }
-            
-            else if (entity.getBoundingBox().intersects(playerBoundingBox)) { //Pickups
+
+            //Player intersects entity
+            else if (entity.getBoundingBox().intersects(playerBoundingBox)) {
                 
-                //Health
+                //Health Pickup
                 if (entity instanceof HealthPickup) {
                     player.heal();
                     entityIterator.remove();
                 }
 
-                //Strength                
+                //Strength Pickup           
                 else if (entity instanceof StrengthPickup) {
                     player.applyBonusDamage();
                     entityIterator.remove();
+                }
+
+                //Treadmill
+                else if (entity instanceof Treadmill) {
+                    String direction = ((Treadmill) entity).getDirection();
+                    if (direction.equals("RIGHT"))
+                        player.setX(player.getX() + ((Treadmill) entity).getMoveRate());
+                    else if (direction.equals("LEFT"))
+                        player.setX(player.getX() - ((Treadmill) entity).getMoveRate());
+                    else if (direction.equals("UP"))
+                        player.setY(player.getY() - ((Treadmill) entity).getMoveRate());
+                    else if (direction.equals("DOWN"))
+                        player.setY(player.getY() + ((Treadmill) entity).getMoveRate());
                 }
             }
         }
