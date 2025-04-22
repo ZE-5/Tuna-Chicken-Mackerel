@@ -75,11 +75,11 @@ public class LevelManager {
             // gamePanel.startGame(); //Uncomment this for a good time ;)
             return;
         }
-        handlePlayerInput(keys);
-        player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
-        
+
         collisionManager.checkCollisions(keys);
 
+        player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
+        handlePlayerInput(keys);        
         // for (int i = 0; i < gameEntities.size(); i++) {
         // for (GameEntity entity : gameEntities) {
         Iterator<GameEntity> iterator = gameEntities.iterator();
