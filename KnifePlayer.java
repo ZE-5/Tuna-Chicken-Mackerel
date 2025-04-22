@@ -3,28 +3,9 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class KnifePlayer extends Player {
-    private int t;
-    private final int COOLDOWN = 10;
     public KnifePlayer(int x, int y) {
         super(x, y, 40, 40, 100, 10, 10, 10);
-        t = -1;
-    }
-
-
-    public void update() {
-        stopAttack();
-        if (t >= 0) {
-            t++;
-            if (t == COOLDOWN)
-                t = -1;
-        }
-    }
-
-    public void attack() {
-        if (t < 0) {
-            t = 0;
-            isAttacking = true;
-        }
+        COOLDOWN = 10;
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
