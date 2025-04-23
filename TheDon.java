@@ -10,7 +10,7 @@ public class TheDon extends Enemy {
     private EnemyProjectile[] mortarPool;
     private final int SWITCH = 500;
     private final int MAX_LEFT = 200, MAX_RIGHT = 800, CENTER_X = 600, CENTER_Y = 600;
-    private final int NUM_PROJECTILES = 15, SHOOT_CHARGE = 50, MORTAR_CHARGE = 25;
+    private final int NUM_PROJECTILES = 15, SHOOT_CHARGE = 50, MORTAR_CHARGE = 100;
     private enum State {
         PUNCH,
         SHOOT,
@@ -31,7 +31,7 @@ public class TheDon extends Enemy {
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
             pool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
-            mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 60);
+            mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 200);
         }
     }
 
@@ -138,12 +138,21 @@ public class TheDon extends Enemy {
     }
 
     private void bombHim() {
-        int i = 0;
-        while (mortarPool[i].isActive()) {
-            i++;
+        int[] xPos = {-1, -1, -1, -1, -1, -1, -1, -1};
+        for (int j = 0; j < 5; j++) {
+            int i = 0;
+            while (mortarPool[i].isActive()) {
+                i++;
+            }
+            int lane = rand.nextInt(8);
+            while (xPos[lane] != -1)
+                lane = rand.nextInt(8);
+            xPos[lane] = lane + 1;
+            xPos[lane] *= 40;
+            xPos[lane] += player.getX() - 100;
+            mortarPool[i].setTrajectory(xPos[lane], xPos[lane ], 100, 101);
+            mortarPool[i].fire();
         }
-        mortarPool[i].setTrajectory(x, y, x, y + 200);
-        mortarPool[i].fire();
     }
 
     public void draw(Graphics2D g2) {
