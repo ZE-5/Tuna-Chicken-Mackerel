@@ -21,19 +21,17 @@ public class TheDon extends Enemy {
         t = 0;
         atk_t = -1;
         big_t = 0;
+        state = State.PUNCH;
     }
 
     public void update() {
         stopAttack();
-        if (state != State.TREAD && state != State.MORTAR && big_t % SWITCH == 0) {
-            if (distFromPlayer() >= CLOSE_RANGE) {
-                if (rand.nextInt() % 2 == 0)
-                    state = State.PUNCH;
-                else
-                    state = State.SHOOT;
-            } else {
+        if (state != State.TREAD && state != State.MORTAR && big_t == SWITCH) {
+            big_t = 0;
+            if (state == State.SHOOT)
                 state = State.PUNCH;
-            }
+            else if (state == State.PUNCH)
+                state = State.SHOOT;
         }
         big_t++;
         act(state);
