@@ -56,7 +56,7 @@ public class CollisionManager {
                 projectileIterator = projectiles.iterator();
                 while (projectileIterator.hasNext()) {
                     Projectile projectile = projectileIterator.next();
-                    if (projectile instanceof PlayerProjectile && !enemy.isDead() && projectile.getBoundingBox().intersects(enemyBoundingBox)) {
+                    if (projectile instanceof PlayerProjectile && !enemy.isDead() && projectile.getBoundingBox().intersects(enemyBoundingBox) && projectile.isActive()) {
                         enemy.damaged(projectile.getDamage());
                         projectile.reset();
                     }
