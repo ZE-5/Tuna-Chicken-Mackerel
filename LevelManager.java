@@ -60,7 +60,7 @@ public class LevelManager {
         new ExampleEnemy(player, 200, 100, 10000);
         new Assassin(player, 300, 300);
 
-        new EnemyProjectile(0, 0, 400, 0, 0, 10, 10, 10, 1, 400);
+        new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
 
         new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
 
