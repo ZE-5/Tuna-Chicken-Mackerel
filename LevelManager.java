@@ -10,6 +10,7 @@ public class LevelManager {
     private boolean moveScreenPosition;
     private int screenX, screenY;
     private CollisionManager collisionManager;
+    private Sound levelSound;
     // private int offsetX, offsetY, offsetDx, offsetDy;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     
@@ -48,6 +49,7 @@ public class LevelManager {
     }
 
     public void exampleLevel() {
+        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
         //TODO: Implement choices for character selection
         new ExamplePlayer(500, 500);
         new HealthPickup(70, 70);
@@ -69,6 +71,7 @@ public class LevelManager {
             new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400);
 
         collisionManager = new CollisionManager(player, gameEntities);
+        levelSound.play();
     }
 
     public void update(boolean[] keys) {
