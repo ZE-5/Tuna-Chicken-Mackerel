@@ -45,8 +45,25 @@ public class TheDon extends Enemy {
     private void act(State current) {
         switch (current) {
             case PUNCH:
+                moveToPlayer();
                 break;
             case SHOOT:
+                if (player.getX() < 500) {
+                    if (x < MAX_RIGHT) {
+                        move("RIGHT");
+                    } else {
+                        facePlayer();
+                        matchY();
+                    }
+                } else {
+                    if (x > MAX_LEFT) {
+                        move("LEFT");
+                    } else {
+                        facePlayer();
+                        matchY();
+                    }
+                }
+                
                 break;
             case TREAD:
                 break;
@@ -57,6 +74,30 @@ public class TheDon extends Enemy {
         }
     }
 
+    private void facePlayer() {
+        if (player.getX() > x) {
+            isFacingRight = true;
+        } else {
+            isFacingRight = false;
+        }
+    }
+
+    public void draw(Graphics2D g2) {
+        if (atk_t >= 0)
+            g2.setColor(Color.RED);
+        else
+            g2.setColor(Color.GREEN);
+        g2.fillRect(x, y, width, height);
+        g2.drawString(state.toString() + " " + big_t, x, y);
+    }
+
+    private void matchY() {
+        int py = player.getY();
+        if (y < py)
+            move("DOWN");
+        if (y > py)
+            move("UP");
+    }
     public void damaged(int damage) {
         int before = health;
         super.damaged(damage);
