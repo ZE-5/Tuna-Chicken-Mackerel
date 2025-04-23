@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
@@ -5,7 +7,7 @@ public class TheDon extends Enemy {
     private Random rand;
     private int t, atk_t, big_t;
     private final int CLOSE_RANGE = 20, SWITCH = 500;
-    private final int MAX_LEFT = 200, MAX_RIGHT = 800, DIST = 200;
+    private final int MAX_LEFT = 200, MAX_RIGHT = 800, CENTER_X = 600, CENTER_Y = 600;
     private enum State {
         PUNCH,
         SHOOT,
@@ -61,8 +63,29 @@ public class TheDon extends Enemy {
                 
                 break;
             case TREAD:
+                if (x < MAX_RIGHT) {
+                    move("RIGHT");
+                }
+                if (y < CENTER_Y) {
+                    move("DOWN");
+                }
+                if (y > CENTER_Y) {
+                    move("UP");
+                }
                 break;
             case MORTAR:
+                if (x < CENTER_X) {
+                    move("RIGHT");
+                }
+                if (x > CENTER_X) {
+                    move("LEFT");
+                }
+                if (y < CENTER_Y) {
+                    move("DOWN");
+                }
+                if (y > CENTER_Y) {
+                    move("UP");
+                }
                 break;
             default:
                 break;
@@ -104,7 +127,7 @@ public class TheDon extends Enemy {
         
         if (state == State.MORTAR && after <= 300) {
             big_t = 0;
-            state = State.PUNCH;
+            state = State.SHOOT;
         }
 
         if (state == State.TREAD && after <= 100) {
