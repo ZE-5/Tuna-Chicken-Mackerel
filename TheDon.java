@@ -102,13 +102,19 @@ public class TheDon extends Enemy {
         int before = health;
         super.damaged(damage);
         int after = health;
-        if (before > 400 && after < 400)
+        if (before > 400 && after <= 400)
             state = State.MORTAR;
-        if (before > 200 && after < 200)
+        if (before > 200 && after <= 200)
             state = State.TREAD;
-        int diff = before - after;
-        if (diff >= 100 && (state == State.MORTAR || state == State.TREAD)) {
+        
+        if (state == State.MORTAR && after <= 300) {
+            big_t = 0;
+            state = State.PUNCH;
+        }
 
+        if (state == State.TREAD && after <= 100) {
+            big_t = 0;
+            state = State.SHOOT;
         }
     }
 
