@@ -61,6 +61,7 @@ public class LevelManager {
         new Assassin(player, 300, 300);
 
         new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
+        new Henchman(player, 600, 600);
 
         new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
 
@@ -75,11 +76,11 @@ public class LevelManager {
             // gamePanel.startGame(); //Uncomment this for a good time ;)
             return;
         }
-        handlePlayerInput(keys);
-        player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
-        
+
         collisionManager.checkCollisions(keys);
 
+        player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
+        handlePlayerInput(keys);        
         // for (int i = 0; i < gameEntities.size(); i++) {
         // for (GameEntity entity : gameEntities) {
         Iterator<GameEntity> iterator = gameEntities.iterator();
@@ -153,6 +154,9 @@ public class LevelManager {
             player.attack();
         else if (player.isAttacking() && !keys[4])
             player.stopAttack();
+        
+        if (!keys[4])
+            player.release();
     }
 
 
