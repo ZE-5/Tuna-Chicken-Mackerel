@@ -153,6 +153,9 @@ public class LevelManager {
             player.attack();
         else if (player.isAttacking() && !keys[4])
             player.stopAttack();
+        
+        if (!keys[4])
+            player.release();
     }
 
 
