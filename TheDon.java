@@ -5,7 +5,7 @@ public class TheDon extends Enemy {
     private Random rand;
     private int t, atk_t, big_t;
     private final int CLOSE_RANGE = 20, SWITCH = 500;
-
+    private final int MAX_LEFT = 200, MAX_RIGHT = 800, DIST = 200;
     private enum State {
         PUNCH,
         SHOOT,
