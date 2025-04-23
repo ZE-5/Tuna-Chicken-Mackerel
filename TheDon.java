@@ -6,8 +6,11 @@ import java.util.Random;
 public class TheDon extends Enemy {
     private Random rand;
     private int t, atk_t, big_t;
-    private final int CLOSE_RANGE = 20, SWITCH = 500;
+    private EnemyProjectile[] pool;
+    private EnemyProjectile[] mortarPool;
+    private final int SWITCH = 500;
     private final int MAX_LEFT = 200, MAX_RIGHT = 800, CENTER_X = 600, CENTER_Y = 600;
+    private final int NUM_PROJECTILES = 15, SHOOT_CHARGE = 50, MORTAR_CHARGE = 25;
     private enum State {
         PUNCH,
         SHOOT,
@@ -23,7 +26,13 @@ public class TheDon extends Enemy {
         t = 0;
         atk_t = -1;
         big_t = 0;
-        state = State.PUNCH;
+        state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
+        pool = new EnemyProjectile[NUM_PROJECTILES];
+        mortarPool = new EnemyProjectile[NUM_PROJECTILES];
+        for (int i = 0; i < NUM_PROJECTILES; i++) {
+            pool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
+            mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 60);
+        }
     }
 
     public void update() {
@@ -42,6 +51,7 @@ public class TheDon extends Enemy {
     private void act(State current) {
         switch (current) {
             case PUNCH:
+                t = 0;
                 moveToPlayer();
                 break;
             case SHOOT:
@@ -51,6 +61,11 @@ public class TheDon extends Enemy {
                     } else {
                         facePlayer();
                         matchY();
+                        t++;
+                        if (t == SHOOT_CHARGE) {
+                            t = 0;
+                            shootHim();
+                        }
                     }
                 } else {
                     if (x > MAX_LEFT) {
@@ -58,6 +73,11 @@ public class TheDon extends Enemy {
                     } else {
                         facePlayer();
                         matchY();
+                        t++;
+                        if (t == SHOOT_CHARGE) {
+                            t = 0;
+                            shootHim();
+                        }
                     }
                 }
                 
@@ -86,6 +106,15 @@ public class TheDon extends Enemy {
                 if (y > CENTER_Y) {
                     move("UP");
                 }
+                if (x == CENTER_X && y == CENTER_Y) {
+                    t++;
+                } else {
+                    t = 0;
+                }
+                if (t == MORTAR_CHARGE) {
+                    t = 0;
+                    bombHim();
+                }
                 break;
             default:
                 break;
@@ -100,13 +129,30 @@ public class TheDon extends Enemy {
         }
     }
 
+    private void shootHim() {
+        int i = 0;
+        while (pool[i].isActive()) {
+            i++;
+        }
+        pool[i].fire(x, y, isFacingRight);
+    }
+
+    private void bombHim() {
+        int i = 0;
+        while (mortarPool[i].isActive()) {
+            i++;
+        }
+        mortarPool[i].setTrajectory(x, y, x, y + 200);
+        mortarPool[i].fire();
+    }
+
     public void draw(Graphics2D g2) {
         if (atk_t >= 0)
             g2.setColor(Color.RED);
         else
             g2.setColor(Color.GREEN);
         g2.fillRect(x, y, width, height);
-        g2.drawString(state.toString() + " " + big_t, x, y);
+        g2.drawString(state.toString() + " " + health, x, y);
     }
 
     private void matchY() {
