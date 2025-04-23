@@ -37,11 +37,6 @@ public class TheDon extends Enemy {
         act(state);
     }
 
-    private int distFromPlayer() {
-        // TODO: Calculate Euclidean distance from player
-        return -1;
-    }
-
     private void act(State current) {
         switch (current) {
             case PUNCH:
