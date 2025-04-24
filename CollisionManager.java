@@ -109,7 +109,7 @@ public class CollisionManager {
                 }
 
                 //Treadmill
-                else if (entity instanceof Treadmill) {
+                else if (entity instanceof Treadmill && ((Treadmill) entity).isActive()) {
                     String direction = ((Treadmill) entity).getDirection();
                     if (direction.equals("RIGHT"))
                         player.setX(player.getX() + ((Treadmill) entity).getMoveRate());
