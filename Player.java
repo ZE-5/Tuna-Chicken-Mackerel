@@ -2,7 +2,7 @@ public abstract class Player extends Character{
     private boolean isBonusDamageActive;
     private int damageBonusTimer;
     private boolean released;
-    private int t;
+    protected int t;
     protected int COOLDOWN, atkCount, numAtk;
     private static final int bonusDamageMultiplier = 1+1/3, bonusDamageTime = 15, healAmount = 20;
 
@@ -70,8 +70,8 @@ public abstract class Player extends Character{
         if (t < 0 && released) {
             t = 0;
             isAttacking = true;
+            released = false;
+            atkCount = ++atkCount % numAtk;
         }
-        released = false;
-        atkCount = ++atkCount % numAtk;
     }
 }
