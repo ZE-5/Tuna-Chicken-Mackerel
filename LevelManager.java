@@ -77,6 +77,7 @@ public class LevelManager {
     public void update(boolean[] keys) {
         if (player.isDead()){
             // gamePanel.startGame(); //Uncomment this for a good time ;)
+            levelSound.stop();
             return;
         }
 
