@@ -155,18 +155,18 @@ public class TheDon extends Enemy {
     }
 
     private void bombHim() {
-        int[] xPos = {-1, -1, -1, -1, -1, -1, -1, -1};
+        int[] xPos = new int[NUM_LANES];
         for (int j = 0; j < 5; j++) {
             int i = 0;
             while (mortarPool[i].isActive()) {
                 i++;
             }
-            int lane = rand.nextInt(8);
-            while (xPos[lane] != -1)
-                lane = rand.nextInt(8);
+            int lane = rand.nextInt(NUM_LANES);
+            while (xPos[lane] != 0)
+                lane = rand.nextInt(NUM_LANES);
             xPos[lane] = lane + 1;
             xPos[lane] *= 40;
-            xPos[lane] += player.getX() - 100;
+            xPos[lane] += player.getX() - (NUM_LANES / 2) * 40;
             mortarPool[i].setTrajectory(xPos[lane], xPos[lane ], 100, 101);
             mortarPool[i].fire();
         }
