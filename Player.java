@@ -3,8 +3,7 @@ public abstract class Player extends Character{
     private int damageBonusTimer;
     private boolean released;
     private int t;
-    protected int COOLDOWN;
-
+    protected int COOLDOWN, atkCount, numAtk;
     private static final int bonusDamageMultiplier = 1+1/3, bonusDamageTime = 15, healAmount = 20;
 
     Player(int x, int y, int width, int height, int health, int damage, int dx, int dy) {
@@ -13,6 +12,8 @@ public abstract class Player extends Character{
         damageBonusTimer = -1;
         t = -1;
         released = true;
+        atkCount = 0;
+        numAtk = 1;
     }
 
 
@@ -71,5 +72,6 @@ public abstract class Player extends Character{
             isAttacking = true;
         }
         released = false;
+        atkCount = ++atkCount % numAtk;
     }
 }
