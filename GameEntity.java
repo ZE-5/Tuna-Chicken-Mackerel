@@ -8,6 +8,7 @@ public abstract class GameEntity {
     protected boolean isVisible;
     protected boolean drawBehindPlayer;
     private LevelManager levelManager;
+    protected boolean isFacingRight;
     //TODO: add sounds
 
     public GameEntity(int x, int y, int width, int height) {
@@ -20,6 +21,7 @@ public abstract class GameEntity {
         levelManager = LevelManager.getInstance();
         register();
         drawBehindPlayer = false;
+        isFacingRight = true;
     }
 
 
@@ -47,6 +49,9 @@ public abstract class GameEntity {
         return isVisible;
     }
 
+    public boolean isFacingRight() {
+        return isFacingRight;
+    }
 
     public abstract void update();
 
