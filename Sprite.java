@@ -29,6 +29,9 @@ public class Sprite extends Drawable{
         x = owner.getX();
         y = owner.getY();
         BufferedImage toDraw = spriteImage;
+        if (owner.isFacingRight() != defaultDirection) {
+            toDraw = flip(toDraw);
+        }
         g2.drawImage(toDraw, x, y, null);
     }
 }

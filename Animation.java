@@ -95,6 +95,9 @@ public class Animation extends Drawable {
         if (step >= string.size())
             step = string.size() - 1;
         BufferedImage toDraw = string.get(step);
+        if (owner.isFacingRight() != defaultDirection) {
+            toDraw = flip(toDraw);
+        }
         g2.drawImage(toDraw, x, y, null);
     }
 }
