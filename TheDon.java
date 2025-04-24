@@ -85,20 +85,6 @@ public class TheDon extends Enemy {
                 }
                 break;
             case SHOOT:
-                if (player.getX() < 500) {
-                    if (x < MAX_RIGHT) {
-                        t = 0;
-                        move("RIGHT");
-                    } else {
-                        facePlayer();
-                        matchY();
-                        t++;
-                        if (t == SHOOT_CHARGE) {
-                            t = 0;
-                            shootHim();
-                        }
-                    }
-                } else {
                     if (x > MAX_LEFT) {
                         t = 0;
                         move("LEFT");
@@ -110,6 +96,8 @@ public class TheDon extends Enemy {
                             t = 0;
                             shootHim();
                         }
+                    if (inRange()) {
+                        state = State.PUNCH;
                     }
                 }
                 break;
