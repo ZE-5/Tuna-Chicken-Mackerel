@@ -64,6 +64,7 @@ public class TheDon extends Enemy {
             case SHOOT:
                 if (player.getX() < 500) {
                     if (x < MAX_RIGHT) {
+                        t = 0;
                         move("RIGHT");
                     } else {
                         facePlayer();
@@ -76,6 +77,7 @@ public class TheDon extends Enemy {
                     }
                 } else {
                     if (x > MAX_LEFT) {
+                        t = 0;
                         move("LEFT");
                     } else {
                         facePlayer();
