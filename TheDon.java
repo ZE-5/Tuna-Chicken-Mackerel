@@ -162,7 +162,7 @@ public class TheDon extends Enemy {
         while (projPool[i].isActive()) {
             i++;
         }
-        projPool[i].fire(x, y, isFacingRight);
+        projPool[i].fire(x, player.getX(), y, player.getY());
     }
 
     private void shootHimRandomly() {
@@ -177,7 +177,7 @@ public class TheDon extends Enemy {
         yPos *= TREAD_HEIGHT;
         yPos += lane * TREAD_LANE_OFFSET;
         yPos += topY;
-        bigProjPool[i].fire(x, yPos, isFacingRight);
+        bigProjPool[i].fire(x, yPos, false);
     }
 
     private void bombHim() {
