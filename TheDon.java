@@ -6,7 +6,7 @@ import java.util.Random;
 public class TheDon extends Enemy {
     private Random rand;
     private int t, atk_t, big_t;
-    private EnemyProjectile[] pool;
+    private EnemyProjectile[] projPool;
     private EnemyProjectile[] mortarPool;
     private Treadmill[] treadPool;
     private final int SWITCH = 500;
@@ -30,10 +30,10 @@ public class TheDon extends Enemy {
         atk_t = -1;
         big_t = 0;
         state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
-        pool = new EnemyProjectile[NUM_PROJECTILES];
+        projPool = new EnemyProjectile[NUM_PROJECTILES];
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
-            pool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
+            projPool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
             mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 200);
         }
         treadPool = new Treadmill[NUM_TREADS];
@@ -87,7 +87,6 @@ public class TheDon extends Enemy {
                         }
                     }
                 }
-                
                 break;
             case TREAD:
                 if (x < MAX_RIGHT) {
@@ -148,10 +147,10 @@ public class TheDon extends Enemy {
 
     private void shootHim() {
         int i = 0;
-        while (pool[i].isActive()) {
+        while (projPool[i].isActive()) {
             i++;
         }
-        pool[i].fire(x, y, isFacingRight);
+        projPool[i].fire(x, y, isFacingRight);
     }
 
     private void bombHim() {
