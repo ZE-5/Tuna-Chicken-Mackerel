@@ -68,7 +68,7 @@ public class LevelManager {
         new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
 
         for (int i = 0; i < 11; i++)
-            new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400);
+            new PlayerProjectile(0, 0, 200, 100, 10, 10, 10, 1, 400);
 
         collisionManager = new CollisionManager(player, gameEntities);
         levelSound.play();
