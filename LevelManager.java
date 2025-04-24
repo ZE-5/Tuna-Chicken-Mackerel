@@ -61,7 +61,7 @@ public class LevelManager {
         new Wall(400, 100, 50, 50);
         new ExampleEnemy(player, 200, 100, 10000);
         new Assassin(player, 300, 300);
-
+        new TheDon(player, 800, 400);
         new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
         new Henchman(player, 600, 600);
 

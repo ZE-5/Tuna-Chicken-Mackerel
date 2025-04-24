@@ -51,7 +51,7 @@ public abstract class Projectile extends GameEntity{
             return;
         }
         trueX += dx * speed;
-        trueY += dy * Math.abs(speed);
+        trueY += dy * speed;
         x = (int) trueX;
         y = (int) trueY;
     }
@@ -61,18 +61,20 @@ public abstract class Projectile extends GameEntity{
             active = true;
     }
 
-    public void fire(int x1, int x2, int y1, int y2, int direction) {
+    public void fire(int x1, int x2, int y1, int y2) {
         trueX = x = x1;
         trueY = y = y1;
         this.x2 = x2;
         this.y2 = y2;
         calcGrads();
-        setDirection(direction);
         fire();
     }
 
     public void fire(int x, int y, int direction) {
-        fire(x, x + 1, y, y, direction);
+        if (direction == LEFT)
+            fire(x, x - 1, y, y);
+        else
+            fire(x, x + 1, y, y);
     }
 
     public void fire(int x, int y, boolean right) {
@@ -102,19 +104,6 @@ public abstract class Projectile extends GameEntity{
 
     public void delete(){
         timedOut = true;
-    }
-
-    public void setDirection(int direction) {
-        switch (direction) {
-            case LEFT:
-                speed = -Math.abs(speed);
-                break;
-            case RIGHT:
-                speed = Math.abs(speed);
-                break;
-            default:
-                break;
-        }
     }
 
     public void setTrajectory(int x1, int x2, int y1, int y2) {
