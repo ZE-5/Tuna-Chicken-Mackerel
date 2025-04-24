@@ -2,15 +2,15 @@ public abstract class Player extends Character{
     private boolean isBonusDamageActive;
     private int damageBonusTimer;
     private boolean released;
-    protected int t;
-    protected int COOLDOWN, atkCount, numAtk;
+    protected int t, input_t;
+    protected int COOLDOWN, atkCount, numAtk, INPUT_GRACE;
     private static final int bonusDamageMultiplier = 1+1/3, bonusDamageTime = 15, healAmount = 20;
 
     Player(int x, int y, int width, int height, int health, int damage, int dx, int dy) {
         super(x, y, width, height, health, damage, dx, dy);
         isBonusDamageActive = false;
         damageBonusTimer = -1;
-        t = -1;
+        t = input_t = -1;
         released = true;
         atkCount = 0;
         numAtk = 1;
@@ -60,6 +60,17 @@ public abstract class Player extends Character{
             if (t == COOLDOWN)
                 t = -1;
         }
+        if (input_t >= 0) {
+            input_t++;
+            if (input_t == INPUT_GRACE) {
+                input_t = -1;
+                resetAtkString();
+            }
+        }
+    }
+
+    private void resetAtkString() {
+        atkCount = 0;
     }
 
     public void release() {
@@ -69,6 +80,7 @@ public abstract class Player extends Character{
     public void attack() {
         if (t < 0 && released) {
             t = 0;
+            input_t = 0;
             isAttacking = true;
             released = false;
             atkCount = ++atkCount % numAtk;
