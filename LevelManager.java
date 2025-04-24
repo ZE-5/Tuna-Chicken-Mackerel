@@ -81,10 +81,12 @@ public class LevelManager {
             return;
         }
 
+        handlePlayerMovementInputs(keys);
+
         collisionManager.checkCollisions(keys);
 
         player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
-        handlePlayerInput(keys);        
+        handlePlayerAttackingInputs(keys);        
         // for (int i = 0; i < gameEntities.size(); i++) {
         // for (GameEntity entity : gameEntities) {
         Iterator<GameEntity> iterator = gameEntities.iterator();
@@ -123,7 +125,7 @@ public class LevelManager {
     }
 
 
-    private void handlePlayerInput(boolean[] keys) {
+    private void handlePlayerMovementInputs(boolean[] keys) {
         
         if (keys[0])
         {
@@ -152,7 +154,10 @@ public class LevelManager {
             if (player.getY() >= mapBoundaries[3])
                 player.setY(mapBoundaries[3] - player.getHeight());
         }
+    }
 
+
+    public void handlePlayerAttackingInputs(boolean[] keys) {
         //Player is attacking if space is pressed
         if (keys[4]) 
             player.attack();
