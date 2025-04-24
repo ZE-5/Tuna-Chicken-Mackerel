@@ -41,6 +41,8 @@ public class Animation implements Drawable {
     }
 
     public void setState(String state) {
+        if (!state.equals(currentState))
+            step = 0;
         currentState = state + modifier;
     }
 
