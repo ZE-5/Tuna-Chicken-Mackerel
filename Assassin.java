@@ -9,10 +9,15 @@ public class Assassin extends Enemy {
     private final int THROW_CHARGE = 100, CLOSE_CHARGE = 50, ATTACK_DUR = 20, RETREAT_DUR = 200;
 
     private enum State {
-        STALK,
-        SHANK,
-        SCARED,
-        THROW
+        STALK("STALK"),
+        SHANK("SHANK"),
+        SCARED("SCARED"),
+        THROW("THROW");
+
+        private String value;
+        State(String string) {
+            value = string;
+        }
     }
 
     private State state;
