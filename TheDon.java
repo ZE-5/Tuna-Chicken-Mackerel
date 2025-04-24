@@ -85,7 +85,7 @@ public class TheDon extends Enemy {
                             attack();
                         }
                         meleeCount = (meleeCount + 1) % 5;
-                    }   
+                    }
                 } else {
                     t = 0;
                     moveToPlayer();
@@ -93,17 +93,17 @@ public class TheDon extends Enemy {
                 break;
             case SHOOT:
                 res = 0.5f;
-                    if (x > MAX_LEFT) {
+                if (x > MAX_LEFT) {
+                    t = 0;
+                    move("LEFT");
+                } else {
+                    facePlayer();
+                    matchY();
+                    t++;
+                    if (t == SHOOT_CHARGE) {
                         t = 0;
-                        move("LEFT");
-                    } else {
-                        facePlayer();
-                        matchY();
-                        t++;
-                        if (t == SHOOT_CHARGE) {
-                            t = 0;
-                            shootHim();
-                        }
+                        shootHim();
+                    }
                     if (inRange()) {
                         state = State.PUNCH;
                     }
@@ -240,7 +240,7 @@ public class TheDon extends Enemy {
             state = State.MORTAR;
         if (before > 200 && after <= 200)
             state = State.TREAD;
-        
+
         if (state == State.MORTAR && after <= 300) {
             big_t = 0;
             state = State.SHOOT;
