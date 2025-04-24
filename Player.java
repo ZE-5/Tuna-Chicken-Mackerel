@@ -1,7 +1,7 @@
 public abstract class Player extends Character{
     private boolean isBonusDamageActive;
     private int damageBonusTimer;
-    private boolean released;
+    protected boolean released;
     protected int t, input_t;
     protected int COOLDOWN, atkCount, numAtk, INPUT_GRACE;
     private static final int bonusDamageMultiplier = 1+1/3, bonusDamageTime = 15, healAmount = 20;
