@@ -15,6 +15,7 @@ public class TheDon extends Enemy {
     private final int NUM_PROJECTILES = 50, SHOOT_CHARGE = 10, MORTAR_CHARGE = 100, BIG_SHOOT_CHARGE = 25, NUM_LANES = 8;
     private final int NUM_TREADS = 4, TREAD_HEIGHT = 125, TREAD_WIDTH = 650, TREAD_LANE_OFFSET = 10, TREAD_CHARGE = 30;
     private final float BIG_PROJ_FACTOR = 0.8f;
+    private int MELEE_CHARGE, meleeCount;
 
     private enum State {
         PUNCH,
@@ -26,11 +27,13 @@ public class TheDon extends Enemy {
     private State state;
 
     public TheDon(Player player, int x, int y) {
-        super(player, x, y, 80, 80, 600, -1, 4, 4, 250);
+        super(player, x, y, 80, 80, 600, 10, 4, 4, 250);
         rand = new Random();
         t = 0;
         atk_t = -1;
         big_t = 0;
+        MELEE_CHARGE = 40;
+        meleeCount = 0;
         state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
         projPool = new EnemyProjectile[NUM_PROJECTILES];
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
@@ -62,8 +65,24 @@ public class TheDon extends Enemy {
     private void act(State current) {
         switch (current) {
             case PUNCH:
-                t = 0;
-                moveToPlayer();
+                if (inRange()) {
+                    t++;
+                    if (t == MELEE_CHARGE) {
+                        t = 0;
+                        if (meleeCount == 4) {
+                            damage = 10;
+                            MELEE_CHARGE = 100;
+                        } else {
+                            damage *= 1.05f;
+                            MELEE_CHARGE = 40;
+                            attack();
+                        }
+                        meleeCount = (meleeCount + 1) % 5;
+                    }   
+                } else {
+                    t = 0;
+                    moveToPlayer();
+                }
                 break;
             case SHOOT:
                 if (player.getX() < 500) {
@@ -235,6 +254,10 @@ public class TheDon extends Enemy {
             big_t = 0;
             state = State.SHOOT;
         }
+    }
+
+    private boolean inRange() {
+        return getBoundingBox().intersects(player.getBoundingBox());
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
