@@ -5,7 +5,7 @@ import java.awt.event.*;        // need this to respond to GUI events
 
 public class GameWindow extends JFrame implements KeyListener{
     private GraphicsDevice device; 
-    private int width, height;
+    // private int width, height;
     private GamePanel gamePanel;
 
     public GameWindow(){
@@ -41,11 +41,11 @@ public class GameWindow extends JFrame implements KeyListener{
 
         // we can now adjust the display modes, if we wish
 
-        width = getBounds().width;
-        height = getBounds().height;
+        // width = getBounds().width;
+        // height = getBounds().height;
 
-        System.out.println("Width of window is " + width);
-        System.out.println("Height of window is " + height);
+        // System.out.println("Width of window is " + width);
+        // System.out.println("Height of window is " + height);
     }
 
     
