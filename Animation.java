@@ -50,6 +50,10 @@ public class Animation implements Drawable {
         this.modifier = modifier;
     }
 
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
     public void rowAnim(String stateName, int row) {
         ArrayList<BufferedImage> string = new ArrayList<>();
         try {
@@ -89,7 +93,7 @@ public class Animation implements Drawable {
         x = owner.getX();
         y = owner.getY();
         if (step >= string.size())
-            return;
+            step = string.size() - 1;
         BufferedImage toDraw = string.get(step);
         g2.drawImage(toDraw, x, y, null);
     }
