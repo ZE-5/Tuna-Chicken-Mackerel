@@ -7,13 +7,15 @@ public class TheDon extends Enemy {
     private Random rand;
     private int t, atk_t, big_t;
     private EnemyProjectile[] projPool;
+    private EnemyProjectile[] bigProjPool;
     private EnemyProjectile[] mortarPool;
     private Treadmill[] treadPool;
     private final int SWITCH = 500;
     private final int MAX_LEFT = 200, MAX_RIGHT = 800, CENTER_X = 600, CENTER_Y = 600;
-    private final int NUM_PROJECTILES = 50, SHOOT_CHARGE = 10, MORTAR_CHARGE = 100, NUM_LANES = 8;
-    private final int NUM_TREADS = 4, TREAD_HEIGHT = 125, TREAD_WIDTH = 650, TREAD_CHARGE = 30;
-    
+    private final int NUM_PROJECTILES = 50, SHOOT_CHARGE = 10, MORTAR_CHARGE = 100, BIG_SHOOT_CHARGE = 25, NUM_LANES = 8;
+    private final int NUM_TREADS = 4, TREAD_HEIGHT = 125, TREAD_WIDTH = 650, TREAD_LANE_OFFSET = 10, TREAD_CHARGE = 30;
+    private final float BIG_PROJ_FACTOR = 0.8f;
+
     private enum State {
         PUNCH,
         SHOOT,
@@ -32,13 +34,15 @@ public class TheDon extends Enemy {
         state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
         projPool = new EnemyProjectile[NUM_PROJECTILES];
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
+        bigProjPool = new EnemyProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
             projPool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
             mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 200);
+            bigProjPool[i] = new EnemyProjectile(x, y, Math.round(TREAD_HEIGHT * BIG_PROJ_FACTOR), Math.round(TREAD_HEIGHT * BIG_PROJ_FACTOR), 15, 6, 120);
         }
         treadPool = new Treadmill[NUM_TREADS];
         for (int i = 0; i < NUM_TREADS; i++) {
-            treadPool[i] = new Treadmill(MAX_RIGHT - TREAD_WIDTH - 5, i * TREAD_HEIGHT + CENTER_Y - (NUM_TREADS / 2) * TREAD_HEIGHT + i * 10, TREAD_WIDTH, TREAD_HEIGHT, Math.round(0.9f * player.getDx()), "LEFT");
+            treadPool[i] = new Treadmill(MAX_RIGHT - TREAD_WIDTH - 5, i * TREAD_HEIGHT + CENTER_Y - (NUM_TREADS / 2) * TREAD_HEIGHT + i * TREAD_LANE_OFFSET, TREAD_WIDTH, TREAD_HEIGHT, Math.round(0.9f * player.getDx()), "LEFT");
         }
     }
 
@@ -102,13 +106,19 @@ public class TheDon extends Enemy {
                 }
                 if (x == MAX_RIGHT && y == CENTER_Y) {
                     t++;
+                    facePlayer();
                 } else {
                     t = 0;
                 }
-                if (t == TREAD_CHARGE) {
+                if (!treadPool[0].isActive() && t == TREAD_CHARGE) {
+                    t = 0;
                     for (Treadmill tread : treadPool) {
                         tread.setActive(true);;
                     }
+                }
+                if (treadPool[0].isActive() && t == BIG_SHOOT_CHARGE) {
+                    t = 0;
+                    shootHimRandomly();
                 }
                 break;
             case MORTAR:
@@ -153,6 +163,21 @@ public class TheDon extends Enemy {
             i++;
         }
         projPool[i].fire(x, y, isFacingRight);
+    }
+
+    private void shootHimRandomly() {
+        int i = 0;
+        while (bigProjPool[i].isActive()) {
+            i++;
+        }
+        int lane = rand.nextInt(NUM_TREADS);
+        int topY = CENTER_Y - (NUM_TREADS / 2) * TREAD_HEIGHT;
+        topY += TREAD_HEIGHT / 2 - (BIG_PROJ_FACTOR * TREAD_HEIGHT / 2);
+        int yPos = lane;
+        yPos *= TREAD_HEIGHT;
+        yPos += lane * TREAD_LANE_OFFSET;
+        yPos += topY;
+        bigProjPool[i].fire(x, yPos, isFacingRight);
     }
 
     private void bombHim() {
@@ -204,6 +229,9 @@ public class TheDon extends Enemy {
         }
 
         if (state == State.TREAD && after <= 100) {
+            for (int i = 0; i < NUM_TREADS; i++) {
+                treadPool[i].setActive(false);
+            }
             big_t = 0;
             state = State.SHOOT;
         }
