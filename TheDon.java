@@ -8,9 +8,12 @@ public class TheDon extends Enemy {
     private int t, atk_t, big_t;
     private EnemyProjectile[] pool;
     private EnemyProjectile[] mortarPool;
+    private Treadmill[] treadPool;
     private final int SWITCH = 500;
     private final int MAX_LEFT = 200, MAX_RIGHT = 800, CENTER_X = 600, CENTER_Y = 600;
-    private final int NUM_PROJECTILES = 15, SHOOT_CHARGE = 50, MORTAR_CHARGE = 100;
+    private final int NUM_PROJECTILES = 50, SHOOT_CHARGE = 10, MORTAR_CHARGE = 100, NUM_LANES = 8;
+    private final int NUM_TREADS = 4, TREAD_HEIGHT = 125, TREAD_WIDTH = 650, TREAD_CHARGE = 30;
+    
     private enum State {
         PUNCH,
         SHOOT,
@@ -32,6 +35,10 @@ public class TheDon extends Enemy {
         for (int i = 0; i < NUM_PROJECTILES; i++) {
             pool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
             mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 200);
+        }
+        treadPool = new Treadmill[NUM_TREADS];
+        for (int i = 0; i < NUM_TREADS; i++) {
+            treadPool[i] = new Treadmill(MAX_RIGHT - TREAD_WIDTH - 5, i * TREAD_HEIGHT + CENTER_Y - (NUM_TREADS / 2) * TREAD_HEIGHT + i * 10, TREAD_WIDTH, TREAD_HEIGHT, Math.round(0.9f * player.getDx()), "LEFT");
         }
     }
 
@@ -91,6 +98,16 @@ public class TheDon extends Enemy {
                 }
                 if (y > CENTER_Y) {
                     move("UP");
+                }
+                if (x == MAX_RIGHT && y == CENTER_Y) {
+                    t++;
+                } else {
+                    t = 0;
+                }
+                if (t == TREAD_CHARGE) {
+                    for (Treadmill tread : treadPool) {
+                        tread.setActive(true);;
+                    }
                 }
                 break;
             case MORTAR:
