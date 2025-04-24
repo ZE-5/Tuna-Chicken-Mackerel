@@ -51,7 +51,7 @@ public class LevelManager {
     public void exampleLevel() {
         levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
         //TODO: Implement choices for character selection
-        new ExamplePlayer(500, 500);
+        new KnifePlayer(500, 500);
         new HealthPickup(70, 70);
         new StrengthPickup(100, 100);
         // new ExampleEnemy(player, 5000, 5000, 0);
