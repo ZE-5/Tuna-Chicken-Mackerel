@@ -57,9 +57,16 @@ public abstract class GameEntity {
 
 
     public void draw(Graphics2D g2){
-        //TODO: proper sprite drawing
-        g2.setColor(Color.magenta);
-        g2.draw(new Rectangle2D.Double(x, y, width, height));
+        if (drawable != null) {
+            drawable.draw(g2);
+        } else {
+            g2.setColor(Color.magenta);
+            g2.draw(new Rectangle2D.Double(x, y, width, height));
+        }
+    }
+
+    public void setDrawable(Drawable drawable) {
+        this.drawable = drawable;
     }
 
 
