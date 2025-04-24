@@ -43,7 +43,7 @@ public class TheDon extends Enemy {
         bigProjPool = new EnemyProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
             projPool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
-            mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 200);
+            mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 120);
             bigProjPool[i] = new EnemyProjectile(x, y, Math.round(TREAD_HEIGHT * BIG_PROJ_FACTOR),
                     Math.round(TREAD_HEIGHT * BIG_PROJ_FACTOR), 15, 6, 120);
         }
