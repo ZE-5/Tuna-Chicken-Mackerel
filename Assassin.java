@@ -132,14 +132,6 @@ public class Assassin extends Enemy {
         }
     }
 
-    public void draw(Graphics2D g2) {
-        super.draw(g2);
-        g2.setColor(Color.MAGENTA);
-        g2.draw(getBoundingBox());
-        g2.setColor(Color.WHITE);
-        g2.drawString(state.value, x, y);
-    }
-
     private boolean inCloseRange() {
         return getBoundingBox().intersects(player.getBoundingBox());
     }
