@@ -17,6 +17,9 @@ public class Sprite extends Drawable{
     private void loadSprite() {
         try {
             spriteImage = ImageIO.read(getClass().getClassLoader().getResource(path));
+            width = spriteImage.getWidth();
+            height = spriteImage.getHeight();
+            spriteImage = scaleToOwner(spriteImage);
         } catch (Exception e) {
             e.printStackTrace();
         }
