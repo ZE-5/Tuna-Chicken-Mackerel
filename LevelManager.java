@@ -10,6 +10,7 @@ public class LevelManager {
     private boolean moveScreenPosition;
     private int screenX, screenY;
     private CollisionManager collisionManager;
+    private Sound levelSound;
     // private int offsetX, offsetY, offsetDx, offsetDy;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     
@@ -48,6 +49,7 @@ public class LevelManager {
     }
 
     public void exampleLevel() {
+        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
         //TODO: Implement choices for character selection
         new KnifePlayer(500, 500);
         new HealthPickup(70, 70);
@@ -60,7 +62,8 @@ public class LevelManager {
         new ExampleEnemy(player, 200, 100, 10000);
         new Assassin(player, 300, 300);
 
-        new EnemyProjectile(0, 0, 400, 0, 0, 10, 10, 10, 1, 400);
+        new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
+        new Henchman(player, 600, 600);
 
         new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
 
@@ -68,6 +71,7 @@ public class LevelManager {
             new PlayerProjectile(0, 0, 200, 100, 6, 10, 10, 10, 1, 400);
 
         collisionManager = new CollisionManager(player, gameEntities);
+        levelSound.play();
     }
 
     public void update(boolean[] keys) {
@@ -75,11 +79,11 @@ public class LevelManager {
             // gamePanel.startGame(); //Uncomment this for a good time ;)
             return;
         }
-        handlePlayerInput(keys);
-        player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
-        
+
         collisionManager.checkCollisions(keys);
 
+        player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
+        handlePlayerInput(keys);        
         // for (int i = 0; i < gameEntities.size(); i++) {
         // for (GameEntity entity : gameEntities) {
         Iterator<GameEntity> iterator = gameEntities.iterator();
@@ -153,6 +157,9 @@ public class LevelManager {
             player.attack();
         else if (player.isAttacking() && !keys[4])
             player.stopAttack();
+        
+        if (!keys[4])
+            player.release();
     }
 
 

@@ -1,6 +1,9 @@
 public abstract class Player extends Character{
     private boolean isBonusDamageActive;
     private int damageBonusTimer;
+    private boolean released;
+    private int t;
+    protected int COOLDOWN;
 
     private static final int bonusDamageMultiplier = 1+1/3, bonusDamageTime = 15, healAmount = 20;
 
@@ -8,6 +11,8 @@ public abstract class Player extends Character{
         super(x, y, width, height, health, damage, dx, dy);
         isBonusDamageActive = false;
         damageBonusTimer = -1;
+        t = -1;
+        released = true;
     }
 
 
@@ -48,5 +53,23 @@ public abstract class Player extends Character{
             removeBonusDamage();
         else if (damageBonusTimer != -1)
             damageBonusTimer++;
+        stopAttack();
+        if (t >= 0) {
+            t++;
+            if (t == COOLDOWN)
+                t = -1;
+        }
+    }
+
+    public void release() {
+        released = true;
+    }
+
+    public void attack() {
+        if (t < 0 && released) {
+            t = 0;
+            isAttacking = true;
+        }
+        released = false;
     }
 }

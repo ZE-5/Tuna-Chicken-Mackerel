@@ -32,7 +32,6 @@ public class Assassin extends Enemy {
         else
             projectileX = x;
         stopAttack();
-        System.out.println(t);
         if (!playerFacingMe()) {
             state = State.STALK;
             if (inCloseRange())
