@@ -2,16 +2,16 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class Sprite implements Drawable{
-    private GameEntity owner;
-    private String path;
+public class Sprite extends Drawable{
     private BufferedImage spriteImage;
-    private int x, y;
+
+    public Sprite(GameEntity owner, String path, boolean defaultDirection) {
+        super(owner, path, defaultDirection);
+        loadSprite();
+    }
 
     public Sprite(GameEntity owner, String path) {
-        this.owner = owner;
-        this.path = path;
-        loadSprite();
+        this(owner, path, Drawable.RIGHT);
     }
 
     private void loadSprite() {
