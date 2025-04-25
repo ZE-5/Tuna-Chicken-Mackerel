@@ -18,7 +18,8 @@ public abstract class Player extends Character{
 
 
     protected void register() {
-        LevelManager.getInstance().registerPlayer(this);
+        if (LevelManager.getInstance() != null)
+            LevelManager.getInstance().registerPlayer(this);
     }
 
 
