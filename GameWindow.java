@@ -61,7 +61,7 @@ public class GameWindow extends JFrame implements KeyListener{
 
     
     public void keyPressed(KeyEvent e) {
-        if (selectingPlayer) {
+        if (selectingPlayer || gamePanel == null) {
             characterSelectionMenu.keyPressed(e);
             return; // ignore key events while selecting character
         }
@@ -88,7 +88,7 @@ public class GameWindow extends JFrame implements KeyListener{
 
     
     public void keyReleased(KeyEvent e) {
-        if (selectingPlayer) {
+        if (selectingPlayer || gamePanel == null) {
             return; // ignore key events while selecting character
         }
 
