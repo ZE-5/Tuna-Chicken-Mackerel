@@ -1,0 +1,128 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class CharacterSelectionMenu extends JPanel {
+    private boolean showHidden;
+    private JFrame gameWindow;
+    private BufferedImage bufferedImage;
+    private BufferedImage knifePlayer;
+    private BufferedImage poolPlayer;
+    private BufferedImage hiddenPlayer;
+    private int currentSelection;
+    public int selectedCharacter;
+
+
+
+    public CharacterSelectionMenu(JFrame gameWindow, boolean showHidden) {
+        this.showHidden = showHidden;
+        this.gameWindow = gameWindow;
+        this.currentSelection = 0;
+        this.selectedCharacter = -1;
+
+        bufferedImage = new BufferedImage(gameWindow.getWidth(), gameWindow.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        
+        Player player = new KnifePlayer(0, 0);
+        knifePlayer = new BufferedImage(player.getWidth() + 1, player.getHeight() + 1, BufferedImage.TYPE_INT_ARGB);
+        player.draw(knifePlayer.createGraphics());
+        
+        player = new PoolPlayer(0, 0);
+        poolPlayer = new BufferedImage(player.getWidth() + 1, player.getHeight() + 1, BufferedImage.TYPE_INT_ARGB);
+        player.draw(poolPlayer.createGraphics());
+
+
+        if (showHidden) {
+            player = new TheGun(0, 0);
+            hiddenPlayer = new BufferedImage(player.getWidth() + 1, player.getHeight() + 1, BufferedImage.TYPE_INT_ARGB);
+            player.draw(hiddenPlayer.createGraphics());
+        }
+    }
+
+
+    public void displayOptions() {
+        // int characterFrameLength = showHidden ? gameWindow.getWidth()/2 : gameWindow.getWidth()/3;
+        // int characterFrameHeight = showHidden ? gameWindow.getHeight()/2 : gameWindow.getHeight()/3;
+        // int xOffset = (gameWindow.getWidth() - characterFrameLength) / 2;
+        // int yOffset = (gameWindow.getHeight() - characterFrameHeight) / 2;
+        // int distanceBetween = characterFrameLength / 3;
+
+        int characterFrameLength = poolPlayer.getWidth();
+        int characterFrameHeight = poolPlayer.getHeight();
+        int xOffset = 10;
+        int yOffset = 50;
+        int distanceBetween = 40;
+
+        Graphics2D buffer = (Graphics2D) bufferedImage.getGraphics();
+        buffer.setColor(Color.black);
+        buffer.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight()); //erase screen | replace with background
+
+        buffer.drawImage(knifePlayer, xOffset, yOffset, characterFrameLength, characterFrameHeight, null);
+        buffer.drawImage(poolPlayer, xOffset + distanceBetween, yOffset, characterFrameLength, characterFrameHeight, null);
+        
+        if (showHidden) {
+            buffer.drawImage(hiddenPlayer, xOffset + 2 * distanceBetween, yOffset, characterFrameLength, characterFrameHeight, null);
+        }
+
+
+        // buffer.setColor(Color.white);
+        // buffer.drawRect(xOffset, yOffset, characterFrameLength, characterFrameHeight);
+        // buffer.drawRect(xOffset + distanceBetween, yOffset, characterFrameLength, characterFrameHeight);
+        // if (showHidden) {
+        //     buffer.drawRect(xOffset + 2 * distanceBetween, yOffset, characterFrameLength, characterFrameHeight);
+        // }
+
+
+        buffer.setColor(Color.white); //selection rectangle
+        if (currentSelection == 0) {
+            buffer.drawRect(xOffset - 1, yOffset - 1, characterFrameLength + 1, characterFrameHeight + 1);
+        } else if (currentSelection == 1) {
+            buffer.drawRect(xOffset + distanceBetween - 1, yOffset - 1, characterFrameLength + 1, characterFrameHeight + 1);
+        } else if (showHidden && currentSelection == 2) {
+            buffer.drawRect(xOffset + 2 * distanceBetween - 1, yOffset - 1, characterFrameLength + 1, characterFrameHeight + 1);
+        }
+
+        Graphics2D g2 = (Graphics2D) this.getGraphics();
+        g2.drawImage(bufferedImage, 0, 0, null);
+        g2.dispose();
+        buffer.dispose();
+    }
+
+
+    public void setShowHidden(boolean showHidden) {
+        this.showHidden = showHidden;
+    }
+
+
+    public int getSelectedCharacter() {
+        while (selectedCharacter == -1) {
+            displayOptions();
+            try {
+                Thread.sleep(100); // Sleep for a short duration to avoid busy waiting
+            } catch (InterruptedException e) {}
+        }
+        return selectedCharacter;
+    }
+
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        if (keyCode == KeyEvent.VK_ESCAPE || (keyCode == KeyEvent.VK_F4 && e.isAltDown())) {
+            System.exit(0);
+        }
+        
+        else if (keyCode == KeyEvent.VK_RIGHT) {
+            currentSelection = showHidden ? (currentSelection + 1) % 3 : (currentSelection + 1) % 2;
+        }
+
+        else if (keyCode == KeyEvent.VK_LEFT) {
+            currentSelection = showHidden ? (currentSelection - 1 + 3) % 3 : (currentSelection - 1 + 2) % 2;
+        }
+
+        else if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_SPACE) {
+            selectedCharacter = currentSelection;
+        }
+    }
+}

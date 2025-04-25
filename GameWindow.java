@@ -7,18 +7,27 @@ public class GameWindow extends JFrame implements KeyListener{
     private GraphicsDevice device; 
     // private int width, height;
     private GamePanel gamePanel;
+    private boolean selectingPlayer;
+    private CharacterSelectionMenu characterSelectionMenu;
 
     public GameWindow(){
+        selectingPlayer = false;
         initFullScreen();
-        gamePanel = new GamePanel(this);
-        getContentPane().add(gamePanel);
-        addKeyListener(this);
+
         
+        addKeyListener(this);
         this.setFocusable(true);
         this.requestFocus();
+    
         setTitle("Change this to the name of the game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        
+        int playerCharacter = selectCharacter(); // 0 = Knife, 1 = Pool, 2 = Hidden
+
+        gamePanel = new GamePanel(this);
+        getContentPane().add(gamePanel);
+
         setVisible(true);
         gamePanel.startGame();
     }
@@ -54,6 +63,12 @@ public class GameWindow extends JFrame implements KeyListener{
 
     
     public void keyPressed(KeyEvent e) {
+        if (selectingPlayer) {
+            characterSelectionMenu.keyPressed(e);
+            return; // ignore key events while selecting character
+        }
+
+
         int keyCode = e.getKeyCode();
 
         if (keyCode == KeyEvent.VK_ESCAPE || (keyCode == KeyEvent.VK_F4 && e.isAltDown())) {
@@ -75,6 +90,10 @@ public class GameWindow extends JFrame implements KeyListener{
 
     
     public void keyReleased(KeyEvent e) {
+        if (selectingPlayer) {
+            return; // ignore key events while selecting character
+        }
+
         int keyCode = e.getKeyCode();
 
         if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) 
@@ -89,5 +108,23 @@ public class GameWindow extends JFrame implements KeyListener{
             gamePanel.setKeys(4, false);
         // if (keyCode == KeyEvent.VK_G)
         //     gamePanel.test();
+    }
+
+
+    public int selectCharacter() {
+        selectingPlayer = true;
+        characterSelectionMenu = new CharacterSelectionMenu(this, false);
+        getContentPane().add(characterSelectionMenu);
+        setVisible(true);
+        characterSelectionMenu.displayOptions();
+        int playerCharacter = characterSelectionMenu.getSelectedCharacter();
+        selectingPlayer = false;
+        getContentPane().remove(characterSelectionMenu);
+        // return playerCharacter;
+        playerCharacter = characterSelectionMenu.selectedCharacter;
+        while(playerCharacter == -1) {
+            playerCharacter = characterSelectionMenu.selectedCharacter;
+        }
+        return playerCharacter;
     }
 }
