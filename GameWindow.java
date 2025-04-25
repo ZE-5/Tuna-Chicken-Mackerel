@@ -18,8 +18,8 @@ public class GameWindow extends JFrame implements KeyListener{
         addKeyListener(this);
         this.setFocusable(true);
         this.requestFocus();
-    
-        setTitle("Change this to the name of the game");
+      
+        setTitle("Tuna Chicken Mackerel");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //TODO: hide TheGun
