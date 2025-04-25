@@ -8,19 +8,25 @@ import javax.swing.JPanel;
 
 public class CharacterSelectionMenu extends JPanel {
     private boolean showHidden;
-    private JFrame gameWindow;
     private BufferedImage bufferedImage;
     private BufferedImage knifePlayer;
     private BufferedImage poolPlayer;
     private BufferedImage hiddenPlayer;
     private int currentSelection;
-    public int selectedCharacter;
-
-
+    private int selectedCharacter;
+    
+    private int characterFrameLength, characterFrameHeight, xOffset, yOffset, distanceBetween;
 
     public CharacterSelectionMenu(JFrame gameWindow, boolean showHidden) {
+        characterFrameLength = 100;
+        characterFrameHeight = 100;
+
+        distanceBetween = characterFrameLength*2;
+        
+        xOffset = showHidden ? gameWindow.getWidth() / 2 - characterFrameLength * 3 / 2 - distanceBetween/2: gameWindow.getWidth() / 2 - characterFrameLength - distanceBetween / 4;
+        yOffset = gameWindow.getHeight() / 2 - characterFrameHeight / 2;
+
         this.showHidden = showHidden;
-        this.gameWindow = gameWindow;
         this.currentSelection = 0;
         this.selectedCharacter = -1;
 
@@ -44,36 +50,18 @@ public class CharacterSelectionMenu extends JPanel {
 
 
     public void displayOptions() {
-        // int characterFrameLength = showHidden ? gameWindow.getWidth()/2 : gameWindow.getWidth()/3;
-        // int characterFrameHeight = showHidden ? gameWindow.getHeight()/2 : gameWindow.getHeight()/3;
-        // int xOffset = (gameWindow.getWidth() - characterFrameLength) / 2;
-        // int yOffset = (gameWindow.getHeight() - characterFrameHeight) / 2;
-        // int distanceBetween = characterFrameLength / 3;
-
-        int characterFrameLength = poolPlayer.getWidth();
-        int characterFrameHeight = poolPlayer.getHeight();
-        int xOffset = 10;
-        int yOffset = 50;
-        int distanceBetween = 40;
-
         Graphics2D buffer = (Graphics2D) bufferedImage.getGraphics();
         buffer.setColor(Color.black);
         buffer.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight()); //erase screen | replace with background
 
-        buffer.drawImage(knifePlayer, xOffset, yOffset, characterFrameLength, characterFrameHeight, null);
-        buffer.drawImage(poolPlayer, xOffset + distanceBetween, yOffset, characterFrameLength, characterFrameHeight, null);
+
+        drawCharacter(buffer, knifePlayer, xOffset, yOffset, characterFrameLength, characterFrameHeight);        
+
+        drawCharacter(buffer, poolPlayer, xOffset + distanceBetween, yOffset, characterFrameLength, characterFrameHeight);
         
         if (showHidden) {
-            buffer.drawImage(hiddenPlayer, xOffset + 2 * distanceBetween, yOffset, characterFrameLength, characterFrameHeight, null);
+            drawCharacter(buffer, hiddenPlayer, xOffset + 2 * distanceBetween, yOffset, characterFrameLength, characterFrameHeight);
         }
-
-
-        // buffer.setColor(Color.white);
-        // buffer.drawRect(xOffset, yOffset, characterFrameLength, characterFrameHeight);
-        // buffer.drawRect(xOffset + distanceBetween, yOffset, characterFrameLength, characterFrameHeight);
-        // if (showHidden) {
-        //     buffer.drawRect(xOffset + 2 * distanceBetween, yOffset, characterFrameLength, characterFrameHeight);
-        // }
 
 
         buffer.setColor(Color.white); //selection rectangle
@@ -100,12 +88,17 @@ public class CharacterSelectionMenu extends JPanel {
     public int getSelectedCharacter() {
         while (selectedCharacter == -1) {
             displayOptions();
-            try {
-                Thread.sleep(100); // Sleep for a short duration to avoid busy waiting
-            } catch (InterruptedException e) {}
         }
         return selectedCharacter;
     }
+
+
+    private void drawCharacter(Graphics2D buffer, BufferedImage image, int xOffset, int yOffset, int characterFrameLength, int characterFrameHeight) {
+        double scaleFactor = Math.min((double) characterFrameLength / image.getWidth(), (double) characterFrameHeight / image.getHeight());
+        buffer.drawImage(image, (int) (xOffset + characterFrameLength/2 - image.getWidth()/2 * scaleFactor), yOffset, (int) (image.getWidth() * scaleFactor), (int) (image.getHeight() * scaleFactor), null);
+    }
+
+
 
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();

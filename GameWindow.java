@@ -22,10 +22,7 @@ public class GameWindow extends JFrame implements KeyListener{
         setTitle("Change this to the name of the game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        
-        int playerCharacter = selectCharacter(); // 0 = Knife, 1 = Pool, 2 = Hidden
-
-        gamePanel = new GamePanel(this);
+        gamePanel = new GamePanel(this, selectCharacter(false));
         getContentPane().add(gamePanel);
 
         setVisible(true);
@@ -111,20 +108,15 @@ public class GameWindow extends JFrame implements KeyListener{
     }
 
 
-    public int selectCharacter() {
+    public int selectCharacter(boolean showHidden) { // 0 = Knife, 1 = Pool, 2 = Hidden
         selectingPlayer = true;
-        characterSelectionMenu = new CharacterSelectionMenu(this, false);
+        characterSelectionMenu = new CharacterSelectionMenu(this, showHidden);
         getContentPane().add(characterSelectionMenu);
         setVisible(true);
         characterSelectionMenu.displayOptions();
         int playerCharacter = characterSelectionMenu.getSelectedCharacter();
         selectingPlayer = false;
         getContentPane().remove(characterSelectionMenu);
-        // return playerCharacter;
-        playerCharacter = characterSelectionMenu.selectedCharacter;
-        while(playerCharacter == -1) {
-            playerCharacter = characterSelectionMenu.selectedCharacter;
-        }
         return playerCharacter;
     }
 }
