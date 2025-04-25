@@ -42,10 +42,20 @@ public class TheDon extends Enemy {
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
         bigProjPool = new EnemyProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
-            projPool[i] = new EnemyProjectile(x, y, 15, 15, 15, 8, 60);
-            mortarPool[i] = new EnemyProjectile(x, y, 30, 30, 20, 6, 120);
+            projPool[i] = new EnemyProjectile(x, y, 30, 30, 15, 8, 60);
+            Sprite projSprite = new Sprite(projPool[i], "images/bullet.gif");
+            projPool[i].setDrawable(projSprite);
+
+            mortarPool[i] = new EnemyProjectile(x, y, 100, 100, 20, 6, 120);
+            Sprite mortarSprite = new Sprite(mortarPool[i], "images/mortar.gif", Drawable.LEFT);
+            mortarPool[i].setDrawable(mortarSprite);
+
             bigProjPool[i] = new EnemyProjectile(x, y, Math.round(TREAD_HEIGHT * BIG_PROJ_FACTOR),
                     Math.round(TREAD_HEIGHT * BIG_PROJ_FACTOR), 15, 6, 120);
+            Animation bigProjAnim = new Animation(bigProjPool[i], "images/bowling.gif", 1, 8, 60, true);
+            bigProjAnim.rowAnim("ROLL", 0);
+            bigProjAnim.setState("ROLL");
+            bigProjPool[i].setDrawable(bigProjAnim);
         }
         treadPool = new Treadmill[NUM_TREADS];
         for (int i = 0; i < NUM_TREADS; i++) {
