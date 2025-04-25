@@ -106,11 +106,11 @@ public class CharacterSelectionMenu extends JPanel {
             System.exit(0);
         }
         
-        else if (keyCode == KeyEvent.VK_RIGHT) {
+        else if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_S) {
             currentSelection = showHidden ? (currentSelection + 1) % 3 : (currentSelection + 1) % 2;
         }
 
-        else if (keyCode == KeyEvent.VK_LEFT) {
+        else if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_W) {
             currentSelection = showHidden ? (currentSelection - 1 + 3) % 3 : (currentSelection - 1 + 2) % 2;
         }
 
