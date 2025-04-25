@@ -16,7 +16,7 @@ public class GameWindow extends JFrame implements KeyListener{
         
         this.setFocusable(true);
         this.requestFocus();
-        setTitle("Change this to the name of the game");
+        setTitle("Tuna Chicken Mackerel");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         setVisible(true);
