@@ -143,6 +143,7 @@ public class LevelManager {
 
 
     private void handlePlayerMovementInputs(boolean[] keys) {
+        player.setIsMoving(keys[0] || keys[1] || keys[2] || keys[3]); //Check if player is trying to move
         
         if (keys[0])
         {

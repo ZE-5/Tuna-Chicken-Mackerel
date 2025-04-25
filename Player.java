@@ -4,6 +4,7 @@ public abstract class Player extends Character{
     protected boolean released;
     protected int t, input_t;
     protected int COOLDOWN, atkCount, numAtk, INPUT_GRACE;
+    protected boolean isMoving;
     private static final int bonusDamageMultiplier = 1+1/3, bonusDamageTime = 15, healAmount = 20;
 
     Player(int x, int y, int width, int height, int health, int damage, int dx, int dy) {
@@ -14,12 +15,23 @@ public abstract class Player extends Character{
         released = true;
         atkCount = 0;
         numAtk = 1;
+        isMoving = false;
     }
 
 
     protected void register() {
         if (LevelManager.getInstance() != null)
             LevelManager.getInstance().registerPlayer(this);
+    }
+
+
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+
+    public void setIsMoving(boolean isMoving) {
+        this.isMoving = isMoving;
     }
 
 
