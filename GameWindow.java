@@ -22,7 +22,8 @@ public class GameWindow extends JFrame implements KeyListener{
         setTitle("Change this to the name of the game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        gamePanel = new GamePanel(this, selectCharacter(false));
+        //TODO: hide TheGun
+        gamePanel = new GamePanel(this, selectCharacter(true));
         getContentPane().add(gamePanel);
 
         setVisible(true);
