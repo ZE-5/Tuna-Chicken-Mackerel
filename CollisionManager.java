@@ -79,19 +79,19 @@ public class CollisionManager {
                 if (wall.getBoundingBox().intersects(playerBoundingBox)) {
                     //Right collision
                     if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
-                        player.setX(wall.getX() - player.getWidth() - 1);
+                        player.setX((int) (wall.getX() - playerBoundingBox.getWidth() - 1));
                     
                     //Left collision
                     else if (keys[2] && wall.getRightLine().intersects(playerBoundingBox))
-                        player.setX(wall.getX() + wall.getWidth());
+                        player.setX((int) (wall.getX() + wall.getWidth() - (playerBoundingBox.getX() - player.getX())));
 
                     //Down collision
                     else if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
-                        player.setY(wall.getY() - player.getHeight() - 1);
+                        player.setY((int) (wall.getY() - playerBoundingBox.getHeight() - 1));
                     
                     //Up collision
                     else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
-                        player.setY(wall.getY() + wall.getHeight());
+                        player.setY((int) (wall.getY() + wall.getHeight() - (playerBoundingBox.getY() - player.getY())));
                 }                        
                     
                 //Check if projectile hits a wall
