@@ -1,7 +1,9 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -15,7 +17,7 @@ public class GamePanel extends JPanel implements Runnable {
     private static final long tickrate = 1000/60; 
     int x, y;
     // int[] drawingCoordinates;
-
+    private Image background;
 
     public GamePanel(GameWindow gameWindow, int playerCharacter) {
         this.gameWindow = gameWindow;
@@ -28,6 +30,13 @@ public class GamePanel extends JPanel implements Runnable {
         keys = new boolean[5];
         x = 0;
         y = 0;
+        try {
+            background = ImageIO.read(new File("images/level1back.gif"));
+            background = background.getScaledInstance(2000, 2000, Image.SCALE_FAST);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 
     public void startGame() {
@@ -66,9 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
     
     private void render() {
         Graphics2D buffer = (Graphics2D) bufferedImage.getGraphics();
-        //TODO:replace with background image
-        buffer.setColor(Color.black);
-        buffer.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight()); //erase screen | replace with background
+        buffer.drawImage(background, 0, 0, null);
 
         levelManager.draw(buffer);
 
