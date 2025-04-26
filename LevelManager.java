@@ -225,7 +225,7 @@ public class LevelManager {
         buffer.fillRect(healthX, healthY, width, height);
         buffer.setColor(Color.GREEN);
         buffer.fillRect(healthX, healthY, (int) (width * (theDon.getHealth() / (float) theDon.getMaxHealth())), height);
-        Font font = new Font("Comic Sans MS", Font.BOLD, 18);
+        Font font = new Font("Comic Sans", Font.BOLD, 18);
         FontMetrics metrics = buffer.getFontMetrics(font);
         String donString = "xX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_Xx";
         int stringWidth = metrics.stringWidth(donString);
