@@ -1,4 +1,7 @@
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,8 +33,14 @@ public class GamePanel extends JPanel implements Runnable {
         x = 0;
         y = 0;
         try {
-            background = ImageIO.read(new File("images/level1back.gif"));
-            background = background.getScaledInstance(2000, 2000, Image.SCALE_FAST);
+            BufferedImage in = ImageIO.read(new File("images/level1back.gif"));
+            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice device = env.getDefaultScreenDevice();
+            GraphicsConfiguration config = device.getDefaultConfiguration();
+            background = config.createCompatibleImage(in.getWidth() * 5, in.getHeight() * 5);
+            Graphics2D b2 = (Graphics2D) background.getGraphics();
+            b2.drawImage(in, 0, 0, 5000, 5000, null);
+            b2.dispose();
         } catch (Exception e) {
             e.printStackTrace();
         }
