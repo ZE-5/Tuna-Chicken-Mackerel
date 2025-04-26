@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.Iterator;
 import java.util.Vector;
@@ -165,10 +167,15 @@ public class LevelManager {
 
 
     public void draw(Graphics2D buffer) {
+        TheDon theDon = null;
+
         for (int i = 0; i < gameEntities.size(); i++) {
             if (!gameEntities.get(i).getDrawBehindPlayer() || !gameEntities.get(i).isVisible())
                 continue;
             gameEntities.get(i).draw(buffer);
+
+            if (gameEntities.get(i) instanceof TheDon)
+                theDon = (TheDon) gameEntities.get(i);
         }
 
         player.draw(buffer);
@@ -177,6 +184,9 @@ public class LevelManager {
             if (!gameEntities.get(i).isVisible() ||gameEntities.get(i).getDrawBehindPlayer())
                 continue;
             gameEntities.get(i).draw(buffer);
+
+            if (gameEntities.get(i) instanceof TheDon)
+            theDon = (TheDon) gameEntities.get(i);
         }
 
         //Draw player's health above them
@@ -188,6 +198,9 @@ public class LevelManager {
         // buffer.fillRect(healthX, healthY, (int) (30 * (player.getHealth() / (float) player.getMaxHealth())), 10);
         
         drawPlayerHealthBar(buffer);
+
+        if (theDon != null) 
+            drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(buffer, theDon);
     }
 
 
@@ -200,6 +213,26 @@ public class LevelManager {
         buffer.fillRect(healthX, healthY, width, height);
         buffer.setColor(Color.RED);
         buffer.fillRect(healthX, healthY, (int) (width * (player.getHealth() / (float) player.getMaxHealth())), height);
+    }
+
+
+    private void drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(Graphics2D buffer, TheDon theDon) {
+        int height = 25;
+        int width = 600;
+        int healthX = -1 * gamePanel.getX() + gamePanel.getWidth()/2 - width/2; //+ offset
+        int healthY = -1 * gamePanel.getY() + 30;
+        buffer.setColor(Color.BLACK);
+        buffer.fillRect(healthX, healthY, width, height);
+        buffer.setColor(Color.GREEN);
+        buffer.fillRect(healthX, healthY, (int) (width * (theDon.getHealth() / (float) theDon.getMaxHealth())), height);
+        Font font = new Font("Comic Sans", Font.BOLD, 18);
+        FontMetrics metrics = buffer.getFontMetrics(font);
+        String donString = "xX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_Xx";
+        int stringWidth = metrics.stringWidth(donString);
+        buffer.setFont(font);
+        buffer.setColor(Color.black);
+        buffer.drawString(donString, healthX + (width - stringWidth)/2, healthY + metrics.getAscent());
+        
     }
 
 
