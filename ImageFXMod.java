@@ -16,5 +16,9 @@ public abstract class ImageFXMod {
         fx.setParameter(parameterName, current);
     }
 
+    public void reset() {
+        t = -1;
+    }
+    
     protected abstract void process();
 }
