@@ -176,6 +176,9 @@ public class LevelManager {
 
             if (gameEntities.get(i) instanceof TheDon)
                 theDon = (TheDon) gameEntities.get(i);
+            
+                else if (gameEntities.get(i) instanceof Enemy)
+                ((Enemy) gameEntities.get(i)).drawHoveringHealthBar(buffer);
         }
 
         player.draw(buffer);
@@ -187,15 +190,10 @@ public class LevelManager {
 
             if (gameEntities.get(i) instanceof TheDon)
             theDon = (TheDon) gameEntities.get(i);
-        }
 
-        //Draw player's health above them
-        // int healthX = player.getX() + (player.getWidth() - 30) / 2;
-        // int healthY = player.getY() - 10 - 10;
-        // buffer.setColor(Color.BLACK);
-        // buffer.fillRect(healthX, healthY, 30, 10);
-        // buffer.setColor(Color.RED);
-        // buffer.fillRect(healthX, healthY, (int) (30 * (player.getHealth() / (float) player.getMaxHealth())), 10);
+            else if (gameEntities.get(i) instanceof Enemy)
+                ((Enemy) gameEntities.get(i)).drawHoveringHealthBar(buffer);
+        }
         
         drawPlayerHealthBar(buffer);
 
