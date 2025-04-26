@@ -19,14 +19,13 @@ public class GamePanel extends JPanel implements Runnable {
     // int[] drawingCoordinates;
     private Image background;
 
-    public GamePanel(GameWindow gameWindow, int playerCharacter) {
+    public GamePanel(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
         bufferedImage = new BufferedImage(gameWindow.getWidth()*3, gameWindow.getHeight()*3, BufferedImage.TYPE_INT_RGB);
         isRunning = false;
         // bufferedImage.createGraphics();
         levelManager = LevelManager.getInstance(this);
-        levelManager.setPlayerCharacter(playerCharacter);
-        levelManager.exampleLevel();
+        levelManager.initialize();
         keys = new boolean[5];
         x = 0;
         y = 0;
@@ -116,6 +115,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public void setY(int y) {
+        this.y = y;
+    }
+
+
+    public void setScreenPosition(int x, int y) {
+        this.x = x;
         this.y = y;
     }
 
