@@ -77,21 +77,21 @@ public class CollisionManager {
 
                 //Wall collision
                 if (wall.getBoundingBox().intersects(playerBoundingBox)) {
-                    //Down collision
-                    if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
-                        player.setY(wall.getY() - player.getHeight() - 1);
-                    
-                    //Up collision
-                    else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
-                        player.setY(wall.getY() + wall.getHeight());
-                    
                     //Right collision
-                    else if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
+                    if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
                         player.setX(wall.getX() - player.getWidth() - 1);
                     
                     //Left collision
                     else if (keys[2] && wall.getRightLine().intersects(playerBoundingBox))
                         player.setX(wall.getX() + wall.getWidth());
+
+                    //Down collision
+                    else if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
+                        player.setY(wall.getY() - player.getHeight() - 1);
+                    
+                    //Up collision
+                    else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
+                        player.setY(wall.getY() + wall.getHeight());
                 }                        
                     
                 //Check if projectile hits a wall
@@ -109,27 +109,15 @@ public class CollisionManager {
                     Rectangle2D enemyBoundingBox = enemy.getBoundingBox();
 
                     if (wall.getBoundingBox().intersects(enemyBoundingBox)) {
-                        //Up collision
-                        if (enemy.movedUp() && wall.getBottomLine().intersects(enemyBoundingBox)) {
-                            enemy.setY(wall.getY() + wall.getHeight());
-                        }
-
-                        //Down collision
-                        else if (enemy.movedDown() && wall.getTopLine().intersects(enemyBoundingBox)) {
+                        if (wall.getTopLine().intersects(enemyBoundingBox))
                             enemy.setY(wall.getY() - enemy.getHeight() - 1);
-                        }
-
-                        //Left collision
-                        else if (enemy.movedRight() && wall.getLeftLine().intersects(enemyBoundingBox)) {
+                        else if (enemy.movedUp() && wall.getBottomLine().intersects(enemyBoundingBox))
+                            enemy.setY(wall.getY() + wall.getHeight());
+                        else if (wall.getLeftLine().intersects(enemyBoundingBox))
                             enemy.setX(wall.getX() - enemy.getWidth() - 1);
-                        }
-
-                        //Right collision
-                        else if (enemy.movedLeft() && wall.getRightLine().intersects(enemyBoundingBox)) {
+                        else if (wall.getRightLine().intersects(enemyBoundingBox))
                             enemy.setX(wall.getX() + wall.getWidth());
-                        }
                     }
-                    enemy.resetMovement();
                 }            
             }
 
@@ -169,5 +157,13 @@ public class CollisionManager {
                 }
             }
         }
+    
+        //Reset enemy movement information since we are done checking collisions
+        enemyIterator = enemies.iterator();
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
+            enemy.resetMovement();
+        }
+
     }
 }
