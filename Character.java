@@ -5,6 +5,7 @@ public abstract class Character extends GameEntity {
     protected ImageFX damageFX;
     protected ImageFXMod damageFXMod;
     protected int dx, dy, health, maxHealth, damage;
+    protected boolean movedUp, movedDown, movedLeft, movedRight;
     // protected Vector<> attackString //TODO: implement attackString
 
 
