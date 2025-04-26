@@ -2,7 +2,7 @@ import java.awt.geom.Rectangle2D;
 
 public abstract class Character extends GameEntity {
     protected int dx, dy, health, damage;
-    protected boolean isAttacking;
+    protected boolean isAttacking, movedUp, movedDown, movedLeft, movedRight;
     // protected Vector<> attackString //TODO: implement attackString
 
 
@@ -13,6 +13,10 @@ public abstract class Character extends GameEntity {
         this.dx = dx;
         this.dy = dy;
         this.isAttacking = false;
+        this.movedUp = false;
+        this.movedDown = false;
+        this.movedLeft = false;
+        this.movedRight = false;
     }
 
     
@@ -60,28 +64,63 @@ public abstract class Character extends GameEntity {
     }
 
 
+    public void resetMovement() {
+        movedUp = false;
+        movedDown = false;
+        movedLeft = false;
+        movedRight = false;
+    }
+
+
+    public boolean movedUp() {
+        return movedUp;
+    }
+
+
+    public boolean movedDown() {
+        return movedDown;
+    }
+
+
+    public boolean movedLeft() {
+        return movedLeft;
+    }
+
+
+    public boolean movedRight() {
+        return movedRight;
+    }
+
+
     public void move(String direction) {
         switch (direction) {
             case "UP":
+                movedUp = true;
                 y -= dy;
                 break;
 
             case "RIGHT":
-                if (isFacingRight)
+                if (isFacingRight){
+                    movedRight = true;
                     x += dx;
+                }
                 else
                     isFacingRight = true;
                 break;
 
             case "LEFT":
-                if (!isFacingRight)
+                if (!isFacingRight){
                     x -= dx;
+                    movedLeft = true;
+                }
                 else
                     isFacingRight = false;
                 break;
 
-            case "DOWN":
+            case "DOWN":{
                 y += dy;
+                movedDown = true;
+            }
                 break;
 
             default:

@@ -30,7 +30,7 @@ public abstract class Player extends Character{
     }
 
 
-    public void setIsMoving(boolean isMoving) {
+    public void setMoving(boolean isMoving) {
         this.isMoving = isMoving;
     }
 
