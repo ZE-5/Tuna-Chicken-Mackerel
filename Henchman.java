@@ -16,12 +16,20 @@ public class Henchman extends Enemy {
     }
 
     private State state;
+    private Animation anim;
 
     public Henchman(Player player, int x, int y) {
-        super(player, x, y, 50, 80, 175, -1, 1, 1, 80);
+        super(player, x, y, 200, 200, 175, -1, 1, 1, 80);
         t = 0;
         atk_t = -1;
         state = State.APPROACH;
+        anim = new Animation(this, "images/HenchmanSpriteSheet.gif", 4, 8);
+        anim.rowAnim("DEFAULT", 0);
+        anim.rowAnim("WALK", 1);
+        anim.rowAnim("ATK1", 2);
+        anim.rowAnim("ATK2", 3);
+        anim.setState("DEFAULT");
+        drawable = anim;
     }
 
     public void update() {
@@ -41,15 +49,20 @@ public class Henchman extends Enemy {
             case APPROACH:
                 t = 0;
                 atk_t = -1;
+                anim.setLoop(true);
+                anim.setState("WALK");
                 moveToPlayer();
                 break;
-            case ATTACK: 
+            case ATTACK:
+                anim.setState("DEFAULT");
                 t++;
                 if (t == ATK1_CHARGE) {
                     t = 0;
                     atk_t = 0;
                     damage = ATK1_DMG;
                     state = State.LIGHT1;
+                    anim.setLoop(false);
+                    anim.setState("ATK1");
                     attack();
                 }
                 break;
@@ -64,6 +77,8 @@ public class Henchman extends Enemy {
                     atk_t = 0;
                     damage = ATK2_DMG;
                     state = State.LIGHT2;
+                    anim.setLoop(false);
+                    anim.setState("ATK2");
                     attack();
                 }
                 break;
@@ -77,7 +92,7 @@ public class Henchman extends Enemy {
                     t = 0;
                     atk_t = 0;
                     damage = ATK3_DMG;
-                    state = State.HEAVY;
+                    state = State.APPROACH; // rip couldnt make the anims - notdredre
                     attack();
                 }
                 break;
@@ -95,14 +110,6 @@ public class Henchman extends Enemy {
             default:
                 break;
         }
-    }
-
-    public void draw(Graphics2D g2) {
-        if (atk_t >= 0)
-            g2.setColor(Color.RED);
-        else
-            g2.setColor(Color.GREEN);
-        g2.fillRect(x, y, width, height);
     }
 
     protected Rectangle2D generateAttackBoundingBox() {

@@ -120,6 +120,13 @@ public class CollisionManager {
                     else if (direction.equals("DOWN"))
                         player.setY(player.getY() + ((Treadmill) entity).getMoveRate());
                 }
+
+                else if (entity instanceof Trigger) {
+                    Trigger trigger = (Trigger) entity;
+                    if (trigger.isActive()) {
+                        LevelManager.getInstance().eventTrigger(trigger.getTriggerType(), trigger.getTriggerValue());
+                    }
+                }
             }
         }
     }

@@ -75,6 +75,7 @@ public class LevelManager {
         new StrengthPickup(100, 100);
         // new ExampleEnemy(player, 5000, 5000, 0);
         new ExampleEnemy(player, 500, 500, 100);
+        new Trigger(100, 100, 50, 50, "LEVEL", 1, true);
         new Grunt(player, 400, 400);
         // new Wall(200, 100, 50, 50);
         new Wall(400, 100, 50, 50);
@@ -300,9 +301,14 @@ public class LevelManager {
         gamePanel.setX(-1*(x - gamePanel.getWidth()/2));
         gamePanel.setY(-1*(y - gamePanel.getHeight()/2));
     }
+  
+  
+    public void eventTrigger(String triggerType, int triggerValue) {
+        if (triggerType.equals("LEVEL")) {
 
+        }
+        else if (triggerType.equals("SPAWN")) {
 
-    public int getPlayerHealth() {
-        return player.getHealth();
+        }
     }
 }

@@ -3,7 +3,6 @@ import java.awt.geom.Rectangle2D;
 public abstract class Character extends GameEntity {
     protected int dx, dy, health, damage;
     protected boolean isAttacking;
-    protected boolean isFacingRight;
     // protected Vector<> attackString //TODO: implement attackString
 
 
@@ -40,12 +39,6 @@ public abstract class Character extends GameEntity {
     public void damaged(int damage) { //return true if dead
         health -= damage;
     }
-
-
-    public boolean isFacingRight() {
-        return isFacingRight;
-    }
-
 
     public boolean isDead() {
         return health <= 0;

@@ -8,6 +8,7 @@ public abstract class GameEntity {
     protected boolean isVisible;
     protected boolean drawBehindPlayer;
     private LevelManager levelManager;
+    protected boolean isFacingRight;
     //TODO: add sounds
 
     public GameEntity(int x, int y, int width, int height) {
@@ -20,6 +21,7 @@ public abstract class GameEntity {
         levelManager = LevelManager.getInstance();
         register();
         drawBehindPlayer = false;
+        isFacingRight = true;
     }
 
 
@@ -48,14 +50,24 @@ public abstract class GameEntity {
         return isVisible;
     }
 
+    public boolean isFacingRight() {
+        return isFacingRight;
+    }
 
     public abstract void update();
 
 
     public void draw(Graphics2D g2){
-        //TODO: proper sprite drawing
-        g2.setColor(Color.magenta);
-        g2.draw(new Rectangle2D.Double(x, y, width, height));
+        if (drawable != null) {
+            drawable.draw(g2);
+        } else {
+            g2.setColor(Color.magenta);
+            g2.draw(new Rectangle2D.Double(x, y, width, height));
+        }
+    }
+
+    public void setDrawable(Drawable drawable) {
+        this.drawable = drawable;
     }
 
 

@@ -1,13 +1,18 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class KnifePlayer extends Player {
+    private Animation anim;
+
     public KnifePlayer(int x, int y) {
-        super(x, y, 40, 40, 100, 10, 10, 10);
+        super(x, y, 90, 90, 100, 4, 10, 10);
         COOLDOWN = 10;
         INPUT_GRACE = 20;
-        numAtk = 4;
+        anim = new Animation(this, "images/KnifePlayerSpriteSheet.gif", 3, 5);
+        anim.rowAnim("DEFAULT", 0);
+        anim.rowAnim("MOVE", 1);
+        anim.rowAnim("STAB", 2);
+        anim.setState("DEFAULT");
+        drawable = anim;
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
@@ -17,26 +22,29 @@ public class KnifePlayer extends Player {
             return new Rectangle2D.Double(x - 50, y, 50, height);
     }
 
-    public void attack() {
-        super.attack();
-        if (atkCount == 3) {
-            COOLDOWN = 20;
+    public void update() {
+        super.update();
+        if (isMoving) {
+            anim.setLoop(true);
+            anim.setState("MOVE");
         } else {
-            COOLDOWN = 10;
-        }
-
-        if (atkCount == 2) {
-            damage = 15;
-        } else {
-            damage = 10;
+            if (input_t < 0)
+                anim.setState("DEFAULT");
         }
     }
 
-    public void draw(Graphics2D g2) {
-        g2.setColor(Color.MAGENTA);
-        g2.draw(new Rectangle2D.Double(x, y, width, height));
-
-        g2.setColor(Color.WHITE);
-        g2.draw(generateAttackBoundingBox());
+    public void attack() {
+        if (isMoving)
+            return;
+        if (t < 0 && released) {
+            t = 0;
+            input_t = 0;
+            isAttacking = true;
+            released = false;
+            anim.setLoop(false);
+            anim.resetStep();
+            anim.setState("STAB");
+        }
+        
     }
 }
