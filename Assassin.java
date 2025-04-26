@@ -1,6 +1,4 @@
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.Color;
 
 public class Assassin extends Enemy {
     private int t, atk_t;
@@ -25,7 +23,7 @@ public class Assassin extends Enemy {
     private State state;
 
     public Assassin(Player player, int x, int y) {
-        super(player, x, y, 100, 100, 100, 20, 2, 2, 40);
+        super(player, x, y, 150, 150, 100, 20, 2, 2, 40);
         t = 0;
         atk_t = -1;
         state = State.STALK;
