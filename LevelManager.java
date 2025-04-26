@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Iterator;
 import java.util.Vector;
@@ -11,6 +12,7 @@ public class LevelManager {
     private int screenX, screenY;
     private CollisionManager collisionManager;
     private Sound levelSound;
+    int healthPosX, healthPosY;
     // private int offsetX, offsetY, offsetDx, offsetDy;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     
@@ -140,6 +142,14 @@ public class LevelManager {
                 continue;
             gameEntities.get(i).draw(buffer);
         }
+
+        //Draw player's health above them
+        int healthX = player.getX() + (player.getWidth() - 30) / 2;
+        int healthY = player.getY() - 10 - 10;
+        buffer.setColor(Color.BLACK);
+        buffer.fillRect(healthX, healthY, 30, 10);
+        buffer.setColor(Color.RED);
+        buffer.fillRect(healthX, healthY, (int) (30 * (player.getHealth() / (float) 100)), 10);
     }
 
 
@@ -291,8 +301,8 @@ public class LevelManager {
         gamePanel.setX(-1*(x - gamePanel.getWidth()/2));
         gamePanel.setY(-1*(y - gamePanel.getHeight()/2));
     }
-
-
+  
+  
     public void eventTrigger(String triggerType, int triggerValue) {
         if (triggerType.equals("LEVEL")) {
 
