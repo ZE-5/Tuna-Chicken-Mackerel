@@ -34,6 +34,8 @@ public class TheDon extends Enemy {
 
     private State state;
     private Animation bossAnim;
+    private Sound[] shot, hit; 
+    private Sound bomb;
 
     public TheDon(Player player, int x, int y) {
         super(player, x, y, 320, 240, 600, 10, 4, 4, 250);
@@ -44,6 +46,15 @@ public class TheDon extends Enemy {
         meleeCount = 0;
         res = 0;
         state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
+        shot = new Sound[15];
+        bomb = new Sound("sounds/bomb.wav", false, 0.7f);
+        hit = new Sound[3];
+        for (int i = 0; i < 3; i++) {
+            hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
+        }
+        for (int i = 0; i < 15; i++) {
+            shot[i] = new Sound("sounds/gun.wav", false, 0.5f);
+        }
         projPool = new EnemyProjectile[NUM_PROJECTILES];
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
         bigProjPool = new EnemyProjectile[NUM_PROJECTILES];
@@ -81,7 +92,6 @@ public class TheDon extends Enemy {
         bossAnim.rowAnim(State.MORTAR.value, 4);
         bossAnim.rowAnim(State.TREAD.value, 5);
         drawable = bossAnim;
-        state = State.SHOOT;
     }
 
     public void update() {
@@ -126,6 +136,7 @@ public class TheDon extends Enemy {
                             MELEE_CHARGE = 40;
                             attack();
                         }
+                        hit[meleeCount].play();
                         meleeCount = (meleeCount + 1) % NUM_ATK;
                     }
                 } else {
@@ -235,6 +246,7 @@ public class TheDon extends Enemy {
             i++;
         }
         projPool[i].fire(projX, player.getX(), projY, player.getY());
+        shot[i].play();
     }
 
     private void shootHimRandomly() {
@@ -268,6 +280,7 @@ public class TheDon extends Enemy {
             mortarPool[i].setTrajectory(xPos[lane], xPos[lane], 100, 101);
             mortarPool[i].fire();
         }
+        bomb.play();
     }
 
     public void draw(Graphics2D g2) {

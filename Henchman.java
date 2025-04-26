@@ -1,6 +1,4 @@
 import java.awt.geom.Rectangle2D;
-import java.awt.Color;
-import java.awt.Graphics2D;
 
 public class Henchman extends Enemy {
     private int t, atk_t;
@@ -17,12 +15,16 @@ public class Henchman extends Enemy {
 
     private State state;
     private Animation anim;
-
+    private Sound[] hit;
     public Henchman(Player player, int x, int y) {
         super(player, x, y, 200, 200, 175, -1, 1, 1, 80);
         t = 0;
         atk_t = -1;
         state = State.APPROACH;
+        hit = new Sound[3];
+        for (int i = 0; i < 3; i++) {
+            hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
+        }
         anim = new Animation(this, "images/HenchmanSpriteSheet.gif", 4, 8);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("WALK", 1);
@@ -63,6 +65,7 @@ public class Henchman extends Enemy {
                     state = State.LIGHT1;
                     anim.setLoop(false);
                     anim.setState("ATK1");
+                    hit[0].play();
                     attack();
                 }
                 break;
@@ -79,6 +82,7 @@ public class Henchman extends Enemy {
                     state = State.LIGHT2;
                     anim.setLoop(false);
                     anim.setState("ATK2");
+                    hit[1].play();
                     attack();
                 }
                 break;

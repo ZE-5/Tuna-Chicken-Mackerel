@@ -6,10 +6,13 @@ public class TheGun extends Player {
     private Animation anim;
     private int projX, projY;
 
+    private Sound[] shot;
+
     public TheGun(int x, int y) {
         super(x, y, 150, 150, 100, 10, 8, 8);
         COOLDOWN = 5;
         INPUT_GRACE = 20;
+        shot = new Sound[NUM_PROJECTILES];
         projPool = new PlayerProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
             projPool[i] = new PlayerProjectile(x, y, 40, 40, damage, 10, 100);
@@ -17,6 +20,7 @@ public class TheGun extends Player {
             proj.rowAnim("DEFAULT", 0);
             proj.setState("DEFAULT");
             projPool[i].setDrawable(proj);
+            shot[i] = new Sound("sounds/gun.wav", false, 0.5f);
         }
         anim = new Animation(this, "images/TheGunSpriteSheet.gif", 3, 5, 60);
         anim.rowAnim("DEFAULT", 0);
@@ -68,6 +72,7 @@ public class TheGun extends Player {
         while (projPool[i].isActive()) {
             i = (i + 1) % NUM_PROJECTILES;
         }
+        shot[i].play();
         projPool[i].fire(projX, projY, isFacingRight);
     }
 }
