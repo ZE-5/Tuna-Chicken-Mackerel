@@ -169,7 +169,7 @@ public class LevelManager {
                 entity.update();
                 
                 if (entity instanceof Enemy)
-                    restrictToMapBoundaries((entity);
+                    restrictToMapBoundaries((entity));
             }
         }
     }
