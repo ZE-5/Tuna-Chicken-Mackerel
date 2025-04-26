@@ -92,6 +92,7 @@ public class TheDon extends Enemy {
         bossAnim.rowAnim(State.MORTAR.value, 4);
         bossAnim.rowAnim(State.TREAD.value, 5);
         drawable = bossAnim;
+        drawable.setImageFX(damageFX);
     }
 
     public void update() {

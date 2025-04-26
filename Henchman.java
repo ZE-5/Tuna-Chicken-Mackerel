@@ -32,6 +32,7 @@ public class Henchman extends Enemy {
         anim.rowAnim("ATK2", 3);
         anim.setState("DEFAULT");
         drawable = anim;
+        drawable.setImageFX(damageFX);
     }
 
     public void update() {

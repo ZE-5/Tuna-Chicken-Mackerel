@@ -14,6 +14,7 @@ public class Grunt extends Enemy {
         gruntAnim.rowAnim("ATTACK", 1);
         gruntAnim.rowAnim("DEFAULT", 2);
         drawable = gruntAnim;
+        drawable.setImageFX(damageFX);
     }
 
     public void update() {

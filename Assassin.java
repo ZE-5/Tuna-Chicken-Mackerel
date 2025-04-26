@@ -38,6 +38,7 @@ public class Assassin extends Enemy {
         assassinAnim.rowAnim("DEFAULT", 3);
         assassinAnim.setState("DEFAULT");
         drawable = assassinAnim;
+        drawable.setImageFX(damageFX);
     }
 
     public void update() {
