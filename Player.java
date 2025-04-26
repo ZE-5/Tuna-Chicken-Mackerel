@@ -37,8 +37,8 @@ public abstract class Player extends Character{
 
     public void heal() {
         health += healAmount;
-        if (health > maxHealth)
-            health = maxHealth;
+        if (health > getMaxHealth())
+            health = getMaxHealth();
         // System.out.println("Healed");
     }
 

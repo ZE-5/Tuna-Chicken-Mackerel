@@ -110,13 +110,13 @@ public class CollisionManager {
 
                     if (wall.getBoundingBox().intersects(enemyBoundingBox)) {
                         if (wall.getTopLine().intersects(enemyBoundingBox))
-                            enemy.setY(wall.getY() - enemy.getHeight() - 1);
+                            enemy.setY((int) (wall.getY() - enemyBoundingBox.getHeight() - 1));
                         else if (enemy.movedUp() && wall.getBottomLine().intersects(enemyBoundingBox))
-                            enemy.setY(wall.getY() + wall.getHeight());
+                            enemy.setY((int) (wall.getY() + wall.getHeight() - (enemyBoundingBox.getY() - enemy.getY())));
                         else if (wall.getLeftLine().intersects(enemyBoundingBox))
-                            enemy.setX(wall.getX() - enemy.getWidth() - 1);
+                            enemy.setX((int) (wall.getX() - enemyBoundingBox.getWidth() - 1));
                         else if (wall.getRightLine().intersects(enemyBoundingBox))
-                            enemy.setX(wall.getX() + wall.getWidth());
+                            enemy.setX((int) (wall.getX() + wall.getWidth() - (enemyBoundingBox.getX() - enemy.getX())));
                     }
                 }            
             }
