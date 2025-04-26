@@ -76,14 +76,19 @@ public class LevelManager {
         // new ExampleEnemy(player, 5000, 5000, 0);
         new ExampleEnemy(player, 500, 500, 100);
         new Trigger(100, 100, 50, 50, "LEVEL", 1, true);
-        new Grunt(player, 400, 400);
         // new Wall(200, 100, 50, 50);
         new Wall(400, 100, 50, 50);
         new ExampleEnemy(player, 200, 100, 10000);
+
+        new Wall(200, 200, 700, 25);
+
+
+        new Grunt(player, 400, 400);        
         new Assassin(player, 300, 300);
         new TheDon(player, 800, 400);
-        new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
         new Henchman(player, 600, 600);
+
+        new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
 
         new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
 
@@ -154,7 +159,7 @@ public class LevelManager {
 
 
     private void handlePlayerMovementInputs(boolean[] keys) {
-        player.setIsMoving(keys[0] || keys[1] || keys[2] || keys[3]); //Check if player is trying to move
+        player.setMoving(keys[0] || keys[1] || keys[2] || keys[3]); //Check if player is trying to move
         
         if (keys[0])
         {
