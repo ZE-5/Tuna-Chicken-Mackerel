@@ -217,15 +217,15 @@ public class LevelManager {
 
 
     private void drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(Graphics2D buffer, TheDon theDon) {
-        int height = 25;
-        int width = 600;
+        int height = 30;
+        int width = 700;
         int healthX = -1 * gamePanel.getX() + gamePanel.getWidth()/2 - width/2; //+ offset
-        int healthY = -1 * gamePanel.getY() + 30;
+        int healthY = -1 * gamePanel.getY() + gamePanel.getHeight() - height - 30;
         buffer.setColor(Color.BLACK);
         buffer.fillRect(healthX, healthY, width, height);
         buffer.setColor(Color.GREEN);
         buffer.fillRect(healthX, healthY, (int) (width * (theDon.getHealth() / (float) theDon.getMaxHealth())), height);
-        Font font = new Font("Comic Sans", Font.BOLD, 18);
+        Font font = new Font("Times New Roman", Font.BOLD, 24);
         FontMetrics metrics = buffer.getFontMetrics(font);
         String donString = "xX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_Xx";
         int stringWidth = metrics.stringWidth(donString);
