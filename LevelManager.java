@@ -64,6 +64,11 @@ public class LevelManager {
     }
 
 
+    public int[] getMapBoundaries() {
+        return mapBoundaries;
+    }
+
+
     private void setRespawnPosition(int x, int y) {
         this.respawnPosX = x;
         this.respawnPosY = y;
@@ -160,10 +165,27 @@ public class LevelManager {
             else if (entity instanceof Projectile && ((Projectile) entity).timedOut())
                 iterator.remove();
             
-            else
+            else{
                 entity.update();
+                
+                if (entity instanceof Enemy)
+                    restrictToMapBoundaries((entity);
+            }
         }
     }
+
+
+    private void restrictToMapBoundaries(GameEntity entity) {
+        if (entity.getX() < mapBoundaries[0])
+            entity.setX(mapBoundaries[0]);
+        else if (entity.getX() + entity.getWidth() > mapBoundaries[2])
+            entity.setX((int) (mapBoundaries[2] - entity.getBoundingBox().getWidth()));
+
+        if (entity.getY() < mapBoundaries[1])
+            entity.setY(mapBoundaries[1]);
+        else if (entity.getY() + entity.getHeight() > mapBoundaries[3])
+            entity.setY((int) (mapBoundaries[3] - entity.getBoundingBox().getHeight()));
+        }
 
 
     public void draw(Graphics2D buffer) {
