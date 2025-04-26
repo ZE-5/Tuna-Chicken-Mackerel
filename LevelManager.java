@@ -12,7 +12,6 @@ public class LevelManager {
     private int screenX, screenY;
     private CollisionManager collisionManager;
     private Sound levelSound;
-    int healthPosX, healthPosY;
     // private int offsetX, offsetY, offsetDx, offsetDy;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     
@@ -149,12 +148,26 @@ public class LevelManager {
         }
 
         //Draw player's health above them
-        int healthX = player.getX() + (player.getWidth() - 30) / 2;
-        int healthY = player.getY() - 10 - 10;
+        // int healthX = player.getX() + (player.getWidth() - 30) / 2;
+        // int healthY = player.getY() - 10 - 10;
+        // buffer.setColor(Color.BLACK);
+        // buffer.fillRect(healthX, healthY, 30, 10);
+        // buffer.setColor(Color.RED);
+        // buffer.fillRect(healthX, healthY, (int) (30 * (player.getHealth() / (float) player.getMaxHealth())), 10);
+        
+        drawPlayerHealthBar(buffer);
+    }
+
+
+    private void drawPlayerHealthBar(Graphics2D buffer) {
+        int healthX = -1 * gamePanel.getX() + 4; //+ offset
+        int healthY = -1 * gamePanel.getY() + 2;
+        int height = 20 ;
+        int width = 300;
         buffer.setColor(Color.BLACK);
-        buffer.fillRect(healthX, healthY, 30, 10);
+        buffer.fillRect(healthX, healthY, width, height);
         buffer.setColor(Color.RED);
-        buffer.fillRect(healthX, healthY, (int) (30 * (player.getHealth() / (float) player.getMaxHealth())), 10);
+        buffer.fillRect(healthX, healthY, (int) (width * (player.getHealth() / (float) player.getMaxHealth())), height);
     }
 
 
