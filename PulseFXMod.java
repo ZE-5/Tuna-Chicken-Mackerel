@@ -1,11 +1,9 @@
 public class PulseFXMod extends ImageFXMod {
     private int maxSteps, descendTarget;
-    private String parameterName;
-    private float min, max, step, current;
+    private float min, max, step;
 
     public PulseFXMod(ImageFX fx, String parameterName, float min, float max, int maxSteps) {
-        super(fx);
-        this.parameterName = parameterName;
+        super(fx, parameterName);
         this.min = Math.clamp(min, 0, 1);
         this.max = Math.clamp(max, 0, 1);
         this.maxSteps = maxSteps;
@@ -23,15 +21,16 @@ public class PulseFXMod extends ImageFXMod {
     }
 
     public void process() {
-        if (t <= maxSteps)
-            current += step;
-        else if (t <= descendTarget) {
-            current -= step;
+        float currFloat = current.floatValue();
+        if (t < maxSteps)
+            currFloat += step;
+        else if (t < descendTarget) {
+            currFloat -= step;
         }
-        if (t > descendTarget) {
+        if (t >= descendTarget) {
             current = min;
             t = -1;
         }
-        fx.setParameter(parameterName, current);
+        current = currFloat;
     }
 }
