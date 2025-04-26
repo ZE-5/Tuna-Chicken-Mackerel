@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 public abstract class Projectile extends GameEntity{
@@ -35,14 +34,18 @@ public abstract class Projectile extends GameEntity{
     public void draw(Graphics2D g2) {
         if (!active)
             return;
-        g2.setColor(Color.RED);
-        g2.fillOval(x, y, width, height);
+        super.draw(g2);
     }
 
 
     public void update() {
         if (!active) {
             return;
+        }
+        if (dx > 0) {
+            isFacingRight = true;
+        } else {
+            isFacingRight = false;
         }
         time++;
         if (time == timeOut)
