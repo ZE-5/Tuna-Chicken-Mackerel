@@ -73,19 +73,18 @@ public class GamePanel extends JPanel implements Runnable {
     
     
     private void render() {
-        Graphics2D buffer = (Graphics2D) bufferedImage.getGraphics();
-        buffer.drawImage(background, 0, 0, null);
-
-        levelManager.draw(buffer);
-
-        Graphics2D g2 = (Graphics2D) this.getGraphics();
-       
         if (!levelManager.holdScreenPositionX())
             x = levelManager.getBufferImageX();
 
         if (!levelManager.holdScreenPositionY())
             y = levelManager.getBufferImageY();
+        
+        Graphics2D buffer = (Graphics2D) bufferedImage.getGraphics();
+        buffer.drawImage(background, 0, 0, null);
 
+        levelManager.draw(buffer);
+       
+        Graphics2D g2 = (Graphics2D) this.getGraphics();
         g2.drawImage(bufferedImage, x, y, null);
         g2.dispose();
         buffer.dispose();
