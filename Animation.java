@@ -48,6 +48,14 @@ public class Animation extends Drawable {
         currentState = state + modifier;
     }
 
+    public void setStateIgnoreCurrent(String state) {
+        currentState = state + modifier;
+    }
+
+    public void resetStep() {
+        step = 0;
+    }
+
     public void setModifier(String modifier) {
         this.modifier = modifier;
     }
