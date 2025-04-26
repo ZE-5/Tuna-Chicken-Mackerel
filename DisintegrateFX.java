@@ -17,8 +17,8 @@ public class DisintegrateFX extends ImageFX {
             if (pixels[i] == 0)
                 continue;
             int alpha = pixels[i] >> 24 & 255;
-            alpha = Math.round(parameters.get(AMOUNT).floatValue() * 255);
-            pixels[i] = (alpha << 24) | pixels[i] << 8;
+            alpha -= Math.round(parameters.get(AMOUNT).floatValue() * 255);
+            pixels[i] = (alpha << 24) | ((pixels[i] << 8) >> 8);
         }
         out.setRGB(0, 0, width, height, pixels, 0, width);
         return out;
