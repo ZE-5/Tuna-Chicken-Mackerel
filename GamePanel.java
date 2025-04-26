@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
         // bufferedImage.createGraphics();
         levelManager = LevelManager.getInstance(this);
         levelManager.setPlayerCharacter(playerCharacter);
-        levelManager.exampleLevel();
+        levelManager.level1();
         keys = new boolean[5];
         x = 0;
         y = 0;

@@ -12,12 +12,19 @@ public class LevelManager {
     private int screenX, screenY;
     private CollisionManager collisionManager;
     private Sound levelSound;
+    private Trigger Trigger1;
+    private Trigger Trigger2;
+    Trigger Trigger3;
+    private Vector<Enemy> enemies1;
+    private Vector<Enemy> enemies2;
     int healthPosX, healthPosY;
     // private int offsetX, offsetY, offsetDx, offsetDy;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     
 
     private LevelManager(GamePanel gamePanel) {
+        this.enemies1 = new Vector<Enemy>();
+        this.enemies2 = new Vector<Enemy>();
         this.gamePanel = gamePanel;
         gameEntities = new Vector<GameEntity>();
         // this.offsetDx = player.getDx();
@@ -93,6 +100,38 @@ public class LevelManager {
         collisionManager = new CollisionManager(player, gameEntities);
         levelSound.play();
     }
+
+
+
+    public void level1() {
+        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
+        //TODO: Implement choices for character selection
+        
+        new Wall(0, 0, 1000, 25);
+        new Wall(0, 750, 1000 - 50 - 25 - 100 - 25, 25);
+
+        new Wall(1000, 0, 25, (int) (1000 - 50 - 25 - 100) - 75);
+        new Wall(0, (int) (1000 - 50 - 25 - 100) + 500, 1000 + 25 + 500, 25);
+
+        new Wall(1000, (int) (1000 - 50 - 25 - 100) - 75, 500, 25);
+        new Wall(1000 + 50 - 25 + 500 - 25 , (int) (1000 - 50 - 25 - 100) - 75, 25, 500 + 100);
+
+        Trigger1 = new Trigger(500, 0, 100, 300, "SPAWN", 1, true);
+        enemies1.add(new Grunt(player, 500, 500));
+        enemies1.add(new Grunt(player, 600, 600));
+        enemies1.add(new Grunt(player, 700, 700));
+
+        Trigger2 = new Trigger(1000 - 50 - 25 -25 - 100, 750, 200 + 25, 50, "SPAWN", 2, false);
+        enemies2.add(new Assassin(player, 1000, 1000));
+        enemies2.add(new Henchman(player, 1000, 1000));
+
+
+        Trigger3 = new Trigger(0, 2000, 50, 50, "LEVEL", 2, true);
+
+        collisionManager = new CollisionManager(player, gameEntities);
+        levelSound.play();
+    }
+
 
     public void update(boolean[] keys) {
         if (player.isDead()){
@@ -308,7 +347,21 @@ public class LevelManager {
 
         }
         else if (triggerType.equals("SPAWN")) {
+            if (triggerValue == 1) {
+                for (Enemy enemy : enemies1) {
+                        enemy.setVisible(true);
+                }
+                enemies1.clear();
+                Trigger1.setActive(false);
+            }
 
+            else if (triggerValue == 2) {
+                for (Enemy enemy : enemies2) {
+                        enemy.setVisible(true);
+                }
+                enemies2.clear();
+                Trigger2.setActive(false);
+            }
         }
     }
 }
