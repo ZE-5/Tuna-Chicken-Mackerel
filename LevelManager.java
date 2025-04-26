@@ -48,10 +48,27 @@ public class LevelManager {
         this.player = player;
     }
 
+
+    public void setPlayerCharacter(int playerCharacter) {
+        switch (playerCharacter) {
+            case 0:
+                player = new KnifePlayer(0, 0);
+                break;
+            case 1:
+                player = new PoolPlayer(0, 0);
+                break;
+            case 2:
+                player = new TheGun(0, 0);
+                break;
+            default:
+                player = new KnifePlayer(0, 0);
+        }
+    }
+
     public void exampleLevel() {
         levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
         //TODO: Implement choices for character selection
-        new PoolPlayer(500, 500);
+        // new PoolPlayer(500, 500);
         new HealthPickup(70, 70);
         new StrengthPickup(100, 100);
         // new ExampleEnemy(player, 5000, 5000, 0);
@@ -81,10 +98,12 @@ public class LevelManager {
             return;
         }
 
+        handlePlayerMovementInputs(keys);
+
         collisionManager.checkCollisions(keys);
 
         player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
-        handlePlayerInput(keys);        
+        handlePlayerAttackingInputs(keys);        
         // for (int i = 0; i < gameEntities.size(); i++) {
         // for (GameEntity entity : gameEntities) {
         Iterator<GameEntity> iterator = gameEntities.iterator();
@@ -123,7 +142,8 @@ public class LevelManager {
     }
 
 
-    private void handlePlayerInput(boolean[] keys) {
+    private void handlePlayerMovementInputs(boolean[] keys) {
+        player.setIsMoving(keys[0] || keys[1] || keys[2] || keys[3]); //Check if player is trying to move
         
         if (keys[0])
         {
@@ -152,7 +172,10 @@ public class LevelManager {
             if (player.getY() >= mapBoundaries[3])
                 player.setY(mapBoundaries[3] - player.getHeight());
         }
+    }
 
+
+    public void handlePlayerAttackingInputs(boolean[] keys) {
         //Player is attacking if space is pressed
         if (keys[4]) 
             player.attack();

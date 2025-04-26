@@ -26,7 +26,8 @@ public abstract class GameEntity {
 
 
     protected void register() {
-        levelManager.register(this);
+        if (levelManager != null)
+            levelManager.register(this);
     }
 
 

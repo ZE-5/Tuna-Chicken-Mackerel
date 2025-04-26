@@ -5,20 +5,27 @@ import java.awt.event.*;        // need this to respond to GUI events
 
 public class GameWindow extends JFrame implements KeyListener{
     private GraphicsDevice device; 
-    private int width, height;
+    // private int width, height;
     private GamePanel gamePanel;
+    private boolean selectingPlayer;
+    private CharacterSelectionMenu characterSelectionMenu;
 
     public GameWindow(){
+        selectingPlayer = false;
         initFullScreen();
-        gamePanel = new GamePanel(this);
-        getContentPane().add(gamePanel);
-        addKeyListener(this);
+
         
+        addKeyListener(this);
         this.setFocusable(true);
         this.requestFocus();
-        setTitle("Change this to the name of the game");
+      
+        setTitle("Tuna Chicken Mackerel");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        //TODO: hide TheGun
+        gamePanel = new GamePanel(this, selectCharacter(true));
+        getContentPane().add(gamePanel);
+
         setVisible(true);
         gamePanel.startGame();
     }
@@ -41,11 +48,11 @@ public class GameWindow extends JFrame implements KeyListener{
 
         // we can now adjust the display modes, if we wish
 
-        width = getBounds().width;
-        height = getBounds().height;
+        // width = getBounds().width;
+        // height = getBounds().height;
 
-        System.out.println("Width of window is " + width);
-        System.out.println("Height of window is " + height);
+        // System.out.println("Width of window is " + width);
+        // System.out.println("Height of window is " + height);
     }
 
     
@@ -54,6 +61,12 @@ public class GameWindow extends JFrame implements KeyListener{
 
     
     public void keyPressed(KeyEvent e) {
+        if (selectingPlayer || gamePanel == null) {
+            characterSelectionMenu.keyPressed(e);
+            return; // ignore key events while selecting character
+        }
+
+
         int keyCode = e.getKeyCode();
 
         if (keyCode == KeyEvent.VK_ESCAPE || (keyCode == KeyEvent.VK_F4 && e.isAltDown())) {
@@ -75,6 +88,10 @@ public class GameWindow extends JFrame implements KeyListener{
 
     
     public void keyReleased(KeyEvent e) {
+        if (selectingPlayer || gamePanel == null) {
+            return; // ignore key events while selecting character
+        }
+
         int keyCode = e.getKeyCode();
 
         if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) 
@@ -89,5 +106,18 @@ public class GameWindow extends JFrame implements KeyListener{
             gamePanel.setKeys(4, false);
         // if (keyCode == KeyEvent.VK_G)
         //     gamePanel.test();
+    }
+
+
+    public int selectCharacter(boolean showHidden) { // 0 = Knife, 1 = Pool, 2 = Hidden
+        selectingPlayer = true;
+        characterSelectionMenu = new CharacterSelectionMenu(this, showHidden);
+        getContentPane().add(characterSelectionMenu);
+        setVisible(true);
+        characterSelectionMenu.displayOptions();
+        int playerCharacter = characterSelectionMenu.getSelectedCharacter();
+        selectingPlayer = false;
+        getContentPane().remove(characterSelectionMenu);
+        return playerCharacter;
     }
 }
