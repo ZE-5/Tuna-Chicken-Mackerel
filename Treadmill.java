@@ -34,11 +34,9 @@ public class Treadmill extends GameEntity {
 
 
     public void draw(Graphics2D g2) {
-        //TODO: proper sprite drawing
         if (!isActive)
             return;
-        g2.setColor(Color.LIGHT_GRAY);
-        g2.fill(new Rectangle2D.Double(x, y, width, height));
+        drawable.draw(g2);
     }
     
     public void setActive(boolean active) {
