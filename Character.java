@@ -1,3 +1,6 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 public abstract class Character extends GameEntity {
@@ -161,4 +164,23 @@ public abstract class Character extends GameEntity {
 
 
     protected abstract Rectangle2D generateAttackBoundingBox();
+
+
+    private void drawHoveringHealthBar(Graphics2D buffer, int xOffset, int yOffset, int width, int height) {
+        // Draw character's health above them
+        Rectangle2D boundingBox = getBoundingBox();
+
+        int healthX = (int) (boundingBox.getX() + (boundingBox.getWidth() - 30) / 2 + xOffset);
+        int healthY = (int) (boundingBox.getY() - 10 - 10 + yOffset);
+        buffer.setColor(Color.BLACK);
+        buffer.fillRect(healthX, healthY, width, height);
+        buffer.setColor(Color.RED);
+        buffer.fillRect(healthX, healthY, (int) (width * (getHealth() / (float) getMaxHealth())), height);
+    }
+
+
+    //Override in subclasses to adjust the health bar position and size
+    public void drawHoveringHealthBar(Graphics2D buffer) {
+        drawHoveringHealthBar(buffer, 0, 0, 30, 10); // default width and height
+    }
 }

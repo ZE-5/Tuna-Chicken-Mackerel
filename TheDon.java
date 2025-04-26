@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
@@ -286,6 +287,7 @@ public class TheDon extends Enemy {
 
     public void draw(Graphics2D g2) {
         super.draw(g2);
+        g2.setColor(Color.WHITE);
         g2.drawString(state.toString() + " " + health, x, y);
     }
 
