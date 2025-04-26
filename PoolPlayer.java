@@ -21,6 +21,7 @@ public class PoolPlayer extends Player {
         anim.setLoop(true);
         anim.setState("DEFAULT");
         drawable = anim;
+        drawable.setImageFX(damageFX);
     }
 
     protected Rectangle2D generateAttackBoundingBox() {

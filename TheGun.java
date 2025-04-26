@@ -29,6 +29,7 @@ public class TheGun extends Player {
         anim.setLoop(true);
         anim.setState("MOVE");
         drawable = anim;
+        drawable.setImageFX(damageFX);
     }
 
     protected Rectangle2D generateAttackBoundingBox() {

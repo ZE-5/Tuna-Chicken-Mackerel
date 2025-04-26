@@ -1,8 +1,10 @@
 import java.awt.geom.Rectangle2D;
 
 public abstract class Character extends GameEntity {
+    protected boolean isAttacking;
+    protected ImageFX damageFX;
+    protected ImageFXMod damageFXMod;
     protected int dx, dy, health, maxHealth, damage;
-    protected boolean isAttacking, movedUp, movedDown, movedLeft, movedRight;
     // protected Vector<> attackString //TODO: implement attackString
 
 
@@ -14,6 +16,9 @@ public abstract class Character extends GameEntity {
         this.dx = dx;
         this.dy = dy;
         this.isAttacking = false;
+        damageFX = new DisintegrateFX();
+        damageFXMod = new FlashFXMod(damageFX, DisintegrateFX.AMOUNT, 5);
+        damageFX.addMod(damageFXMod);
         this.movedUp = false;
         this.movedDown = false;
         this.movedLeft = false;
@@ -52,6 +57,8 @@ public abstract class Character extends GameEntity {
 
 
     public void damaged(int damage) { //return true if dead
+        damageFXMod.reset();
+        damageFX.setActive(true);
         health -= damage;
     }
 

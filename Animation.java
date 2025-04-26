@@ -88,7 +88,7 @@ public class Animation extends Drawable {
         return animMap.get(currentState).get(step);
     }
 
-    public void draw(Graphics2D g2) {
+    protected BufferedImage getToDraw() {
         ArrayList<BufferedImage> string = animMap.get(currentState);
         diff = System.currentTimeMillis() - now;
         if (diff >= target) {
@@ -98,14 +98,8 @@ public class Animation extends Drawable {
                 step++;
             now = System.currentTimeMillis();
         }
-        x = owner.getX();
-        y = owner.getY();
         if (step >= string.size())
             step = string.size() - 1;
-        BufferedImage toDraw = string.get(step);
-        if (owner.isFacingRight() != defaultDirection) {
-            toDraw = flip(toDraw);
-        }
-        g2.drawImage(toDraw, x, y, null);
+        return string.get(step);
     }
 }

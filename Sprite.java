@@ -1,4 +1,3 @@
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
@@ -25,13 +24,7 @@ public class Sprite extends Drawable{
         }
     }
 
-    public void draw(Graphics2D g2) {
-        x = owner.getX();
-        y = owner.getY();
-        BufferedImage toDraw = spriteImage;
-        if (owner.isFacingRight() != defaultDirection) {
-            toDraw = flip(toDraw);
-        }
-        g2.drawImage(toDraw, x, y, null);
+    protected BufferedImage getToDraw() {
+        return spriteImage;
     }
 }

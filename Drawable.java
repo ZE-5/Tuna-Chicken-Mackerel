@@ -1,4 +1,7 @@
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -8,15 +11,35 @@ public abstract class Drawable {
     protected int x, y, width, height;
     protected GameEntity owner;
     protected String path;
+    protected ImageFX fx;
+    protected GraphicsEnvironment env;
+    protected GraphicsDevice device;
+    protected GraphicsConfiguration config;
     public final static boolean RIGHT = true, LEFT = false;
 
     public Drawable(GameEntity owner, String path, boolean defaultDirection) {
         this.owner = owner;
         this.path = path;
         this.defaultDirection = defaultDirection;
+        env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        device = env.getDefaultScreenDevice();
+        config = device.getDefaultConfiguration();
     }
 
-    public abstract void draw(Graphics2D g2);
+    public void draw(Graphics2D g2) {
+        x = owner.getX();
+        y = owner.getY();
+        BufferedImage toDraw = getToDraw();
+        if (owner.isFacingRight() != defaultDirection) {
+            toDraw = flip(toDraw);
+        }
+        if (fx != null) {
+            toDraw = fx.get(toDraw);
+        }
+        g2.drawImage(toDraw, x, y, null);
+    }
+
+    protected abstract BufferedImage getToDraw();
 
     protected BufferedImage flip(BufferedImage toDraw) {
         AffineTransform af = new AffineTransform();
@@ -36,5 +59,9 @@ public abstract class Drawable {
 
     public void setDefaultDirection(boolean defaultDirection) {
         this.defaultDirection = defaultDirection;
+    }
+
+    public void setImageFX(ImageFX fx) {
+        this.fx = fx;
     }
 }

@@ -13,6 +13,7 @@ public class KnifePlayer extends Player {
         anim.rowAnim("STAB", 2);
         anim.setState("DEFAULT");
         drawable = anim;
+        drawable.setImageFX(damageFX);
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
