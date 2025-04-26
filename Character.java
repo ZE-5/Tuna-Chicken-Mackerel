@@ -31,6 +31,11 @@ public abstract class Character extends GameEntity {
     }
 
 
+    public void resetHealth() {
+        health = maxHealth;
+    }
+
+
     public void attack(){
         isAttacking = true;
     }
