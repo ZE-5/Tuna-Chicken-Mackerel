@@ -1,3 +1,5 @@
+import java.awt.Graphics2D;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
@@ -15,9 +17,13 @@ public class Sprite extends Drawable{
 
     private void loadSprite() {
         try {
-            spriteImage = ImageIO.read(getClass().getClassLoader().getResource(path));
-            width = spriteImage.getWidth();
-            height = spriteImage.getHeight();
+            BufferedImage in = ImageIO.read(getClass().getClassLoader().getResource(path));
+            width = in.getWidth();
+            height = in.getHeight();
+            spriteImage = config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+            Graphics2D s2 = (Graphics2D) spriteImage.getGraphics();
+            s2.drawImage(in, 0, 0, null);
+            s2.dispose();
             spriteImage = scaleToOwner(spriteImage);
         } catch (Exception e) {
             e.printStackTrace();

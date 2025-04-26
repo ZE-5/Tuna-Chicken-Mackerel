@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
 public class Animation extends Drawable {
@@ -71,7 +72,7 @@ public class Animation extends Drawable {
             width = in.getWidth() / numCols;
             height = in.getHeight() / numRows;
             for (int i = 0; i < numCols; i++) {
-                BufferedImage frame = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+                BufferedImage frame = config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
                 Graphics2D f2 = (Graphics2D) frame.getGraphics();
                 f2.drawImage(in, 0, 0, width, height, i * width, row * height, i * width + width, row * height + height,
                         null);
