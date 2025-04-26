@@ -154,7 +154,7 @@ public class LevelManager {
         buffer.setColor(Color.BLACK);
         buffer.fillRect(healthX, healthY, 30, 10);
         buffer.setColor(Color.RED);
-        buffer.fillRect(healthX, healthY, (int) (30 * (player.getHealth() / (float) 100)), 10);
+        buffer.fillRect(healthX, healthY, (int) (30 * (player.getHealth() / (float) player.getMaxHealth())), 10);
     }
 
 
