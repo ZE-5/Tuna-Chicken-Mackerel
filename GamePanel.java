@@ -19,14 +19,13 @@ public class GamePanel extends JPanel implements Runnable {
     // int[] drawingCoordinates;
     private Image background;
 
-    public GamePanel(GameWindow gameWindow, int playerCharacter) {
+    public GamePanel(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
         bufferedImage = new BufferedImage(gameWindow.getWidth()*3, gameWindow.getHeight()*3, BufferedImage.TYPE_INT_RGB);
         isRunning = false;
         // bufferedImage.createGraphics();
         levelManager = LevelManager.getInstance(this);
-        levelManager.setPlayerCharacter(playerCharacter);
-        levelManager.exampleLevel();
+        levelManager.initialize();
         keys = new boolean[5];
         x = 0;
         y = 0;
@@ -74,19 +73,18 @@ public class GamePanel extends JPanel implements Runnable {
     
     
     private void render() {
-        Graphics2D buffer = (Graphics2D) bufferedImage.getGraphics();
-        buffer.drawImage(background, 0, 0, null);
-
-        levelManager.draw(buffer);
-
-        Graphics2D g2 = (Graphics2D) this.getGraphics();
-       
         if (!levelManager.holdScreenPositionX())
             x = levelManager.getBufferImageX();
 
         if (!levelManager.holdScreenPositionY())
             y = levelManager.getBufferImageY();
+        
+        Graphics2D buffer = (Graphics2D) bufferedImage.getGraphics();
+        buffer.drawImage(background, 0, 0, null);
 
+        levelManager.draw(buffer);
+       
+        Graphics2D g2 = (Graphics2D) this.getGraphics();
         g2.drawImage(bufferedImage, x, y, null);
         g2.dispose();
         buffer.dispose();
@@ -116,6 +114,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public void setY(int y) {
+        this.y = y;
+    }
+
+
+    public void setScreenPosition(int x, int y) {
+        this.x = x;
         this.y = y;
     }
 

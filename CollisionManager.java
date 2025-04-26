@@ -16,13 +16,19 @@ public class CollisionManager {
         Rectangle2D playerBoundingBox = player.getBoundingBox();
         Rectangle2D playerAttackBoundingBox = player.getAttackBoundingBox();
 
-        //Sort out projectiles
+        //Sort projectiles and enemies into vectors
         Vector<Projectile> projectiles = new Vector<Projectile>();
+        Vector<Enemy> enemies = new Vector<Enemy>();
         for (GameEntity entity : gameEntities) {
-            if (!(entity instanceof Projectile))
+            if (!(entity instanceof Projectile)){
+                if (entity instanceof Enemy) {
+                    enemies.add((Enemy) entity);
+                }
                 continue;
+            }
 
             Projectile projectile = (Projectile) entity;
+            //check if enemy projectile hits player. If yes, damage player and reset projectile
             if (projectile instanceof EnemyProjectile && playerBoundingBox.intersects(projectile.getBoundingBox()) && projectile.isActive()){ //if projectile hits player
                 player.damaged(projectile.getDamage());
                 projectile.reset();
@@ -34,6 +40,7 @@ public class CollisionManager {
 
         //Loop through game entities
         Iterator<Projectile> projectileIterator;
+        Iterator<Enemy> enemyIterator;
         Iterator<GameEntity> entityIterator = gameEntities.iterator();
         while (entityIterator.hasNext()) {
             GameEntity entity = entityIterator.next();
@@ -70,17 +77,21 @@ public class CollisionManager {
 
                 //Wall collision
                 if (wall.getBoundingBox().intersects(playerBoundingBox)) {
-                    if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
-                        player.setY(wall.getY() - player.getHeight() - 1);
+                    //Right collision
+                    if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
+                        player.setX((int) (wall.getX() - playerBoundingBox.getWidth() - 1));
                     
-                    else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
-                        player.setY(wall.getY() + wall.getHeight());
-                    
-                    else if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
-                        player.setX(wall.getX() - player.getWidth() - 1);
-                    
+                    //Left collision
                     else if (keys[2] && wall.getRightLine().intersects(playerBoundingBox))
-                        player.setX(wall.getX() + wall.getWidth());
+                        player.setX((int) (wall.getX() + wall.getWidth() - (playerBoundingBox.getX() - player.getX())));
+
+                    //Down collision
+                    else if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
+                        player.setY((int) (wall.getY() - playerBoundingBox.getHeight() - 1));
+                    
+                    //Up collision
+                    else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
+                        player.setY((int) (wall.getY() + wall.getHeight() - (playerBoundingBox.getY() - player.getY())));
                 }                        
                     
                 //Check if projectile hits a wall
@@ -91,9 +102,26 @@ public class CollisionManager {
                         projectile.reset();
                     }
                 }
+                
+                enemyIterator = enemies.iterator();
+                while (enemyIterator.hasNext()) {
+                    Enemy enemy = enemyIterator.next();
+                    Rectangle2D enemyBoundingBox = enemy.getBoundingBox();
+
+                    if (wall.getBoundingBox().intersects(enemyBoundingBox)) {
+                        if (wall.getTopLine().intersects(enemyBoundingBox))
+                            enemy.setY((int) (wall.getY() - enemyBoundingBox.getHeight() - 1));
+                        else if (enemy.movedUp() && wall.getBottomLine().intersects(enemyBoundingBox))
+                            enemy.setY((int) (wall.getY() + wall.getHeight() - (enemyBoundingBox.getY() - enemy.getY())));
+                        else if (wall.getLeftLine().intersects(enemyBoundingBox))
+                            enemy.setX((int) (wall.getX() - enemyBoundingBox.getWidth() - 1));
+                        else if (wall.getRightLine().intersects(enemyBoundingBox))
+                            enemy.setX((int) (wall.getX() + wall.getWidth() - (enemyBoundingBox.getX() - enemy.getX())));
+                    }
+                }            
             }
 
-            //Player intersects entity
+            //Player INTERSECTS entity
             else if (entity.getBoundingBox().intersects(playerBoundingBox)) {
                 
                 //Health Pickup
@@ -129,5 +157,13 @@ public class CollisionManager {
                 }
             }
         }
+    
+        //Reset enemy movement information since we are done checking collisions
+        enemyIterator = enemies.iterator();
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
+            enemy.resetMovement();
+        }
+
     }
 }
