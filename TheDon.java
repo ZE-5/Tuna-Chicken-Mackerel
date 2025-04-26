@@ -1,11 +1,10 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class TheDon extends Enemy {
     private Random rand;
-    private int t, atk_t, big_t;
+    private int t, big_t;
     private EnemyProjectile[] projPool;
     private EnemyProjectile[] bigProjPool;
     private EnemyProjectile[] mortarPool;
@@ -17,22 +16,29 @@ public class TheDon extends Enemy {
     private final int NUM_TREADS = 4, TREAD_HEIGHT = 125, TREAD_WIDTH = 650, TREAD_LANE_OFFSET = 10, TREAD_CHARGE = 30;
     private final float BIG_PROJ_FACTOR = 0.8f;
     private int MELEE_CHARGE, meleeCount;
+    private final int NUM_ATK = 2;
+    private int projX, projY;
     private float res;
 
     private enum State {
-        PUNCH,
-        SHOOT,
-        TREAD,
-        MORTAR
+        PUNCH("PUNCH"),
+        SHOOT("SHOOT"),
+        TREAD("TREAD"),
+        MORTAR("MORTAR");
+
+        private String value;
+        private State(String value) {
+            this.value = value;
+        }
     }
 
     private State state;
+    private Animation bossAnim;
 
     public TheDon(Player player, int x, int y) {
-        super(player, x, y, 80, 80, 600, 10, 4, 4, 250);
+        super(player, x, y, 320, 240, 600, 10, 4, 4, 250);
         rand = new Random();
         t = 0;
-        atk_t = -1;
         big_t = 0;
         MELEE_CHARGE = 40;
         meleeCount = 0;
@@ -62,10 +68,29 @@ public class TheDon extends Enemy {
             treadPool[i] = new Treadmill(MAX_RIGHT - TREAD_WIDTH - 5,
                     i * TREAD_HEIGHT + CENTER_Y - (NUM_TREADS / 2) * TREAD_HEIGHT + i * TREAD_LANE_OFFSET, TREAD_WIDTH,
                     TREAD_HEIGHT, Math.round(0.9f * player.getDx()), "LEFT");
+            Animation treadAnim = new Animation(treadPool[i], "images/tread.gif", 1, 8, true);
+            treadAnim.rowAnim("TREAD", 0);
+            treadAnim.setState("TREAD");
+            treadPool[i].setDrawable(treadAnim);
         }
+        bossAnim = new Animation(this, "images/TheDonSpriteSheet.gif", 6, 8, 60, true, Drawable.LEFT);
+        bossAnim.rowAnim("WALK", 0);
+        bossAnim.rowAnim(State.SHOOT.value, 1);
+        bossAnim.rowAnim(State.PUNCH + "0", 2);
+        bossAnim.rowAnim(State.PUNCH + "1", 3);
+        bossAnim.rowAnim(State.MORTAR.value, 4);
+        bossAnim.rowAnim(State.TREAD.value, 5);
+        drawable = bossAnim;
+        state = State.SHOOT;
     }
 
     public void update() {
+        if (isFacingRight) {
+            projX = x + width - 80;
+        } else {
+            projX = x + 80;
+        }
+        projY = y + 20;
         stopAttack();
         if (state != State.TREAD && state != State.MORTAR && big_t == SWITCH) {
             big_t = 0;
@@ -78,6 +103,10 @@ public class TheDon extends Enemy {
         act(state);
     }
 
+    public void move(String direction) {
+        super.move(direction);
+    }
+
     private void act(State current) {
         switch (current) {
             case PUNCH:
@@ -86,7 +115,10 @@ public class TheDon extends Enemy {
                     t++;
                     if (t == MELEE_CHARGE) {
                         t = 0;
-                        if (meleeCount == 4) {
+                        bossAnim.resetStep();
+                        bossAnim.setLoop(false);
+                        bossAnim.setState(State.PUNCH + String.valueOf(meleeCount));
+                        if (meleeCount == NUM_ATK - 1) {
                             damage = 10;
                             MELEE_CHARGE = 100;
                         } else {
@@ -94,10 +126,12 @@ public class TheDon extends Enemy {
                             MELEE_CHARGE = 40;
                             attack();
                         }
-                        meleeCount = (meleeCount + 1) % 5;
+                        meleeCount = (meleeCount + 1) % NUM_ATK;
                     }
                 } else {
                     t = 0;
+                    bossAnim.setLoop(true);
+                    bossAnim.setState("WALK");
                     moveToPlayer();
                 }
                 break;
@@ -105,14 +139,17 @@ public class TheDon extends Enemy {
                 res = 0.5f;
                 if (x > MAX_LEFT) {
                     t = 0;
+                    bossAnim.setLoop(true);
+                    bossAnim.setState("WALK");
                     move("LEFT");
                 } else {
                     facePlayer();
-                    matchY();
                     t++;
                     if (t == SHOOT_CHARGE) {
                         t = 0;
                         shootHim();
+                        bossAnim.setLoop(true);
+                        bossAnim.setState(current.value);
                     }
                     if (inRange()) {
                         state = State.PUNCH;
@@ -133,7 +170,11 @@ public class TheDon extends Enemy {
                 if (x == MAX_RIGHT && y == CENTER_Y) {
                     t++;
                     facePlayer();
+                    bossAnim.setLoop(true);
+                    bossAnim.setState(current.value);
                 } else {
+                    bossAnim.setLoop(true);
+                    bossAnim.setState("WALK");
                     t = 0;
                 }
                 if (!treadPool[0].isActive() && t == TREAD_CHARGE) {
@@ -163,7 +204,11 @@ public class TheDon extends Enemy {
                 }
                 if (x == CENTER_X && y == CENTER_Y) {
                     t++;
+                    bossAnim.setLoop(true);
+                    bossAnim.setState(current.value);
                 } else {
+                    bossAnim.setLoop(true);
+                    bossAnim.setState("WALK");
                     t = 0;
                 }
                 if (t == MORTAR_CHARGE) {
@@ -189,7 +234,7 @@ public class TheDon extends Enemy {
         while (projPool[i].isActive()) {
             i++;
         }
-        projPool[i].fire(x, player.getX(), y, player.getY());
+        projPool[i].fire(projX, player.getX(), projY, player.getY());
     }
 
     private void shootHimRandomly() {
@@ -226,11 +271,7 @@ public class TheDon extends Enemy {
     }
 
     public void draw(Graphics2D g2) {
-        if (atk_t >= 0)
-            g2.setColor(Color.RED);
-        else
-            g2.setColor(Color.GREEN);
-        g2.fillRect(x, y, width, height);
+        super.draw(g2);
         g2.drawString(state.toString() + " " + health, x, y);
     }
 
