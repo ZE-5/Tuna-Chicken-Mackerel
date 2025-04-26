@@ -14,7 +14,6 @@ public class LevelManager {
     private int screenX, screenY;
     private CollisionManager collisionManager;
     private Sound levelSound;
-    private int healthPosX, healthPosY;
     private int respawnPosX, respawnPosY;
     private int level;
     private boolean changeLevel;
@@ -73,6 +72,7 @@ public class LevelManager {
     private void respawn() {
         player.resetHealth();
         player.setLocation(respawnPosX, respawnPosY);
+        screenFix();
     }
 
 
@@ -92,10 +92,26 @@ public class LevelManager {
         }
     }
 
+
+    public void setPlayerStartingPosition(int x, int y) {
+        if (x < mapBoundaries[0])
+            x = mapBoundaries[0];
+        else if (x > mapBoundaries[2] - player.getWidth())
+            x = mapBoundaries[2] - player.getWidth();
+
+        if (y < mapBoundaries[1])
+            y = mapBoundaries[1];
+        else if (y > mapBoundaries[3] - player.getHeight())
+            y = mapBoundaries[3] - player.getHeight();
+
+        setRespawnPosition(x, y);
+        player.setLocation(x, y);
+        screenFix();
+    }
+
+
     public void exampleLevel() { //level 0
-        gamePanel.setScreenPosition(0, 0);
-        setRespawnPosition(0, 0);
-        player.setLocation(0, 0);
+        setPlayerStartingPosition(1000, 0);
         levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
 
         new HealthPickup(70, 70);
@@ -384,6 +400,19 @@ public class LevelManager {
         gamePanel.setX(-1*(x - gamePanel.getWidth()/2));
         gamePanel.setY(-1*(y - gamePanel.getHeight()/2));
     }
+
+
+    private void screenFix() {
+        if (gamePanel.getX() < mapBoundaries[0])
+            gamePanel.setX(mapBoundaries[0]);
+        else if (gamePanel.getX() > mapBoundaries[2] - gamePanel.getWidth())
+            gamePanel.setX(mapBoundaries[2] - gamePanel.getWidth());
+
+        if (gamePanel.getY() < mapBoundaries[1])
+            gamePanel.setY(mapBoundaries[1]);
+        else if (gamePanel.getY() > mapBoundaries[3] - gamePanel.getHeight())
+            gamePanel.setY(mapBoundaries[3] - gamePanel.getHeight());
+    }
   
   
     public void eventTrigger(String triggerType, int triggerValue) {
@@ -400,6 +429,10 @@ public class LevelManager {
     public void strike() { //reference to strike in theatre
         if (gameEntities == null)
             gameEntities = new Vector<GameEntity>();
+
+        if (levelSound != null) {
+            levelSound.stop();
+        }
 
         Vector<GameEntity> temp = new Vector<GameEntity>();
 
