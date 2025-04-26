@@ -1,5 +1,3 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class PoolPlayer extends Player {
@@ -27,9 +25,9 @@ public class PoolPlayer extends Player {
 
     protected Rectangle2D generateAttackBoundingBox() {
         if (isFacingRight)
-            return new Rectangle2D.Double(x + width, y, 120, 30);
+            return new Rectangle2D.Double(x + 50, y, 150, height);
         else
-            return new Rectangle2D.Double(x - 120, y, 120, 30);
+            return new Rectangle2D.Double(x, y, 150, height);
     }
 
     public void attack() {
@@ -71,10 +69,10 @@ public class PoolPlayer extends Player {
         }
     }
 
-    public void draw(Graphics2D g2) {
-        super.draw(g2);
-
-        g2.setColor(Color.WHITE);
-        g2.draw(generateAttackBoundingBox());
+    public Rectangle2D getBoundingBox() {
+        if (isFacingRight)
+            return new Rectangle2D.Double(x, y, 100, height);
+        else
+            return new Rectangle2D.Double(x + 100, y, 100, height);
     }
 }

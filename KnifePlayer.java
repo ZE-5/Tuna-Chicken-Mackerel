@@ -17,9 +17,9 @@ public class KnifePlayer extends Player {
 
     protected Rectangle2D generateAttackBoundingBox() {
         if (isFacingRight)
-            return new Rectangle2D.Double(x + width, y, 50, height);
+            return new Rectangle2D.Double(x + width - 40, y, 50, height);
         else
-            return new Rectangle2D.Double(x - 50, y, 50, height);
+            return new Rectangle2D.Double(x - 15, y, 50, height);
     }
 
     public void update() {
@@ -46,5 +46,12 @@ public class KnifePlayer extends Player {
             anim.setState("STAB");
         }
         
+    }
+
+    public Rectangle2D getBoundingBox() {
+        if (isFacingRight)
+            return new Rectangle2D.Double(x, y, width - 40, height);
+        else
+            return new Rectangle2D.Double(x + 30, y, width - 40, height);
     }
 }

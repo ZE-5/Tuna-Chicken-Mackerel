@@ -75,4 +75,8 @@ public class TheGun extends Player {
         shot[i].play();
         projPool[i].fire(projX, projY, isFacingRight);
     }
+
+    public Rectangle2D getBoundingBox() {
+        return new Rectangle2D.Double(x + 20, y, width - 40, height);
+    }
 }
