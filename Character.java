@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 public abstract class Character extends GameEntity {
@@ -9,7 +8,6 @@ public abstract class Character extends GameEntity {
     protected ImageFXMod damageFXMod;
     protected int dx, dy, health, maxHealth, damage;
     protected boolean movedUp, movedDown, movedLeft, movedRight;
-    // protected Vector<> attackString //TODO: implement attackString
 
 
     Character(int x, int y, int width, int height, int health, int damage, int dx, int dy) { //declare these in subclasses

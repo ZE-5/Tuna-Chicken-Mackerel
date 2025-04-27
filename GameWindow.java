@@ -21,8 +21,7 @@ public class GameWindow extends JFrame implements KeyListener{
       
         setTitle("Tuna Chicken Mackerel");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        //TODO: hide TheGun
+
         gamePanel = new GamePanel(this);
         getContentPane().add(gamePanel);
 

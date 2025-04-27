@@ -9,7 +9,6 @@ public abstract class GameEntity {
     protected boolean drawBehindPlayer;
     protected LevelManager levelManager;
     protected boolean isFacingRight;
-    //TODO: add sounds
 
     public GameEntity(int x, int y, int width, int height) {
         this.x = x;

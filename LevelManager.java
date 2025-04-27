@@ -283,7 +283,6 @@ public class LevelManager {
         if (gameCompleted)
             drawWinScreen(buffer);
 
-        //TODO: Remove
         if (drawDebug()) {
             buffer.setColor(Color.WHITE);
             buffer.drawString("X: " + (int) (player.getBoundingBox().getX()) + " Y: " + (int) (player.getBoundingBox().getY()), (int) player.getBoundingBox().getX(), (int) player.getBoundingBox().getY());
