@@ -28,8 +28,10 @@ public class LevelManager {
     private boolean showBossHealthBar;
     
     private boolean drawDebug;
+    private boolean defeatedTheDon;
 
     private LevelManager(GamePanel gamePanel) {
+        defeatedTheDon = false;
         this.gamePanel = gamePanel;
         moveScreenPosition = false;
         changeLevel = false;
@@ -164,9 +166,9 @@ public class LevelManager {
         collisionManager.checkCollisions(keys);
 
         player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
-        handlePlayerAttackingInputs(keys);        
-        // for (int i = 0; i < gameEntities.size(); i++) {
-        // for (GameEntity entity : gameEntities) {
+        handlePlayerAttackingInputs(keys);
+        
+        boolean enemiesPresent = false;
         Iterator<GameEntity> iterator = gameEntities.iterator();
         while (iterator.hasNext()) {
             GameEntity entity = iterator.next();
@@ -178,7 +180,7 @@ public class LevelManager {
                 ((Enemy) entity).dropPickup();
 
                 if (entity instanceof TheDon) {
-                    gameWon();
+                    defeatedTheDon = true;
                 }
 
                 iterator.remove();
@@ -190,9 +192,16 @@ public class LevelManager {
             else{
                 entity.update();
                 
-                if (entity instanceof Enemy)
+                if (entity instanceof Enemy){
                     restrictToMapBoundaries((entity));
+                    enemiesPresent = true;
+                }
             }
+        }
+
+        if (defeatedTheDon && !enemiesPresent){
+            gameWon();
+            defeatedTheDon = false;
         }
     }
 
