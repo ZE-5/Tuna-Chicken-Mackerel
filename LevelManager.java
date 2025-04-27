@@ -625,10 +625,10 @@ public class LevelManager {
         addTriggerEntity(trigger, new Henchman(player, 1561, 4019));
         addTriggerEntity(trigger, new Henchman(player, 2200, 4019));
         addTriggerEntity(trigger, new Henchman(player, 2857, 4019));
-
+        
         //Block level switch
         trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1);
-        addTriggerEntity(trigger, new Wall(3000 + defaultSize, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), Color.RED));
+        addTriggerEntity(trigger, new Wall(3000 + defaultSize, 3263, defaultSize, 4370 - 3265 + 17, Color.black));
         //Level switch
         new Trigger(3595, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL", 2);
     }
@@ -810,11 +810,12 @@ public class LevelManager {
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1500));
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1600));
 
-        Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger);
+        Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger); //making the enemies visible when level is generated. THis is intentional
         for (GameEntity entity : enemies) 
             ((Enemy) entity).setVisible(true);
 
-        GameEntity bossWall = new Wall(1980, (int) (1190 - player.getBoundingBox().getHeight()), 2080 - 1980, (int) (1425 - 1190 + player.getBoundingBox().getHeight()), Color.RED);
+        // GameEntity bossWall = new Wall(2080, (int) (1190 - player.getBoundingBox().getHeight()), -21, (int) (1425 - 1190 + player.getBoundingBox().getHeight()), new Color(147, 70, 49)); //rgb(147, 70, 49)
+        GameEntity bossWall = new Wall(2080, 700, -21, 1430 - 700, new Color(147, 70, 49)); //rgb(147, 70, 49)
         bossWall.setVisible(false);
         addTriggerEntity(bossWallTrigger, bossWall);
     }
