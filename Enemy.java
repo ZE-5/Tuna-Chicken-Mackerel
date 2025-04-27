@@ -1,7 +1,9 @@
+import java.util.Vector;
+
 public abstract class Enemy extends Character {
     protected Player player;
     protected int points;
-    protected Pickup pickup;
+    protected Vector<Pickup> pickups;
 
     public Enemy(Player player, int x, int y, int width, int height, int health, int damage, int dx, int dy, int points) {
         super(x, y, width, height, health, damage, dx, dy);
@@ -9,18 +11,28 @@ public abstract class Enemy extends Character {
         this.points = points;
         setVisible(false);
 
-        if (Math.random() < 0.1)
+        pickups = new Vector<Pickup>();
+        
+        if (Math.random() < 0.3)
         {
-            pickup = new HealthPickup(x, y);
+            Pickup pickup = new HealthPickup(x, y);
             pickup.setVisible(false);
+            pickups.add(pickup);
         }
-        else
-            pickup = null;
+        if (Math.random() < 0.3)
+        {
+            Pickup pickup = new StrengthPickup(x, y);
+            pickup.setVisible(false);
+            pickups.add(pickup);
+        }
     }
 
 
     public void dropPickup() {
-        if (pickup != null) {
+        if (pickups == null || pickups.isEmpty())
+            return;
+
+        for (Pickup pickup : pickups) {
             pickup.setX(getX());
             pickup.setY(getY());
             pickup.setVisible(true);
