@@ -7,7 +7,7 @@ public abstract class GameEntity {
     protected Drawable drawable;
     protected boolean isVisible;
     protected boolean drawBehindPlayer;
-    private LevelManager levelManager;
+    protected LevelManager levelManager;
     protected boolean isFacingRight;
     //TODO: add sounds
 
