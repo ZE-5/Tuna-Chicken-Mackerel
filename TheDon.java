@@ -1,5 +1,3 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
@@ -14,7 +12,7 @@ public class TheDon extends Enemy {
     private final int MAX_LEFT = 2330, MAX_RIGHT = 4210, CENTER_X = 3440, CENTER_Y = 1200;
     private final int NUM_PROJECTILES = 50, SHOOT_CHARGE = 10, MORTAR_CHARGE = 100, BIG_SHOOT_CHARGE = 25,
             NUM_LANES = 10;
-    private final int NUM_TREADS = 8, TREAD_HEIGHT = 295, TREAD_WIDTH = 1534, TREAD_TOP = 265, TREAD_DISPLACE = 90, TREAD_LANE_OFFSET = 10, TREAD_CHARGE = 30;
+    private final int NUM_TREADS = 8, TREAD_HEIGHT = 295, TREAD_WIDTH = 1534, TREAD_TOP = 265, TREAD_DISPLACE = 90, TREAD_LANE_OFFSET = 10;
     private final float BIG_PROJ_FACTOR = 0.8f;
     private int MELEE_CHARGE, meleeCount;
     private final int NUM_ATK = 2;
@@ -272,20 +270,6 @@ public class TheDon extends Enemy {
             mortarPool[i].fire();
         }
         bomb.play();
-    }
-
-    public void draw(Graphics2D g2) {
-        super.draw(g2);
-        g2.setColor(Color.WHITE);
-        g2.drawString(state.toString() + " " + health, x, y);
-    }
-
-    private void matchY() {
-        int py = player.getY();
-        if (y < py)
-            move("DOWN");
-        if (y > py)
-            move("UP");
     }
 
     public void damaged(int damage) {
