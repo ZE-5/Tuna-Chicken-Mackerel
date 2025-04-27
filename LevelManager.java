@@ -116,6 +116,7 @@ public class LevelManager {
 
 
     public void exampleLevel() { //level 0
+        gamePanel.setBackground("images/level1back.gif", 5000, 5000);
         setPlayerStartingPosition(1000, 0);
         levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
 
@@ -123,7 +124,7 @@ public class LevelManager {
         new StrengthPickup(100, 100);
         // new ExampleEnemy(player, 5000, 5000, 0);
         new ExampleEnemy(player, 500, 500, 100);
-        new Trigger(100, 1000, 50, 50, "LEVEL", 1, true);
+        new Trigger(100, 1000, 50, 50, "LEVEL", 2, true);
         // new Wall(200, 100, 50, 50);
         new Wall(400, 100, 50, 50);
         new ExampleEnemy(player, 200, 100, 10000);
@@ -144,6 +145,10 @@ public class LevelManager {
             new PlayerProjectile(0, 0, 200, 100, 10, 10, 10, 1, 400);
 
         levelSound.play();
+    }
+
+    public void level2() {
+        gamePanel.setBackground("images/Level2Extended.gif", 4680, 2600);
     }
 
 
@@ -479,6 +484,10 @@ public class LevelManager {
                 exampleLevel();
                 break;
         
+            case 2:
+                level2();
+                break;
+
             default:
                 System.out.println("Level not found!");
                 break;
