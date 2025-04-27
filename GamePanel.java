@@ -17,7 +17,7 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage bufferedImage;
     private boolean[] keys;
     private GameWindow gameWindow;
-    private static final long tickrate = 1000/60; 
+    private static final long tickrate = 1000/36; 
     int x, y;
     // int[] drawingCoordinates;
     private Image background;
