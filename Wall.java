@@ -35,7 +35,7 @@ public class Wall extends GameEntity{
 
 
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.GRAY);
         g2.fill(new Rectangle2D.Double(x, y, width, height));
     }
 }
