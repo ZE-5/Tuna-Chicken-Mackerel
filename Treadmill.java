@@ -6,13 +6,18 @@ public class Treadmill extends GameEntity {
     private int moveRate;
     private String direction;
     private boolean isActive;
+    private Animation anim;
 
-    public Treadmill(int x, int y, int width, int height, int moveRate, String direction) {
+    public Treadmill(Player player, int x, int y, int width, int height) {
         super(x, y, width, height);
-        this.moveRate = moveRate;
-        this.direction = direction.toUpperCase();
+        this.moveRate = Math.round(0.6f * player.getDx());
+        this.direction = "LEFT";
         isActive = false;
         drawBehindPlayer = true;
+        anim = new Animation(this, "images/tread.gif", 1, 8, true);
+        anim.rowAnim("TREAD", 0);
+        anim.setState("TREAD");
+        drawable = anim;
     }
 
 
