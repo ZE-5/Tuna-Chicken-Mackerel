@@ -1,15 +1,15 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 
 public class Treadmill extends GameEntity {
     private int moveRate;
     private String direction;
     private boolean isActive;
     private Animation anim;
+    private Player player;
 
     public Treadmill(Player player, int x, int y, int width, int height) {
         super(x, y, width, height);
+        this.player = player;
         this.moveRate = Math.round(0.6f * player.getDx());
         this.direction = "LEFT";
         isActive = false;
@@ -35,7 +35,13 @@ public class Treadmill extends GameEntity {
         return direction;
     }
 
-    public void update() {}
+    public void update() {
+        if (player instanceof TheGun && player.isMoving()) {
+            moveRate = 0;
+        } else {
+            moveRate = Math.round(0.6f * player.getDx());
+        }
+    }
 
 
     public void draw(Graphics2D g2) {
