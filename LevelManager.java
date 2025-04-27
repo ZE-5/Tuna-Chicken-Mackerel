@@ -5,7 +5,10 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Vector;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class LevelManager {
     private static LevelManager instance = null;
@@ -42,7 +45,20 @@ public class LevelManager {
 
     public void initialize() {
         level = 1;
-        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(true));
+        String fileContents = "null";
+
+        try{
+            File file = new File("SavedData.txt");
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                fileContents = scanner.nextLine();
+                System.out.println(fileContents);
+            }
+            scanner.close();
+        }
+        catch (FileNotFoundException e) {}
+
+        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(fileContents.equals("HIDDEN")));
         collisionManager = new CollisionManager(player, gameEntities);
         setLevel(level);        
     }
