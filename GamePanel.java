@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     int x, y;
     // int[] drawingCoordinates;
     private Image background;
+    private long pre;
 
     public GamePanel(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
@@ -32,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
         keys = new boolean[5];
         x = 0;
         y = 0;
-        
+        pre = System.currentTimeMillis();
     }
 
     public void startGame() {
@@ -44,15 +45,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         isRunning = true;
         while (isRunning) {
-            if (!isPaused)
-                update();
-            render();
-            
-            try {
-                Thread.sleep(tickrate);
-            } 
-            catch (Exception e) {
-                
+            long diff = System.currentTimeMillis() - pre;
+            if (diff > tickrate) {
+                pre = System.currentTimeMillis();
+                if (!isPaused)
+                    update();
+                render();
             }
         }
     }
