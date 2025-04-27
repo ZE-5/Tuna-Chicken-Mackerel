@@ -183,11 +183,11 @@ public abstract class Character extends GameEntity {
     }
 
     protected boolean targetX(int x) {
-        return target(x, y);
+        return target(x, (int) getBoundingBox().getY());
     }
 
     protected boolean targetY(int y) {
-        return target(x, y);
+        return target((int) getBoundingBox().getX(), y);
     }
 
 
