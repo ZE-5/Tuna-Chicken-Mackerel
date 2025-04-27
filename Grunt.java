@@ -2,11 +2,11 @@ import java.awt.geom.Rectangle2D;
 
 public class Grunt extends Enemy {
     private int t, atk_t;
-    private final int CHARGE = 100, ATTACK_DUR = 20;
+    private final int CHARGE = 30, ATTACK_DUR = 20;
     private Animation gruntAnim;
 
     public Grunt(Player player, int x, int y) {
-        super(player, x, y, 60, 60, 40, 5, 3, 3, 20);
+        super(player, x, y, 60, 60, 40, 3, 6, 6, 20);
         t = 0;
         atk_t = -1;
         gruntAnim = new Animation(this, "images/GruntSpriteSheet.gif", 3, 5, 60);

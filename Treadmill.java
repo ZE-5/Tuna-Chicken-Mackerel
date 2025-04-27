@@ -1,18 +1,23 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 
 public class Treadmill extends GameEntity {
     private int moveRate;
     private String direction;
     private boolean isActive;
+    private Animation anim;
+    private Player player;
 
-    public Treadmill(int x, int y, int width, int height, int moveRate, String direction) {
+    public Treadmill(Player player, int x, int y, int width, int height) {
         super(x, y, width, height);
-        this.moveRate = moveRate;
-        this.direction = direction.toUpperCase();
+        this.player = player;
+        this.moveRate = Math.round(0.6f * player.getDx());
+        this.direction = "LEFT";
         isActive = false;
         drawBehindPlayer = true;
+        anim = new Animation(this, "images/tread.gif", 1, 8, true);
+        anim.rowAnim("TREAD", 0);
+        anim.setState("TREAD");
+        drawable = anim;
     }
 
 
@@ -30,7 +35,13 @@ public class Treadmill extends GameEntity {
         return direction;
     }
 
-    public void update() {}
+    public void update() {
+        if (player instanceof TheGun && player.isMoving()) {
+            moveRate = 0;
+        } else {
+            moveRate = Math.round(0.6f * player.getDx());
+        }
+    }
 
 
     public void draw(Graphics2D g2) {

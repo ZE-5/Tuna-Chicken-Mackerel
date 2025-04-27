@@ -1,18 +1,21 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Assassin extends Enemy {
     private int t, atk_t;
     private int projectileY, projectileX;
-    private EnemyProjectile projectile;
+    private EnemyProjectile[] projectile;
     private Sprite projectileSprite;
-    private final int THROW_CHARGE = 100, CLOSE_CHARGE = 50, ATTACK_DUR = 20, RETREAT_DUR = 200;
+    private final int THROW_CHARGE = 40, CLOSE_CHARGE = 50, ATTACK_DUR = 20, RETREAT_DUR = 200, NUM_PROJECTILES = 12;
     private Animation assassinAnim;
 
     private enum State {
         STALK("STALK"),
         SHANK("SHANK"),
         SCARED("SCARED"),
-        THROW("THROW");
+        THROW("THROW"),
+        SLIDE("SLIDE");
 
         private String value;
         State(String string) {
@@ -23,13 +26,16 @@ public class Assassin extends Enemy {
     private State state;
 
     public Assassin(Player player, int x, int y) {
-        super(player, x, y, 150, 150, 100, 20, 2, 2, 40);
+        super(player, x, y, 150, 150, 100, 20, 4, 4, 40);
         t = 0;
         atk_t = -1;
         state = State.STALK;
-        projectile = new EnemyProjectile(x, y, 50, 50, 1, 5, 50);
-        projectileSprite = new Sprite(projectile, "images/knife.gif");
-        projectile.setDrawable(projectileSprite);
+        projectile = new EnemyProjectile[NUM_PROJECTILES];
+        for (int i = 0; i < NUM_PROJECTILES; i++) {
+            projectile[i] = new EnemyProjectile(x, y, 50, 50, 1, 5, 80);
+            projectileSprite = new Sprite(projectile[i], "images/knife.gif");
+            projectile[i].setDrawable(projectileSprite);
+        }
         assassinAnim = new Animation(this, "images/AssassinSpriteSheet.gif", 4, 5, 60, true, Drawable.LEFT);
         assassinAnim.rowAnim(State.STALK.value, 0);
         assassinAnim.rowAnim(State.SHANK.value, 1);
@@ -42,11 +48,11 @@ public class Assassin extends Enemy {
     }
 
     public void update() {
-        projectileY = y;
+        projectileY = (int) getBoundingBox().getY() + 30;
         if (isFacingRight)
-            projectileX = x + width;
+            projectileX = (int) getBoundingBox().getMaxX();
         else
-            projectileX = x;
+            projectileX = (int) getBoundingBox().getX() - 20;
         stopAttack();
         if (!playerFacingMe()) {
             state = State.STALK;
@@ -56,7 +62,7 @@ public class Assassin extends Enemy {
             if (inCloseRange()) {
                 state = State.SCARED;
             } else {
-                if (inLongRange()) {
+                if (inLongRange() && state != State.SLIDE) {
                     state = State.THROW;
                 }
             }
@@ -121,14 +127,27 @@ public class Assassin extends Enemy {
                     t = 0;
                     assassinAnim.setLoop(true);
                     assassinAnim.setState("DEFAULT");
-                    if (!projectile.isActive()) {
-                        projectile.fire(projectileX, projectileY, isFacingRight);
-                    }
+                    throwKnife();
+                    state = State.SLIDE;
                 }
                 break;
+            case SLIDE:
+                assassinAnim.setLoop(true);
+                assassinAnim.setState(State.STALK.value);
+                if (targetY(player.getY())) {
+                    state = State.THROW;
+                }
             default:
                 break;
         }
+    }
+
+    private void throwKnife() {
+        int i = 0;
+        while (projectile[i].isActive()) {
+            i = (i + 1) % NUM_PROJECTILES;
+        }
+        projectile[i].fire(projectileX, projectileY, isFacingRight);
     }
 
     private boolean inCloseRange() {

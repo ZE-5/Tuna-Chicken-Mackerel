@@ -503,7 +503,7 @@ public class LevelManager {
 
         new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
 
-        new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
+        new Treadmill(player, 700, 700, 200, 50);
 
         levelSound.play();
     }
