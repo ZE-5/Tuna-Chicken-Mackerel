@@ -43,7 +43,7 @@ public class LevelManager {
 
     public void initialize() {
         level = 1;
-        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
+        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(true));
         collisionManager = new CollisionManager(player, gameEntities);
         setLevel(level);        
     }
@@ -513,7 +513,7 @@ public class LevelManager {
         setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);
         setPlayerStartingPosition(30, 630);
 
-        setPlayerStartingPosition(3040, 3409);
+        // setPlayerStartingPosition(2570, 3659);
 
         int defaultSize = 50;
 
@@ -525,12 +525,45 @@ public class LevelManager {
 
         new Wall(1450, 4370, 3590 - 1450, defaultSize); //bottom street BOTTOM wall
         new Wall(3025, (int) (3290 - player.getBoundingBox().getHeight()), 3590 - 3020, -1 * defaultSize); //bottom street TOP wall
+
+
+        //setting up TRIGGERS
+        Trigger trigger;
+        //Spawn triggers
+        trigger = new Trigger(800, 0, defaultSize, 1220, "SPAWN", 1, true);
+        addTriggerEntity(trigger, new Grunt(player, 970, 300));
+        addTriggerEntity(trigger, new Grunt(player, 610, 310));
+        addTriggerEntity(trigger, new Grunt(player, 700, 1000));
+        addTriggerEntity(trigger, new Grunt(player, 1000, 900));
+
+        trigger = new Trigger(1465, 1590, 3025 - 1465, defaultSize, "SPAWN", 2, true);
+        addTriggerEntity(trigger, new Grunt(player, 1500, 1300));
+        addTriggerEntity(trigger, new Grunt(player, 1600, 1400));
+        addTriggerEntity(trigger, new Grunt(player, 1700, 1500));
+        addTriggerEntity(trigger, new Grunt(player, 1800, 1600));
+        addTriggerEntity(trigger, new Grunt(player, 1900, 1700));
+        addTriggerEntity(trigger, new Grunt(player, 2000, 1800));
+        addTriggerEntity(trigger, new Grunt(player, 2100, 1900));
+        addTriggerEntity(trigger, new Grunt(player, 2200, 2000));
+        addTriggerEntity(trigger, new Assassin(player, 50, 630));
+        addTriggerEntity(trigger, new Assassin(player, 30, 630));
+        addTriggerEntity(trigger, new Assassin(player, 30, 675));
+        addTriggerEntity(trigger, new Henchman(player, 2570, 3659 + 30));
+        addTriggerEntity(trigger, new Henchman(player, 2570 - 75, 3659 - 50));
+        addTriggerEntity(trigger, new Henchman(player, 2570 - 50, 3659 + 100));
+
+        //Block level switch
+        trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1, true);
+        addTriggerEntity(trigger, new Wall(3000 + defaultSize, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), Color.RED));
+        //Level switch
+        new Trigger(3595, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL", 2, true);
     }
 
 
     private void playerDied() {
         // gamePanel.startGame(); //Uncomment this for a good time ;)
-        levelSound.stop();
+        if (levelSound != null)
+            levelSound.stop();
         respawn();
         levelSound.play();
 
@@ -606,9 +639,34 @@ public class LevelManager {
             level = triggerValue;
             changeLevel = true;
         }
-        else if (triggerType.equals("SPAWN")) {
-            
-            
+        else if (triggerType.equals("SPAWN")) { 
+            Vector<GameEntity> triggerEntities = getTriggerEntities(trigger);
+            if (triggerEntities == null) 
+                return;
+            for (GameEntity entity : triggerEntities) {
+                entity.setVisible(true);
+            }
+        }
+        else if (triggerType.equals("LEVEL BARRICADE")) {
+            //check if enemies are present
+            if (gameEntities != null)
+            {
+                for (GameEntity entity : gameEntities) {
+                    if (entity instanceof Enemy) {
+                        return;
+                    }
+                }
+            }
+
+            //if no enemies are present
+            Vector<GameEntity> triggerEntities = getTriggerEntities(trigger);
+            if (triggerEntities == null) 
+                return;
+            for (GameEntity entity : triggerEntities) {
+                if (entity instanceof Wall) {
+                    entity.setVisible(false);
+                }
+            }
         }
         else if (triggerType.equals("BOSSBATTLE")) {
             // showBossBattleText("The Don has entered the building!");
@@ -628,6 +686,8 @@ public class LevelManager {
                 }
             }
         }
+        else
+            throw new IllegalArgumentException("Invalid trigger type: " + triggerType);
     }
 
 

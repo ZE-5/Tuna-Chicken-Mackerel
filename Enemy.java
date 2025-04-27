@@ -6,6 +6,7 @@ public abstract class Enemy extends Character {
         super(x, y, width, height, health, damage, dx, dy);
         this.player = player;
         this.points = points;
+        setVisible(false);
     }
 
 
