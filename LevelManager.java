@@ -177,12 +177,12 @@ public class LevelManager {
     private void restrictToMapBoundaries(GameEntity entity) {
         if (entity.getX() < mapBoundaries[0])
             entity.setX(mapBoundaries[0]);
-        else if (entity.getX() + entity.getWidth() > mapBoundaries[2])
+        else if (entity.getX() + entity.getBoundingBox().getWidth() > mapBoundaries[2])
             entity.setX((int) (mapBoundaries[2] - entity.getBoundingBox().getWidth()));
 
         if (entity.getY() < mapBoundaries[1])
             entity.setY(mapBoundaries[1]);
-        else if (entity.getY() + entity.getHeight() > mapBoundaries[3])
+        else if (entity.getY() + entity.getBoundingBox().getHeight() > mapBoundaries[3])
             entity.setY((int) (mapBoundaries[3] - entity.getBoundingBox().getHeight()));
     }
 
