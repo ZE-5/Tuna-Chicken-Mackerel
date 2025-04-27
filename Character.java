@@ -29,7 +29,19 @@ public abstract class Character extends GameEntity {
         this.movedRight = false;
     }
 
+    public void draw(Graphics2D g2) {
+        super.draw(g2);
+        if (levelManager != null && levelManager.drawDebug()) {
+            g2.setColor(Color.WHITE);
+            g2.draw(getBoundingBox());
     
+            g2.setColor(Color.RED);
+            g2.draw(generateAttackBoundingBox());
+        } else {
+            levelManager = LevelManager.getInstance();
+        }
+    }
+
     public int getHealth() {
         return health;
     }

@@ -19,6 +19,7 @@ public class LevelManager {
     private boolean changeLevel;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     
+    private boolean drawDebug;
 
     private LevelManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -30,6 +31,8 @@ public class LevelManager {
         setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
                 
         collisionManager = new CollisionManager(player, gameEntities);
+
+        drawDebug = false;
     }
 
 
