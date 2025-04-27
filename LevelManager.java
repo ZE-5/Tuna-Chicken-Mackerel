@@ -59,7 +59,6 @@ public class LevelManager {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 fileContents = scanner.nextLine();
-                System.out.println(fileContents);
             }
             scanner.close();
         }
@@ -221,10 +220,8 @@ public class LevelManager {
             writer.close();
         }
         catch (Exception e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.err.println("Error writing to file: " + e.getMessage());
         }
-
-        System.out.println("You won the game!");
     }
 
 
@@ -558,7 +555,7 @@ public class LevelManager {
                 break;
 
             default:
-                System.out.println("Level not found!");
+                System.err.println("Level not found!");
                 break;
         }
     }
