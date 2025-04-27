@@ -505,11 +505,9 @@ public class LevelManager {
 
     public void level2() {
         gamePanel.setBackground("images/Level2Extended.gif", 4680, 2600);
-        setMapBoundaries(0, 0, 4680 - 50, 2160 - 50);
+        setMapBoundaries(0, 0, 4680 - 50, 2160 - 100);
 
         setPlayerStartingPosition(10, 1220);
-        setPlayerStartingPosition(2340, 1740);
-        // setPlayerStartingPosition(3900, 1730);
         player.setFacingRight(true);
 
         new Wall(0, 800, 2080, 1190 - 800 - player.getHeight()); //starting roof
@@ -518,7 +516,8 @@ public class LevelManager {
         new Wall(1980, 0, 4680 - 1980, 280 - player.getHeight()); // dojo roof
         new Wall(1980, 0, 2080 - 1980, 800 + (1190 - 800 - player.getHeight())); // dojo top left wall
         new Wall(1980, 1410 + 15, 2080 - 1980, 2160 - 1410 - 5); // dojo bottom left wall
-        new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall        
+        new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
+        new Wall(1980, 2000 + 90, 4680 - 1980, 25) ;
 
         
     }
