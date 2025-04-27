@@ -510,7 +510,7 @@ public class LevelManager {
     }
 
     public void level1() {
-        gamePanel.setBackground("images/Level1.gif", 4500, 4500);
+        gamePanel.setBackground("images/Level1.png", 4500, 4500);
         setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);
         setPlayerStartingPosition(30, 630);
 
