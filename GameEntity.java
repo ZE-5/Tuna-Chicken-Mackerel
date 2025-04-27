@@ -54,6 +54,12 @@ public abstract class GameEntity {
         return isFacingRight;
     }
 
+
+    public void setFacingRight(boolean isFacingRight) {
+        this.isFacingRight = isFacingRight;
+    }
+    
+
     public abstract void update();
 
 

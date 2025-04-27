@@ -24,8 +24,7 @@ public class LevelManager {
         this.gamePanel = gamePanel;
         moveScreenPosition = false;
         changeLevel = false;
-        
-        mapBoundaries = new int[]{0, 0, (int) (1920 * 1.5f), (int) (1080 * 1.5f)};
+        mapBoundaries = new int[4];
         
         gameEntities = new Vector<GameEntity>();
         setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
@@ -35,7 +34,7 @@ public class LevelManager {
 
 
     public void initialize() {
-        level = 0;
+        level = 2;
         setLevel(level);        
     }
 
@@ -65,6 +64,14 @@ public class LevelManager {
 
     public int[] getMapBoundaries() {
         return mapBoundaries;
+    }
+
+
+    public void setMapBoundaries(int x1, int y1, int x2, int y2) {
+        mapBoundaries[0] = x1;
+        mapBoundaries[1] = y1;
+        mapBoundaries[2] = x2;
+        mapBoundaries[3] = y2;
     }
 
 
@@ -112,38 +119,6 @@ public class LevelManager {
         setRespawnPosition(x, y);
         player.setLocation(x, y);
         screenFix();
-    }
-
-
-    public void exampleLevel() { //level 0
-        setPlayerStartingPosition(1000, 0);
-        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
-
-        new HealthPickup(70, 70);
-        new StrengthPickup(100, 100);
-        // new ExampleEnemy(player, 5000, 5000, 0);
-        new ExampleEnemy(player, 500, 500, 100);
-        new Trigger(100, 1000, 50, 50, "LEVEL", 1, true);
-        // new Wall(200, 100, 50, 50);
-        new Wall(400, 100, 50, 50);
-        new ExampleEnemy(player, 200, 100, 10000);
-
-        new Wall(200, 200, 700, 25);
-
-
-        new Grunt(player, 400, 400);        
-        new Assassin(player, 300, 300);
-        new TheDon(player, 800, 400);
-        new Henchman(player, 600, 600);
-
-        new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
-
-        new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
-
-        for (int i = 0; i < 11; i++)
-            new PlayerProjectile(0, 0, 200, 100, 10, 10, 10, 1, 400);
-
-        levelSound.play();
     }
 
 
@@ -237,6 +212,11 @@ public class LevelManager {
 
         if (theDon != null) 
             drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(buffer, theDon);
+
+
+        //TODO: Remove
+        buffer.setColor(Color.WHITE);
+        buffer.drawString("X: " + player.getX() + " Y: " + player.getY(), player.getX(), player.getY());
     }
 
 
@@ -479,9 +459,66 @@ public class LevelManager {
                 exampleLevel();
                 break;
         
+            case 2:
+                level2();
+                break;
+
             default:
                 System.out.println("Level not found!");
                 break;
         }
+    }
+
+
+    public void exampleLevel() { //level 0
+        gamePanel.setBackground("images/level1back.gif", 5000, 5000);
+        setMapBoundaries(0, 0, 5000, 5000);
+        setPlayerStartingPosition(1000, 0);
+        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
+
+        new HealthPickup(70, 70);
+        new StrengthPickup(100, 100);
+        // new ExampleEnemy(player, 5000, 5000, 0);
+        new ExampleEnemy(player, 500, 500, 100);
+        new Trigger(100, 1000, 50, 50, "LEVEL", 2, true);
+        // new Wall(200, 100, 50, 50);
+        new Wall(400, 100, 50, 50);
+        new ExampleEnemy(player, 200, 100, 10000);
+
+        new Wall(200, 200, 700, 25);
+
+
+        new Grunt(player, 400, 400);        
+        new Assassin(player, 300, 300);
+        new TheDon(player, 800, 400);
+        new Henchman(player, 600, 600);
+
+        new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
+
+        new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
+
+        for (int i = 0; i < 11; i++)
+            new PlayerProjectile(0, 0, 200, 100, 10, 10, 10, 1, 400);
+
+        levelSound.play();
+    }
+
+    public void level2() {
+        gamePanel.setBackground("images/Level2Extended.gif", 4680, 2600);
+        setMapBoundaries(0, 0, 4680 - 50, 2160 - 100);
+
+        setPlayerStartingPosition(10, 1220);
+        player.setFacingRight(true);
+
+        new Wall(0, 800, 2080, 1190 - 800 - player.getHeight()); //starting roof
+        new Wall(0, 1410 + 15, 2080, 25);
+
+        new Wall(1980, 0, 4680 - 1980, 280 - player.getHeight()); // dojo roof
+        new Wall(1980, 0, 2080 - 1980, 800 + (1190 - 800 - player.getHeight())); // dojo top left wall
+        new Wall(1980, 1410 + 15, 2080 - 1980, 2160 - 1410 - 5); // dojo bottom left wall
+        new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
+        new Wall(1980, 2000 + 90, 4680 - 1980, 25) ;
+
+        
     }
 }
