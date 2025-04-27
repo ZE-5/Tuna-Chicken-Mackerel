@@ -158,8 +158,10 @@ public class LevelManager {
             if (!entity.isVisible())
                 continue;
 
-            if (entity instanceof Enemy && ((Enemy) entity).isDead())
+            if (entity instanceof Enemy && ((Enemy) entity).isDead()) {
+                ((Enemy) entity).dropPickup();
                 iterator.remove();
+            }
             
             else if (entity instanceof Projectile && ((Projectile) entity).timedOut())
                 iterator.remove();
