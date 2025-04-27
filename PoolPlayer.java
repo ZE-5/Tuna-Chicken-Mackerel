@@ -12,7 +12,7 @@ public class PoolPlayer extends Player {
         for (int i = 0; i < 5; i++) {
             hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
         }
-        anim = new Animation(this, "images/PoolPlayerSpriteSheet.gif", 5, 8, 60);
+        anim = new Animation(this, "images/PoolPlayerSpriteSheet.gif", 5, 8, 60, true, Drawable.RIGHT, -100);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("WALK", 1);
         anim.rowAnim("ATK0", 2);
@@ -25,10 +25,14 @@ public class PoolPlayer extends Player {
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
-        if (isFacingRight)
-            return new Rectangle2D.Double(x + 50, y, 150, height);
-        else
-            return new Rectangle2D.Double(x, y, 150, height);
+        Rectangle2D b = getBoundingBox();
+        int xValue = (int) b.getX();
+        int yValue = (int) b.getY();
+        int wValue = 200;
+        int hValue = (int) b.getHeight();
+        if (!isFacingRight)
+            xValue -= 140;
+        return new Rectangle2D.Double(xValue, yValue, wValue, hValue);
     }
 
     public void attack() {
@@ -71,9 +75,6 @@ public class PoolPlayer extends Player {
     }
 
     public Rectangle2D getBoundingBox() {
-        if (isFacingRight)
-            return new Rectangle2D.Double(x, y, 100, height);
-        else
-            return new Rectangle2D.Double(x + 100, y, 100, height);
+        return new Rectangle2D.Double(x + 20, y + 15, width - 140, height - 5);
     }
 }
