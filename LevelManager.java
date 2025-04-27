@@ -34,7 +34,7 @@ public class LevelManager {
 
 
     public void initialize() {
-        level = 2;
+        level = 1;
         setLevel(level);        
     }
 
@@ -456,7 +456,7 @@ public class LevelManager {
                 break;
 
             case 1:
-                exampleLevel();
+                level1();
                 break;
         
             case 2:
@@ -501,6 +501,12 @@ public class LevelManager {
             new PlayerProjectile(0, 0, 200, 100, 10, 10, 10, 1, 400);
 
         levelSound.play();
+    }
+
+    public void level1() {
+        gamePanel.setBackground("images/Level1.gif", 4500, 4500);
+        setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);
+        setPlayerStartingPosition(10, 10);
     }
 
     public void level2() {
