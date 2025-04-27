@@ -20,7 +20,7 @@ public class TheGun extends Player {
             proj.rowAnim("DEFAULT", 0);
             proj.setState("DEFAULT");
             projPool[i].setDrawable(proj);
-            shot[i] = new Sound("sounds/gun.wav", false, 0.5f);
+            shot[i] = new Sound("sounds/gun2.wav", false, 0.9f);
         }
         anim = new Animation(this, "images/TheGunSpriteSheet.gif", 3, 5, 60);
         anim.rowAnim("DEFAULT", 0);

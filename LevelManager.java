@@ -51,7 +51,7 @@ public class LevelManager {
 
 
     public void initialize() {
-        level = 1;
+        level = 2;
 
         String fileContents = "null";
         try{
@@ -553,7 +553,7 @@ public class LevelManager {
         gamePanel.setBackground("images/level1back.gif", 5000, 5000);
         setMapBoundaries(0, 0, 5000, 5000);
         setPlayerStartingPosition(1000, 0);
-        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
+        levelSound = new Sound("sounds/level1.wav", true, 0.8f);
 
         new HealthPickup(70, 70);
         new StrengthPickup(100, 100);
@@ -580,7 +580,7 @@ public class LevelManager {
     }
 
     public void level1() {
-        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
+        levelSound = new Sound("sounds/level1.wav", true, 0.68f);
         levelSound.play();
         gamePanel.setBackground("images/Level1.png", 4500, 4500);
         setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);

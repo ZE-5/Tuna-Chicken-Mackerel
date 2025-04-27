@@ -2,11 +2,16 @@ import java.awt.geom.Rectangle2D;
 
 public class KnifePlayer extends Player {
     private Animation anim;
+    private Sound[] atkSound;
 
     public KnifePlayer(int x, int y) {
         super(x, y, 90, 90, 100, 7, 10, 10);
         COOLDOWN = 10;
         INPUT_GRACE = 20;
+        atkSound = new Sound[5];
+        for (int i = 0; i < 5; i++) {
+            atkSound[i] = new Sound("sounds/stab.wav", false, 0.8f);
+        }
         anim = new Animation(this, "images/KnifePlayerSpriteSheet.gif", 3, 5, 60, true, Drawable.RIGHT, -25);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("MOVE", 1);
@@ -46,6 +51,10 @@ public class KnifePlayer extends Player {
             input_t = 0;
             isAttacking = true;
             released = false;
+            int i = 0;
+            while (atkSound[i].isPlaying())
+                i = (i + 1) % 5;
+            atkSound[i].play();
             anim.setLoop(false);
             anim.resetStep();
             anim.setState("STAB");
