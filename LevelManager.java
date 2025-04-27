@@ -46,12 +46,12 @@ public class LevelManager {
         gameEntities = new Vector<GameEntity>();
 
 
-        drawDebug = true;
+        drawDebug = false;
     }
 
 
     public void initialize() {
-        level = 2;
+        level = 1;
 
         String fileContents = "null";
         try{
