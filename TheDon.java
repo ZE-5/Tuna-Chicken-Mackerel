@@ -155,12 +155,7 @@ public class TheDon extends Enemy {
                 break;
             case SHOOT:
                 res = 0.5f;
-                if (x > MAX_LEFT) {
-                    t = 0;
-                    bossAnim.setLoop(true);
-                    bossAnim.setState("WALK");
-                    move("LEFT");
-                } else {
+                if (targetX(MAX_LEFT)) {
                     facePlayer();
                     t++;
                     if (t == SHOOT_CHARGE) {
@@ -172,20 +167,15 @@ public class TheDon extends Enemy {
                     if (inRange()) {
                         state = State.PUNCH;
                     }
+                } else {
+                    t = 0;
+                    bossAnim.setLoop(true);
+                    bossAnim.setState("WALK");
                 }
                 break;
             case TREAD:
                 res = 1;
-                if (x < MAX_RIGHT) {
-                    move("RIGHT");
-                }
-                if (y < CENTER_Y) {
-                    move("DOWN");
-                }
-                if (y > CENTER_Y) {
-                    move("UP");
-                }
-                if (x == MAX_RIGHT && y == CENTER_Y) {
+                if (target(MAX_RIGHT, CENTER_Y)) {
                     t++;
                     facePlayer();
                     bossAnim.setLoop(true);
@@ -208,19 +198,7 @@ public class TheDon extends Enemy {
                 break;
             case MORTAR:
                 res = 0.15f;
-                if (x < CENTER_X) {
-                    move("RIGHT");
-                }
-                if (x > CENTER_X) {
-                    move("LEFT");
-                }
-                if (y < CENTER_Y) {
-                    move("DOWN");
-                }
-                if (y > CENTER_Y) {
-                    move("UP");
-                }
-                if (x == CENTER_X && y == CENTER_Y) {
+                if (target(CENTER_X, CENTER_Y)) {
                     t++;
                     bossAnim.setLoop(true);
                     bossAnim.setState(current.value);
