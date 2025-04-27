@@ -24,6 +24,7 @@ public class LevelManager {
     private boolean showBossHealthBar;
     private Wall bossWall;
     
+    private boolean drawDebug;
 
     private LevelManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -34,14 +35,16 @@ public class LevelManager {
 
         triggerEntitiesMap = new HashMap<>();
         gameEntities = new Vector<GameEntity>();
-        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
-                
-        collisionManager = new CollisionManager(player, gameEntities);
+
+
+        drawDebug = false;
     }
 
 
     public void initialize() {
         level = 2;
+        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
+        collisionManager = new CollisionManager(player, gameEntities);
         setLevel(level);        
     }
 
@@ -181,8 +184,16 @@ public class LevelManager {
             entity.setY(mapBoundaries[1]);
         else if (entity.getY() + entity.getHeight() > mapBoundaries[3])
             entity.setY((int) (mapBoundaries[3] - entity.getBoundingBox().getHeight()));
-        }
+    }
 
+
+    public boolean drawDebug() {
+        return drawDebug;
+    }
+
+    public void setDrawDebug(boolean value) {
+        drawDebug = value;
+    }
 
     public void draw(Graphics2D buffer) {
         TheDon theDon = null;
@@ -493,9 +504,6 @@ public class LevelManager {
         new EnemyProjectile(0, 0, 400, 0, 10, 10, 10, 1, 400);
 
         new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
-
-        for (int i = 0; i < 11; i++)
-            new PlayerProjectile(0, 0, 200, 100, 10, 10, 10, 1, 400);
 
         levelSound.play();
     }

@@ -6,9 +6,13 @@ import javax.imageio.ImageIO;
 public class Sprite extends Drawable{
     private BufferedImage spriteImage;
 
-    public Sprite(GameEntity owner, String path, boolean defaultDirection) {
-        super(owner, path, defaultDirection);
+    public Sprite(GameEntity owner, String path, boolean defaultDirection, int flipOffset) {
+        super(owner, path, defaultDirection, flipOffset);
         loadSprite();
+    }
+
+    public Sprite(GameEntity owner, String path, boolean defaultDirection) {
+        this(owner, path, defaultDirection, 0);
     }
 
     public Sprite(GameEntity owner, String path) {

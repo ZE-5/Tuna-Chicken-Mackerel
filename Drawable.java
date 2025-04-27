@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class Drawable {
     protected boolean defaultDirection;
-    protected int x, y, width, height;
+    protected int x, y, width, height, flipOffset;
     protected GameEntity owner;
     protected String path;
     protected ImageFX fx;
@@ -17,26 +17,29 @@ public abstract class Drawable {
     protected GraphicsConfiguration config;
     public final static boolean RIGHT = true, LEFT = false;
 
-    public Drawable(GameEntity owner, String path, boolean defaultDirection) {
+    public Drawable(GameEntity owner, String path, boolean defaultDirection, int flipOffset) {
         this.owner = owner;
         this.path = path;
         this.defaultDirection = defaultDirection;
         env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         device = env.getDefaultScreenDevice();
         config = device.getDefaultConfiguration();
+        this.flipOffset = flipOffset;
     }
 
     public void draw(Graphics2D g2) {
         x = owner.getX();
         y = owner.getY();
+        int xOffset = 0;
         BufferedImage toDraw = getToDraw();
         if (owner.isFacingRight() != defaultDirection) {
+            xOffset = flipOffset;
             toDraw = flip(toDraw);
         }
         if (fx != null) {
             toDraw = fx.get(toDraw);
         }
-        g2.drawImage(toDraw, x, y, null);
+        g2.drawImage(toDraw, x + xOffset, y, null);
     }
 
     protected abstract BufferedImage getToDraw();

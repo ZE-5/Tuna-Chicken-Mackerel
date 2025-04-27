@@ -118,10 +118,15 @@ public class Henchman extends Enemy {
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
-        return getBoundingBox();
+        Rectangle2D b = getBoundingBox();
+        return new Rectangle2D.Double(b.getX() - 20, b.getY(), b.getWidth() + 40, b.getHeight() - 100);
     }
 
     private boolean inRange() {
-        return getBoundingBox().intersects(player.getBoundingBox());
+        return generateAttackBoundingBox().intersects(player.getBoundingBox());
+    }
+
+    public Rectangle2D getBoundingBox() {
+        return new Rectangle2D.Double(x + 30, y, width - 60, height);
     }
 }

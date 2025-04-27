@@ -7,7 +7,7 @@ public class KnifePlayer extends Player {
         super(x, y, 90, 90, 100, 4, 10, 10);
         COOLDOWN = 10;
         INPUT_GRACE = 20;
-        anim = new Animation(this, "images/KnifePlayerSpriteSheet.gif", 3, 5, 60);
+        anim = new Animation(this, "images/KnifePlayerSpriteSheet.gif", 3, 5, 60, true, Drawable.RIGHT, -25);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("MOVE", 1);
         anim.rowAnim("STAB", 2);
@@ -17,10 +17,14 @@ public class KnifePlayer extends Player {
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
-        if (isFacingRight)
-            return new Rectangle2D.Double(x + width - 40, y, 50, height);
-        else
-            return new Rectangle2D.Double(x - 15, y, 50, height);
+        Rectangle2D b = getBoundingBox();
+        int xValue = (int) b.getX();
+        int yValue = (int) b.getY();
+        int wValue = 80;
+        int hValue = (int) b.getHeight();
+        if (!isFacingRight)
+            xValue -= 55;
+        return new Rectangle2D.Double(xValue, yValue, wValue, hValue);
     }
 
     public void update() {
@@ -50,9 +54,6 @@ public class KnifePlayer extends Player {
     }
 
     public Rectangle2D getBoundingBox() {
-        if (isFacingRight)
-            return new Rectangle2D.Double(x, y, width - 40, height);
-        else
-            return new Rectangle2D.Double(x + 30, y, width - 40, height);
+        return new Rectangle2D.Double(x + 10, y + 10, width - 45, height);
     }
 }

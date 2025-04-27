@@ -132,7 +132,7 @@ public class Assassin extends Enemy {
     }
 
     private boolean inCloseRange() {
-        return getBoundingBox().intersects(player.getBoundingBox());
+        return generateAttackBoundingBox().intersects(player.getBoundingBox());
     }
 
     private boolean inLongRange() {
@@ -145,7 +145,15 @@ public class Assassin extends Enemy {
         return range.intersects(player.getBoundingBox());
     }
 
+    public Rectangle2D getBoundingBox() {
+        return new Rectangle2D.Double(x + 30, y, width - 60, height);
+    }
+
     protected Rectangle2D generateAttackBoundingBox() {
-        return getBoundingBox();
+        Rectangle2D b = getBoundingBox();
+        int xValue = (int) b.getX() + 50;
+        if (!isFacingRight)
+            xValue -= 90;
+        return new Rectangle2D.Double(xValue, y + 30, 60, height - 100);
     }
 }
