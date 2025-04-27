@@ -32,18 +32,6 @@ public class GamePanel extends JPanel implements Runnable {
         keys = new boolean[5];
         x = 0;
         y = 0;
-        try {
-            BufferedImage in = ImageIO.read(new File("images/level1back.gif"));
-            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            GraphicsDevice device = env.getDefaultScreenDevice();
-            GraphicsConfiguration config = device.getDefaultConfiguration();
-            background = config.createCompatibleImage(in.getWidth() * 5, in.getHeight() * 5);
-            Graphics2D b2 = (Graphics2D) background.getGraphics();
-            b2.drawImage(in, 0, 0, 5000, 5000, null);
-            b2.dispose();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         
     }
 
@@ -79,7 +67,21 @@ public class GamePanel extends JPanel implements Runnable {
         levelManager.update(keys);
         
     }
-    
+
+    public void setBackground(String path, int width, int height) {
+        try {
+            BufferedImage in = ImageIO.read(new File(path));
+            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice device = env.getDefaultScreenDevice();
+            GraphicsConfiguration config = device.getDefaultConfiguration();
+            background = config.createCompatibleImage(width, height);
+            Graphics2D b2 = (Graphics2D) background.getGraphics();
+            b2.drawImage(in, 0, 0, width, height, null);
+            b2.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     private void render() {
         if (!levelManager.holdScreenPositionX())
