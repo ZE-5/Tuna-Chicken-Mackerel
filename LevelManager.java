@@ -22,7 +22,6 @@ public class LevelManager {
     private boolean changeLevel;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
     private boolean showBossHealthBar;
-    private Wall bossWall;
     
     private boolean drawDebug;
 
@@ -532,27 +531,30 @@ public class LevelManager {
         //setting up TRIGGERS
         Trigger trigger;
         //Spawn triggers
+        //Top street
         trigger = new Trigger(800, 0, defaultSize, 1220, "SPAWN", 1, true);
         addTriggerEntity(trigger, new Grunt(player, 970, 300));
         addTriggerEntity(trigger, new Grunt(player, 610, 310));
         addTriggerEntity(trigger, new Grunt(player, 700, 1000));
         addTriggerEntity(trigger, new Grunt(player, 1000, 900));
 
-        trigger = new Trigger(1465, 1590, 3025 - 1465, defaultSize, "SPAWN", 2, true);
-        addTriggerEntity(trigger, new Grunt(player, 1500, 1300));
-        addTriggerEntity(trigger, new Grunt(player, 1600, 1400));
-        addTriggerEntity(trigger, new Grunt(player, 1700, 1500));
-        addTriggerEntity(trigger, new Grunt(player, 1800, 1600));
-        addTriggerEntity(trigger, new Grunt(player, 1900, 1700));
-        addTriggerEntity(trigger, new Grunt(player, 2000, 1800));
-        addTriggerEntity(trigger, new Grunt(player, 2100, 1900));
-        addTriggerEntity(trigger, new Grunt(player, 2200, 2000));
-        addTriggerEntity(trigger, new Assassin(player, 50, 630));
-        addTriggerEntity(trigger, new Assassin(player, 30, 630));
-        addTriggerEntity(trigger, new Assassin(player, 30, 675));
-        addTriggerEntity(trigger, new Henchman(player, 2570, 3659 + 30));
-        addTriggerEntity(trigger, new Henchman(player, 2570 - 75, 3659 - 50));
-        addTriggerEntity(trigger, new Henchman(player, 2570 - 50, 3659 + 100));
+        //Vertical street
+        trigger = new Trigger(1465, 2400, 3025 - 1465, defaultSize, "SPAWN", 2, true);
+        addTriggerEntity(trigger, new Grunt(player, 1630, 1925));
+        addTriggerEntity(trigger, new Grunt(player, 2734, 2093));
+        addTriggerEntity(trigger, new Henchman(player, 2400, 1973));
+        addTriggerEntity(trigger, new Assassin(player, 1598, 2909));
+        addTriggerEntity(trigger, new Grunt(player, 2000, 2909)); 
+        addTriggerEntity(trigger, new Grunt(player, 1830, 2669));
+        addTriggerEntity(trigger, new Grunt(player, 2558, 2629));
+
+        addTriggerEntity(trigger, new Assassin(player, 1670, 22));
+        addTriggerEntity(trigger, new Assassin(player, 2334, 22));
+        addTriggerEntity(trigger, new Assassin(player, 2946, 22));
+
+        addTriggerEntity(trigger, new Henchman(player, 1561, 4019));
+        addTriggerEntity(trigger, new Henchman(player, 2200, 4019));
+        addTriggerEntity(trigger, new Henchman(player, 2857, 4019));
 
         //Block level switch
         trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1, true);
@@ -565,10 +567,13 @@ public class LevelManager {
     private void playerDied() {
         // gamePanel.startGame(); //Uncomment this for a good time ;)
         if (levelSound != null)
+        {
             levelSound.stop();
-        respawn();
-        levelSound.play();
+            levelSound.play();
 
+        }
+        respawn();
+        
         resetTriggerEvents();
     }
 
