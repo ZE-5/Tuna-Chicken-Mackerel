@@ -2,7 +2,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Grunt extends Enemy {
     private int t, atk_t;
-    private final int CHARGE = 100, ATTACK_DUR = 20;
+    private final int CHARGE = 30, ATTACK_DUR = 20;
     private Animation gruntAnim;
 
     public Grunt(Player player, int x, int y) {
