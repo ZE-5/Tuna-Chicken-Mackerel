@@ -232,7 +232,7 @@ public class LevelManager {
 
         //TODO: Remove
         buffer.setColor(Color.WHITE);
-        buffer.drawString("X: " + player.getX() + " Y: " + player.getY(), player.getX(), player.getY());
+        buffer.drawString("X: " + (int) (player.getBoundingBox().getX()) + " Y: " + (int) (player.getBoundingBox().getY()), (int) player.getBoundingBox().getX(), (int) player.getBoundingBox().getY());
     }
 
 
@@ -511,7 +511,20 @@ public class LevelManager {
     public void level1() {
         gamePanel.setBackground("images/Level1.gif", 4500, 4500);
         setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);
-        setPlayerStartingPosition(10, 10);
+        setPlayerStartingPosition(30, 630);
+
+        setPlayerStartingPosition(3040, 3409);
+
+        int defaultSize = 50;
+
+        new Wall(0, 0, 3020, (int) (100 - player.getBoundingBox().getHeight())); //top wall
+        new Wall(0, 1220, 1459, defaultSize); //top street bottom wall
+
+        new Wall(3025, 0, defaultSize, (int) (3290 - player.getBoundingBox().getHeight())); //vertical street RIGHT wall
+        new Wall(1465, 1220, -1 * defaultSize, 4040); //vertical street LEFT wall
+
+        new Wall(1450, 4370, 3590 - 1450, defaultSize); //bottom street BOTTOM wall
+        new Wall(3025, (int) (3290 - player.getBoundingBox().getHeight()), 3590 - 3020, -1 * defaultSize); //bottom street TOP wall
     }
 
 
