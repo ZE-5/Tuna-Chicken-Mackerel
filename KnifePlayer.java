@@ -20,7 +20,7 @@ public class KnifePlayer extends Player {
         Rectangle2D b = getBoundingBox();
         int xValue = (int) b.getX();
         int yValue = (int) b.getY();
-        int wValue = 100;
+        int wValue = 80;
         int hValue = (int) b.getHeight();
         if (!isFacingRight)
             xValue -= 55;
