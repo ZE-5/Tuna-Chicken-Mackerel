@@ -180,8 +180,16 @@ public class LevelManager {
             entity.setY(mapBoundaries[1]);
         else if (entity.getY() + entity.getHeight() > mapBoundaries[3])
             entity.setY((int) (mapBoundaries[3] - entity.getBoundingBox().getHeight()));
-        }
+    }
 
+
+    public boolean drawDebug() {
+        return drawDebug;
+    }
+
+    public void setDrawDebug(boolean value) {
+        drawDebug = value;
+    }
 
     public void draw(Graphics2D buffer) {
         TheDon theDon = null;
