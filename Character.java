@@ -150,6 +150,32 @@ public abstract class Character extends GameEntity {
         }
     }
 
+    protected boolean target(int x, int y) {
+        if (this.x + dx >= x && this.x - dx <= x && this.y + dy >= y && this.y - dy <= y)
+            return true;
+        if (this.x + dx < x) {
+            move("RIGHT");
+        }
+        if (this.x - dx > x) {
+            move("LEFT");
+        }
+        if (this.y + dy < y) {
+            move("DOWN");
+        }
+        if (this.y - dy > y) {
+            move("UP");
+        }
+        return false;
+    }
+
+    protected boolean targetX(int x) {
+        return target(x, y);
+    }
+
+    protected boolean targetY(int y) {
+        return target(x, y);
+    }
+
 
     public abstract void update();
 
