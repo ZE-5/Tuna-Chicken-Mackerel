@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
-        bufferedImage = new BufferedImage(gameWindow.getWidth()*4, gameWindow.getHeight()*3, BufferedImage.TYPE_INT_RGB);
+        // bufferedImage = new BufferedImage(gameWindow.getWidth()*4, gameWindow.getHeight()*4, BufferedImage.TYPE_INT_RGB);
         isRunning = false;
         // bufferedImage.createGraphics();
         levelManager = LevelManager.getInstance(this);
@@ -69,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setBackground(String path, int width, int height) {
+        bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         try {
             BufferedImage in = ImageIO.read(new File(path));
             GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();

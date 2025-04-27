@@ -8,13 +8,13 @@ public class Wall extends GameEntity{
     private Color colour;
 
     public Wall(int x, int y, int width, int height, Color color) {
-        super(x, y, width, height);
+        super((width > 0 ? x : x + width), (height > 0 ? y : y + height), (width > 0 ? width : -width), (height > 0 ? height : -height));
         this.colour = color;
     }
 
 
     public Wall(int x, int y, int width, int height) {
-        this(x, y, width, height, Color.GRAY);
+        this(x, y, width, height, Color.PINK);
     }
 
 
