@@ -13,6 +13,7 @@ public class Grunt extends Enemy {
         gruntAnim.rowAnim("WALK", 0);
         gruntAnim.rowAnim("ATTACK", 1);
         gruntAnim.rowAnim("DEFAULT", 2);
+        gruntAnim.setState("DEFAULT");
         drawable = gruntAnim;
         drawable.setImageFX(damageFX);
     }

@@ -37,6 +37,7 @@ public class TheDon extends Enemy {
     private Animation bossAnim;
     private Sound[] shot, hit; 
     private Sound bomb;
+    private Sound mortar;
 
     public TheDon(Player player, int x, int y) {
         super(player, x, y, 320, 240, 600, 10, 8, 8, 250);
@@ -49,6 +50,7 @@ public class TheDon extends Enemy {
         state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
         shot = new Sound[NUM_PROJECTILES];
         bomb = new Sound("sounds/bomb.wav", false, 0.7f);
+        mortar = new Sound("sounds/grenades.wav", false, 0.7f);
         hit = new Sound[3];
         for (int i = 0; i < 3; i++) {
             hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
@@ -200,6 +202,8 @@ public class TheDon extends Enemy {
                 res = 0.15f;
                 if (target(CENTER_X, CENTER_Y)) {
                     t++;
+                    if (!mortar.isPlaying())
+                        mortar.play();
                     bossAnim.setLoop(true);
                     bossAnim.setState(current.value);
                 } else {

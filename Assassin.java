@@ -9,6 +9,7 @@ public class Assassin extends Enemy {
     private Sprite projectileSprite;
     private final int THROW_CHARGE = 40, CLOSE_CHARGE = 50, ATTACK_DUR = 20, RETREAT_DUR = 200, NUM_PROJECTILES = 12;
     private Animation assassinAnim;
+    private Sound sound;
 
     private enum State {
         STALK("STALK"),
@@ -31,8 +32,9 @@ public class Assassin extends Enemy {
         atk_t = -1;
         state = State.STALK;
         projectile = new EnemyProjectile[NUM_PROJECTILES];
+        sound = new Sound("sounds/knife.wav", false, 0.65f);
         for (int i = 0; i < NUM_PROJECTILES; i++) {
-            projectile[i] = new EnemyProjectile(x, y, 50, 50, 1, 5, 80);
+            projectile[i] = new EnemyProjectile(x, y, 50, 50, 1, 5, 120);
             projectileSprite = new Sprite(projectile[i], "images/knife.gif");
             projectile[i].setDrawable(projectileSprite);
         }
@@ -121,6 +123,8 @@ public class Assassin extends Enemy {
                 break;
             case THROW:
                 t++;
+                if (!sound.isPlaying())
+                    sound.play();
                 assassinAnim.setLoop(false);
                 assassinAnim.setState(current.value);
                 if (t == THROW_CHARGE) {
