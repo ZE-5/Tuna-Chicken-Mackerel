@@ -158,7 +158,7 @@ public class CollisionManager {
                 else if (entity instanceof Trigger) {
                     Trigger trigger = (Trigger) entity;
                     if (trigger.isActive()) {
-                        LevelManager.getInstance().eventTrigger(trigger.getTriggerType(), trigger.getTriggerValue());
+                        LevelManager.getInstance().triggerEvent(trigger);
                     }
                 }
             }

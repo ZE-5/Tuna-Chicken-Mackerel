@@ -2,13 +2,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
 public class LevelManager {
     private static LevelManager instance = null;
     private GamePanel gamePanel;
     private Vector<GameEntity> gameEntities;
+    private Map<String, Map<Integer, Vector<GameEntity>>> triggerEntitiesMap;
     private Player player;
     private boolean moveScreenPosition;
     private int screenX, screenY;
@@ -18,23 +21,30 @@ public class LevelManager {
     private int level;
     private boolean changeLevel;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
+    private boolean showBossHealthBar;
+    private Wall bossWall;
     
+    private boolean drawDebug;
 
     private LevelManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         moveScreenPosition = false;
         changeLevel = false;
+        showBossHealthBar = false;
         mapBoundaries = new int[4];
-        
+
+        triggerEntitiesMap = new HashMap<>();
         gameEntities = new Vector<GameEntity>();
-        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
-                
-        collisionManager = new CollisionManager(player, gameEntities);
+
+
+        drawDebug = false;
     }
 
 
     public void initialize() {
         level = 1;
+        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
+        collisionManager = new CollisionManager(player, gameEntities);
         setLevel(level);        
     }
 
@@ -130,9 +140,7 @@ public class LevelManager {
 
 
         if (player.isDead()){
-            // gamePanel.startGame(); //Uncomment this for a good time ;)
-            levelSound.stop();
-            respawn();
+            playerDied();
         }
 
         handlePlayerMovementInputs(keys);
@@ -176,8 +184,16 @@ public class LevelManager {
             entity.setY(mapBoundaries[1]);
         else if (entity.getY() + entity.getHeight() > mapBoundaries[3])
             entity.setY((int) (mapBoundaries[3] - entity.getBoundingBox().getHeight()));
-        }
+    }
 
+
+    public boolean drawDebug() {
+        return drawDebug;
+    }
+
+    public void setDrawDebug(boolean value) {
+        drawDebug = value;
+    }
 
     public void draw(Graphics2D buffer) {
         TheDon theDon = null;
@@ -233,6 +249,9 @@ public class LevelManager {
 
 
     private void drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(Graphics2D buffer, TheDon theDon) {
+        if (!showBossHealthBar)
+            return;
+
         int height = 30;
         int width = 700;
         int healthX = -1 * gamePanel.getX() + gamePanel.getWidth()/2 - width/2; //+ offset
@@ -413,17 +432,6 @@ public class LevelManager {
         else if (gamePanel.getY() > mapBoundaries[3] - gamePanel.getHeight())
             gamePanel.setY(mapBoundaries[3] - gamePanel.getHeight());
     }
-  
-  
-    public void eventTrigger(String triggerType, int triggerValue) {
-        if (triggerType.equals("LEVEL")) {
-            level = triggerValue;
-            changeLevel = true;
-        }
-        else if (triggerType.equals("SPAWN")) {
-
-        }
-    }
 
 
     public void strike() { //reference to strike in theatre
@@ -497,9 +505,6 @@ public class LevelManager {
 
         new Treadmill(700, 700, 200, 50, player.getDx()/2, "RIGHT");
 
-        for (int i = 0; i < 11; i++)
-            new PlayerProjectile(0, 0, 200, 100, 10, 10, 10, 1, 400);
-
         levelSound.play();
     }
 
@@ -509,7 +514,128 @@ public class LevelManager {
         setPlayerStartingPosition(10, 10);
     }
 
+
+    private void playerDied() {
+        // gamePanel.startGame(); //Uncomment this for a good time ;)
+        levelSound.stop();
+        respawn();
+        levelSound.play();
+
+        resetTriggerEvents();
+    }
+
+
+    private void addTriggerEntity(Trigger trigger, GameEntity entity) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (!triggerEntitiesMap.containsKey(triggerType)) {
+            triggerEntitiesMap.put(triggerType, new HashMap<>());
+        }
+
+        Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+        if (!entityMap.containsKey(triggerValue)) {
+            entityMap.put(triggerValue, new Vector<>());
+        }
+
+        Vector<GameEntity> entities = entityMap.get(triggerValue);
+        entities.add(entity);
+    }
+
+
+    private void removeTriggerEntity(Trigger trigger, GameEntity entity) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (triggerEntitiesMap.containsKey(triggerType)) {
+            Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+            if (entityMap.containsKey(triggerValue)) {
+                Vector<GameEntity> entities = entityMap.get(triggerValue);
+                entities.remove(entity);
+            }
+        }
+    }
+
+
+    public Vector<GameEntity> getTriggerEntities(Trigger trigger) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (triggerEntitiesMap.containsKey(triggerType)) {
+            Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+            if (entityMap.containsKey(triggerValue)) {
+                return entityMap.get(triggerValue);
+            }
+        }
+
+        return null;
+    }
+
+
+    public Vector<GameEntity> getTriggerEntities(String triggerType, int triggerValue) {
+        if (triggerEntitiesMap.containsKey(triggerType)) {
+            Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+            if (entityMap.containsKey(triggerValue)) {
+                return entityMap.get(triggerValue);
+            }
+        }
+
+        return null;
+    }
+    
+ 
+  
+    public void triggerEvent(Trigger trigger) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (triggerType.equals("LEVEL")) {
+            level = triggerValue;
+            changeLevel = true;
+        }
+        else if (triggerType.equals("SPAWN")) {
+            
+            
+        }
+        else if (triggerType.equals("BOSSBATTLE")) {
+            // showBossBattleText("The Don has entered the building!");
+            this.showBossHealthBar = true;
+            Vector<GameEntity> triggerEntities = getTriggerEntities(trigger);
+
+            if (triggerEntities != null) {
+                for (GameEntity entity : triggerEntities) {
+                    if (entity instanceof Wall)
+                        entity.setVisible(true);
+                    else if(entity.getX() > 2090)
+                        continue;
+                    else if (entity instanceof TheDon)
+                        entity.setLocation(4064, 1264);
+                    else if (entity instanceof Enemy)
+                        entity.setX((int) (Math.random() * 1000 + 2090));
+                }
+            }
+        }
+    }
+
+
+    public void resetTriggerEvents() {
+        if (level == 2) {
+            this.showBossHealthBar = false;
+            Vector<GameEntity> triggerEntities = getTriggerEntities("BOSSBATTLE", 1);
+            
+            if (triggerEntities != null) {
+                for (GameEntity entity : triggerEntities){
+                    if (entity instanceof Wall)
+                        entity.setVisible(false);
+                }
+            }
+        }
+    }
+
+
     public void level2() {
+        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
+        levelSound.play();
         gamePanel.setBackground("images/Level2Extended.gif", 4680, 2600);
         setMapBoundaries(0, 0, 4680 - 50, 2160 - 100);
 
@@ -523,8 +649,23 @@ public class LevelManager {
         new Wall(1980, 0, 2080 - 1980, 800 + (1190 - 800 - player.getHeight())); // dojo top left wall
         new Wall(1980, 1410 + 15, 2080 - 1980, 2160 - 1410 - 5); // dojo bottom left wall
         new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
-        new Wall(1980, 2000 + 90, 4680 - 1980, 25) ;
+        new Wall(1980, 2000 + 90, 4680 - 1980, 25) ; //dojo floor
 
+        Trigger bossWallTrigger = new Trigger(player.getWidth()/2 + 2060, 1110, 2140 - 2060, 1404 - 1110 + 15, "BOSSBATTLE", 1, true);
         
+        addTriggerEntity(bossWallTrigger, new TheDon(player, 4064, 1264));
+        addTriggerEntity(bossWallTrigger, new Assassin(player, 4064, 1200));
+        addTriggerEntity(bossWallTrigger, new Henchman(player, 4064, 1300));
+        addTriggerEntity(bossWallTrigger, new Grunt(player, 4064, 1400));
+        addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1500));
+        addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1600));
+
+        Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger);
+        for (GameEntity entity : enemies) 
+            ((Enemy) entity).setVisible(true);
+
+        GameEntity bossWall = new Wall(1980, (1190 - player.getHeight()), 2080 - 1980, 1425 - 1190 + player.getHeight(), Color.RED);
+        bossWall.setVisible(false);
+        addTriggerEntity(bossWallTrigger, bossWall);
     }
 }

@@ -12,8 +12,8 @@ public class Animation extends Drawable {
     private String currentState, modifier;
     private boolean loop;
 
-    public Animation(GameEntity owner, String path, int numRows, int numCols, long target, boolean loop, boolean defaultDirection) {
-        super(owner, path, defaultDirection);
+    public Animation(GameEntity owner, String path, int numRows, int numCols, long target, boolean loop, boolean defaultDirection, int flipOffset) {
+        super(owner, path, defaultDirection, flipOffset);
         animMap = new HashMap<>();
         this.target = target;
         // step = -1;
@@ -25,6 +25,10 @@ public class Animation extends Drawable {
         this.numRows = numRows;
         modifier = "";
         this.loop = loop;
+    }
+
+    public Animation(GameEntity owner, String path, int numRows, int numCols, long target, boolean loop, boolean defaultDirection) {
+        this(owner, path, numRows, numCols, target, loop, defaultDirection, 0);
     }
 
     public Animation(GameEntity owner, String path, int numRows, int numCols, long target, boolean loop) {

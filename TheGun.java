@@ -78,6 +78,6 @@ public class TheGun extends Player {
     }
 
     public Rectangle2D getBoundingBox() {
-        return new Rectangle2D.Double(x + 20, y, width - 40, height);
+        return new Rectangle2D.Double(x + 40, y, width - 80, height);
     }
 }
