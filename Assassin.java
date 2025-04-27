@@ -142,11 +142,6 @@ public class Assassin extends Enemy {
         }
     }
 
-    public void draw(Graphics2D g2) {
-        super.draw(g2);
-        g2.setColor(Color.WHITE);
-        g2.drawString(state.value, x, y);
-    }
     private void throwKnife() {
         int i = 0;
         while (projectile[i].isActive()) {
