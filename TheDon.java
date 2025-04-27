@@ -60,7 +60,7 @@ public class TheDon extends Enemy {
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
         bigProjPool = new EnemyProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
-            projPool[i] = new EnemyProjectile(x, y, 30, 30, 15, 8, 200);
+            projPool[i] = new EnemyProjectile(x, y, 30, 30, 15, 8, 160);
             Sprite projSprite = new Sprite(projPool[i], "images/bullet.gif");
             projPool[i].setDrawable(projSprite);
 
