@@ -4,7 +4,7 @@ public abstract class Enemy extends Character {
     protected Pickup pickup;
 
     public Enemy(Player player, int x, int y, int width, int height, int health, int damage, int dx, int dy, int points) {
-        super(x, y, width, height, 1, damage, dx, dy);
+        super(x, y, width, height, health, damage, dx, dy);
         this.player = player;
         this.points = points;
         setVisible(false);
