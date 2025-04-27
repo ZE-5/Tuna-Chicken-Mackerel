@@ -12,7 +12,7 @@ public class PoolPlayer extends Player {
         for (int i = 0; i < 5; i++) {
             hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
         }
-        anim = new Animation(this, "images/PoolPlayerSpriteSheet.gif", 5, 8);
+        anim = new Animation(this, "images/PoolPlayerSpriteSheet.gif", 5, 8, 60);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("WALK", 1);
         anim.rowAnim("ATK0", 2);

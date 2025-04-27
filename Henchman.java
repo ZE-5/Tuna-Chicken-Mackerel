@@ -25,7 +25,7 @@ public class Henchman extends Enemy {
         for (int i = 0; i < 3; i++) {
             hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
         }
-        anim = new Animation(this, "images/HenchmanSpriteSheet.gif", 4, 8);
+        anim = new Animation(this, "images/HenchmanSpriteSheet.gif", 4, 8, 60);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("WALK", 1);
         anim.rowAnim("ATK1", 2);

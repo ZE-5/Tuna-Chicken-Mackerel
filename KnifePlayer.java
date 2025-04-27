@@ -7,7 +7,7 @@ public class KnifePlayer extends Player {
         super(x, y, 90, 90, 100, 4, 10, 10);
         COOLDOWN = 10;
         INPUT_GRACE = 20;
-        anim = new Animation(this, "images/KnifePlayerSpriteSheet.gif", 3, 5);
+        anim = new Animation(this, "images/KnifePlayerSpriteSheet.gif", 3, 5, 60);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("MOVE", 1);
         anim.rowAnim("STAB", 2);
