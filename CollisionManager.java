@@ -39,6 +39,7 @@ public class CollisionManager {
 
 
         //Loop through game entities
+        boolean alreadyOnTreadmill = false;
         Iterator<Projectile> projectileIterator;
         Iterator<Enemy> enemyIterator;
         Iterator<GameEntity> entityIterator = gameEntities.iterator();
@@ -137,7 +138,12 @@ public class CollisionManager {
                 }
 
                 //Treadmill
-                else if (entity instanceof Treadmill && ((Treadmill) entity).isActive()) {
+                else if (entity instanceof Treadmill) {
+
+                    if (!((Treadmill) entity).isActive() || alreadyOnTreadmill)
+                        continue;
+                    alreadyOnTreadmill = true;
+
                     String direction = ((Treadmill) entity).getDirection();
                     if (direction.equals("RIGHT"))
                         player.setX(player.getX() + ((Treadmill) entity).getMoveRate());
