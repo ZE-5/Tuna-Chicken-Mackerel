@@ -79,8 +79,8 @@ public class CollisionManager {
                 //Wall collision
                 if (wall.getBoundingBox().intersects(playerBoundingBox)) {
                     //Right collision
-                    if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox))
-                        player.setX((int) (wall.getX() - playerBoundingBox.getWidth() - 1));
+                    if (keys[1] && wall.getLeftLine().intersects(playerBoundingBox)) // the latter part after the - 1 is to account for any offset placed on the x coordinate of the player when generating the bounding box
+                        player.setX((int) (wall.getX() - playerBoundingBox.getWidth() - 1 - (playerBoundingBox.getX() - player.getX())));
                     
                     //Left collision
                     else if (keys[2] && wall.getRightLine().intersects(playerBoundingBox))
@@ -88,7 +88,7 @@ public class CollisionManager {
 
                     //Down collision
                     else if (keys[3] && wall.getTopLine().intersects(playerBoundingBox))
-                        player.setY((int) (wall.getY() - playerBoundingBox.getHeight() - 1));
+                        player.setY((int) (wall.getY() - playerBoundingBox.getHeight() - 1 - (playerBoundingBox.getY() - player.getY())));
                     
                     //Up collision
                     else if (keys[0] && wall.getBottomLine().intersects(playerBoundingBox))
