@@ -90,7 +90,7 @@ public class TheDon extends Enemy {
             treadAnim.setState("TREAD");
             treadPool[i].setDrawable(treadAnim);
         }
-        bossAnim = new Animation(this, "images/TheDonSpriteSheet.gif", 6, 8, 60, true, Drawable.LEFT);
+        bossAnim = new Animation(this, "images/TheDonSpriteSheet.gif", 6, 8, 60, true, Drawable.LEFT, 80);
         bossAnim.rowAnim("WALK", 0);
         bossAnim.rowAnim(State.SHOOT.value, 1);
         bossAnim.rowAnim(State.PUNCH + "0", 2);
@@ -310,6 +310,14 @@ public class TheDon extends Enemy {
     }
 
     protected Rectangle2D generateAttackBoundingBox() {
-        return getBoundingBox();
+        Rectangle2D b = getBoundingBox();
+        int xValue = (int) b.getX() + 100;
+        if (!isFacingRight)
+            xValue -= 150;
+        return new Rectangle2D.Double(xValue, y + 30, width - 200, height - 100);
+    }
+
+    public Rectangle2D getBoundingBox() {
+        return new Rectangle2D.Double(x +  120, y, width - 165, height - 20);
     }
 }
