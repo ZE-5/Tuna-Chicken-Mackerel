@@ -14,7 +14,7 @@ public class TheDon extends Enemy {
     private final int MAX_LEFT = 2330, MAX_RIGHT = 4210, CENTER_X = 3440, CENTER_Y = 1200;
     private final int NUM_PROJECTILES = 50, SHOOT_CHARGE = 10, MORTAR_CHARGE = 100, BIG_SHOOT_CHARGE = 25,
             NUM_LANES = 10;
-    private final int NUM_TREADS = 8, TREAD_HEIGHT = 295, TREAD_WIDTH = 1534, TREAD_TOP = 265, TREAD_DISPLACE = 70, TREAD_LANE_OFFSET = 10, TREAD_CHARGE = 30;
+    private final int NUM_TREADS = 8, TREAD_HEIGHT = 295, TREAD_WIDTH = 1534, TREAD_TOP = 265, TREAD_DISPLACE = 90, TREAD_LANE_OFFSET = 10, TREAD_CHARGE = 30;
     private final float BIG_PROJ_FACTOR = 0.8f;
     private int MELEE_CHARGE, meleeCount;
     private final int NUM_ATK = 2;
@@ -47,20 +47,20 @@ public class TheDon extends Enemy {
         meleeCount = 0;
         res = 0;
         state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
-        shot = new Sound[15];
+        shot = new Sound[NUM_PROJECTILES];
         bomb = new Sound("sounds/bomb.wav", false, 0.7f);
         hit = new Sound[3];
         for (int i = 0; i < 3; i++) {
             hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
         }
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < NUM_PROJECTILES; i++) {
             shot[i] = new Sound("sounds/gun.wav", false, 0.5f);
         }
         projPool = new EnemyProjectile[NUM_PROJECTILES];
         mortarPool = new EnemyProjectile[NUM_PROJECTILES];
         bigProjPool = new EnemyProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
-            projPool[i] = new EnemyProjectile(x, y, 30, 30, 15, 8, 60);
+            projPool[i] = new EnemyProjectile(x, y, 30, 30, 15, 8, 200);
             Sprite projSprite = new Sprite(projPool[i], "images/bullet.gif");
             projPool[i].setDrawable(projSprite);
 
@@ -95,9 +95,9 @@ public class TheDon extends Enemy {
 
     public void update() {
         if (isFacingRight) {
-            projX = x + width - 80;
+            projX = (int) getBoundingBox().getMaxX() + 15;
         } else {
-            projX = x + 80;
+            projX = (int) getBoundingBox().getMinX() - 25;
         }
         projY = y + 20;
         stopAttack();
@@ -228,7 +228,7 @@ public class TheDon extends Enemy {
     private void shootHim() {
         int i = 0;
         while (projPool[i].isActive()) {
-            i++;
+            i = (i + 1) % NUM_PROJECTILES;
         }
         projPool[i].fire(projX, player.getX(), projY, player.getY());
         shot[i].play();
@@ -237,7 +237,7 @@ public class TheDon extends Enemy {
     private void shootHimRandomly() {
         int i = 0;
         while (bigProjPool[i].isActive()) {
-            i++;
+            i = (i + 1) % NUM_PROJECTILES;
         }
         int lane = rand.nextInt(NUM_TREADS);
         int topY = TREAD_TOP;
@@ -255,7 +255,7 @@ public class TheDon extends Enemy {
         for (int j = 0; j < 8; j++) {
             int i = 0;
             while (mortarPool[i].isActive()) {
-                i++;
+                i = (i + 1) % NUM_PROJECTILES;
             }
             int lane = rand.nextInt(NUM_LANES);
             while (xPos[lane] != 0)
