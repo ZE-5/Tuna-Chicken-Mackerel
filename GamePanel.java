@@ -3,6 +3,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -22,7 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
     // int[] drawingCoordinates;
     private Image background;
     private long pre;
-
+    private GraphicsConfiguration config;
     public GamePanel(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
         // bufferedImage = new BufferedImage(gameWindow.getWidth()*4, gameWindow.getHeight()*4, BufferedImage.TYPE_INT_RGB);
@@ -67,12 +68,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setBackground(String path, int width, int height) {
-        bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = env.getDefaultScreenDevice();
+        config = device.getDefaultConfiguration();
+        bufferedImage = config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
         try {
             BufferedImage in = ImageIO.read(new File(path));
-            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            GraphicsDevice device = env.getDefaultScreenDevice();
-            GraphicsConfiguration config = device.getDefaultConfiguration();
             background = config.createCompatibleImage(width, height);
             Graphics2D b2 = (Graphics2D) background.getGraphics();
             b2.drawImage(in, 0, 0, width, height, null);
