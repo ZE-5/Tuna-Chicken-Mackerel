@@ -163,18 +163,20 @@ public abstract class Character extends GameEntity {
     }
 
     protected boolean target(int x, int y) {
-        if (this.x + dx >= x && this.x - dx <= x && this.y + dy >= y && this.y - dy <= y)
+        int xValue =(int) getBoundingBox().getX();
+        int yValue =  (int) getBoundingBox().getY();
+        if (xValue + dx >= x && xValue - dx <= x && yValue + dy >= y && yValue - dy <= y)
             return true;
-        if (this.x + dx < x) {
+        if (xValue + dx < x) {
             move("RIGHT");
         }
-        if (this.x - dx > x) {
+        if (xValue - dx > x) {
             move("LEFT");
         }
-        if (this.y + dy < y) {
+        if (yValue + dy < y) {
             move("DOWN");
         }
-        if (this.y - dy > y) {
+        if (yValue - dy > y) {
             move("UP");
         }
         return false;
