@@ -4,9 +4,9 @@ public class PoolPlayer extends Player {
     private Animation anim;
     private Sound[] hit;
     public PoolPlayer(int x, int y) {
-        super(x, y, 200, 150, 100, 25, 7, 7);
-        COOLDOWN = 20;
-        INPUT_GRACE = 50;
+        super(x, y, 200, 150, 100, 25, 8, 8);
+        COOLDOWN = 25;
+        INPUT_GRACE = 30;
         numAtk = 3;
         hit = new Sound[5];
         for (int i = 0; i < 5; i++) {
@@ -38,6 +38,13 @@ public class PoolPlayer extends Player {
     public void attack() {
         if (isMoving)
             return;
+        if (atkCount == 0) {
+            damage = 15;
+        } else if (atkCount == 1) {
+            damage = 19;
+        } else if (atkCount == 2) {
+            damage = 28;
+        }
         if (t < 0 && released) {
             t = 0;
             input_t = 0;
@@ -51,15 +58,11 @@ public class PoolPlayer extends Player {
 
         }
         if (atkCount == numAtk - 1) {
-            COOLDOWN = 30;
+            COOLDOWN = 40;
+            INPUT_GRACE = 50;
         } else {
-            COOLDOWN = 20;
-        }
-
-        if (atkCount == numAtk - 2) {
-            damage = 35;
-        } else {
-            damage = 25;
+            COOLDOWN = 25;
+            INPUT_GRACE = 30;
         }
     }
 

@@ -9,13 +9,13 @@ public class TheGun extends Player {
     private Sound[] shot;
 
     public TheGun(int x, int y) {
-        super(x, y, 150, 150, 100, 10, 8, 8);
+        super(x, y, 150, 150, 100, 9, 8, 8);
         COOLDOWN = 5;
         INPUT_GRACE = 20;
         shot = new Sound[NUM_PROJECTILES];
         projPool = new PlayerProjectile[NUM_PROJECTILES];
         for (int i = 0; i < NUM_PROJECTILES; i++) {
-            projPool[i] = new PlayerProjectile(x, y, 40, 40, damage, 10, 100);
+            projPool[i] = new PlayerProjectile(x, y, 40, 40, damage, 8, 100);
             Animation proj = new Animation(projPool[i], "images/THE gun.gif", 1, 4, 80, true);
             proj.rowAnim("DEFAULT", 0);
             proj.setState("DEFAULT");
