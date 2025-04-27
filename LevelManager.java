@@ -5,7 +5,11 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Vector;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 
 public class LevelManager {
     private static LevelManager instance = null;
@@ -24,8 +28,14 @@ public class LevelManager {
     private boolean showBossHealthBar;
     
     private boolean drawDebug;
+    private boolean defeatedTheDon, gameCompleted;
+    private boolean showHidden;
+    private int winScreenTimer;
 
     private LevelManager(GamePanel gamePanel) {
+        winScreenTimer = 0;
+        defeatedTheDon = false;
+        gameCompleted = false;
         this.gamePanel = gamePanel;
         moveScreenPosition = false;
         changeLevel = false;
@@ -42,7 +52,20 @@ public class LevelManager {
 
     public void initialize() {
         level = 1;
-        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(true));
+
+        String fileContents = "null";
+        try{
+            File file = new File("SavedData.txt");
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                fileContents = scanner.nextLine();
+            }
+            scanner.close();
+        }
+        catch (FileNotFoundException e) {}
+        showHidden = fileContents.equals("HIDDEN");
+
+        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(showHidden));
         collisionManager = new CollisionManager(player, gameEntities);
         setLevel(level);        
     }
@@ -147,9 +170,9 @@ public class LevelManager {
         collisionManager.checkCollisions(keys);
 
         player.update(); //use this to update the player for things that the user does not directly control, such as increasing time for drawing a cape blowing
-        handlePlayerAttackingInputs(keys);        
-        // for (int i = 0; i < gameEntities.size(); i++) {
-        // for (GameEntity entity : gameEntities) {
+        handlePlayerAttackingInputs(keys);
+        
+        boolean enemiesPresent = false;
         Iterator<GameEntity> iterator = gameEntities.iterator();
         while (iterator.hasNext()) {
             GameEntity entity = iterator.next();
@@ -159,6 +182,11 @@ public class LevelManager {
 
             if (entity instanceof Enemy && ((Enemy) entity).isDead()) {
                 ((Enemy) entity).dropPickup();
+
+                if (entity instanceof TheDon) {
+                    defeatedTheDon = true;
+                }
+
                 iterator.remove();
             }
             
@@ -168,9 +196,31 @@ public class LevelManager {
             else{
                 entity.update();
                 
-                if (entity instanceof Enemy)
+                if (entity instanceof Enemy){
                     restrictToMapBoundaries((entity));
+                    enemiesPresent = true;
+                }
             }
+        }
+
+        if (defeatedTheDon && !enemiesPresent){
+            gameWon();
+            defeatedTheDon = false;
+            gameCompleted = true;
+        }
+    }
+
+
+    public void gameWon() {
+        try {
+            File file = new File("SavedData.txt");
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write("HIDDEN");
+            writer.close();
+        }
+        catch (Exception e) {
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
 
@@ -230,10 +280,14 @@ public class LevelManager {
         if (theDon != null) 
             drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(buffer, theDon);
 
+        if (gameCompleted)
+            drawWinScreen(buffer);
 
         //TODO: Remove
-        buffer.setColor(Color.WHITE);
-        buffer.drawString("X: " + (int) (player.getBoundingBox().getX()) + " Y: " + (int) (player.getBoundingBox().getY()), (int) player.getBoundingBox().getX(), (int) player.getBoundingBox().getY());
+        if (drawDebug) {
+            buffer.setColor(Color.WHITE);
+            buffer.drawString("X: " + (int) (player.getBoundingBox().getX()) + " Y: " + (int) (player.getBoundingBox().getY()), (int) player.getBoundingBox().getX(), (int) player.getBoundingBox().getY());
+        }
     }
 
 
@@ -248,6 +302,34 @@ public class LevelManager {
         buffer.fillRect(healthX, healthY, (int) (width * (player.getHealth() / (float) player.getMaxHealth())), height);
     }
 
+
+    public void drawWinScreen(Graphics2D buffer) {
+        int height = 100;
+        int width = 700;
+        int healthX = -1 * gamePanel.getX() + gamePanel.getWidth()/2 - width/2; //+ offset
+        int healthY = -1 * gamePanel.getY() + gamePanel.getHeight()/2 - height/2;
+        buffer.setColor(Color.BLACK);
+        buffer.fillRect(healthX, healthY, width, height);
+        Font font = new Font("Times New Roman", Font.BOLD, 24);
+        FontMetrics metrics = buffer.getFontMetrics(font);
+        String string = "You won the game!";
+
+        winScreenTimer++;
+        int num = 60;
+        if (winScreenTimer > num)
+            string = "The Cougar Cats have been defeated!";
+
+        if (!showHidden && winScreenTimer > num * 2)
+            string = "Hmm... That's odd";
+
+        if (!showHidden && winScreenTimer > num * 3)
+            string = "Try restarting the game";
+
+        int stringWidth = metrics.stringWidth(string);
+        buffer.setFont(font);
+        buffer.setColor(Color.GREEN);
+        buffer.drawString(string, healthX + width/2 - stringWidth/2, healthY + height/2 + metrics.getAscent()/2);
+    }
 
     private void drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(Graphics2D buffer, TheDon theDon) {
         if (!showBossHealthBar)
@@ -473,7 +555,7 @@ public class LevelManager {
                 break;
 
             default:
-                System.out.println("Level not found!");
+                System.err.println("Level not found!");
                 break;
         }
     }
