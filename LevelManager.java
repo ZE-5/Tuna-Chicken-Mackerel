@@ -319,7 +319,6 @@ public class LevelManager {
 
         winScreenTimer++;
         int num = 60;
-        showHidden = false;
         if (winScreenTimer > num)
             string = "The Cougar Cats have been defeated!";
 
