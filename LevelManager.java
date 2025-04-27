@@ -315,7 +315,7 @@ public class LevelManager {
         String string = "You won the game!";
 
         winScreenTimer++;
-        int num = 60;
+        int num = 80;
         if (winScreenTimer > num)
             string = "The Cougar Cats have been defeated!";
 
@@ -592,6 +592,8 @@ public class LevelManager {
     }
 
     public void level1() {
+        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
+        levelSound.play();
         gamePanel.setBackground("images/Level1.png", 4500, 4500);
         setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);
         setPlayerStartingPosition(30, 630);
