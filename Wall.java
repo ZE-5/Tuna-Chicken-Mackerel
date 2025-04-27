@@ -4,10 +4,17 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 
-public class Wall extends GameEntity{
-    
-    public Wall(int x, int y, int width, int height) {
+public class Wall extends GameEntity{    
+    private Color colour;
+
+    public Wall(int x, int y, int width, int height, Color color) {
         super(x, y, width, height);
+        this.colour = color;
+    }
+
+
+    public Wall(int x, int y, int width, int height) {
+        this(x, y, width, height, Color.GRAY);
     }
 
 
@@ -35,7 +42,9 @@ public class Wall extends GameEntity{
 
 
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.GRAY);
+        if (colour == null)
+            return;
+        g2.setColor(colour);
         g2.fill(new Rectangle2D.Double(x, y, width, height));
     }
 }

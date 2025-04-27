@@ -11,7 +11,7 @@ public class LevelManager {
     private static LevelManager instance = null;
     private GamePanel gamePanel;
     private Vector<GameEntity> gameEntities;
-    private Map<Integer, Vector<GameEntity>> triggerSpawnMap;
+    private Map<String, Map<Integer, Vector<GameEntity>>> triggerEntitiesMap;
     private Player player;
     private boolean moveScreenPosition;
     private int screenX, screenY;
@@ -32,7 +32,7 @@ public class LevelManager {
         showBossHealthBar = false;
         mapBoundaries = new int[4];
 
-        triggerSpawnMap = new HashMap<>();
+        triggerEntitiesMap = new HashMap<>();
         gameEntities = new Vector<GameEntity>();
         setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
                 
@@ -137,9 +137,7 @@ public class LevelManager {
 
 
         if (player.isDead()){
-            // gamePanel.startGame(); //Uncomment this for a good time ;)
-            levelSound.stop();
-            respawn();
+            playerDied();
         }
 
         handlePlayerMovementInputs(keys);
@@ -423,27 +421,6 @@ public class LevelManager {
         else if (gamePanel.getY() > mapBoundaries[3] - gamePanel.getHeight())
             gamePanel.setY(mapBoundaries[3] - gamePanel.getHeight());
     }
-  
-  
-    public void eventTrigger(String triggerType, int triggerValue) {
-        if (triggerType.equals("LEVEL")) {
-            level = triggerValue;
-            changeLevel = true;
-        }
-        else if (triggerType.equals("SPAWN")) {
-            
-            
-        }
-        else if (triggerType.equals("BOSSBATTLE")) {
-            // new TheDon(player, 4064, 1264).setVisible(true);
-            // new Henchman(player, 4064, 1264).setVisible(true);
-            // new Henchman(player, 4064, 1264).setVisible(true);
-            // new Trigger(2060, 1110, 2140, 1404, "BOSSBATTLE", 1, true);
-            // showBossBattleText("The Don has entered the building!");
-            this.showBossHealthBar = true;
-            this.bossWall.setVisible(true);
-        }
-    }
 
 
     public void strike() { //reference to strike in theatre
@@ -523,6 +500,125 @@ public class LevelManager {
         levelSound.play();
     }
 
+
+    private void playerDied() {
+        // gamePanel.startGame(); //Uncomment this for a good time ;)
+        levelSound.stop();
+        respawn();
+        levelSound.play();
+
+        resetTriggerEvents();
+    }
+
+
+    private void addTriggerEntity(Trigger trigger, GameEntity entity) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (!triggerEntitiesMap.containsKey(triggerType)) {
+            triggerEntitiesMap.put(triggerType, new HashMap<>());
+        }
+
+        Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+        if (!entityMap.containsKey(triggerValue)) {
+            entityMap.put(triggerValue, new Vector<>());
+        }
+
+        Vector<GameEntity> entities = entityMap.get(triggerValue);
+        entities.add(entity);
+    }
+
+
+    private void removeTriggerEntity(Trigger trigger, GameEntity entity) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (triggerEntitiesMap.containsKey(triggerType)) {
+            Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+            if (entityMap.containsKey(triggerValue)) {
+                Vector<GameEntity> entities = entityMap.get(triggerValue);
+                entities.remove(entity);
+            }
+        }
+    }
+
+
+    public Vector<GameEntity> getTriggerEntities(Trigger trigger) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (triggerEntitiesMap.containsKey(triggerType)) {
+            Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+            if (entityMap.containsKey(triggerValue)) {
+                return entityMap.get(triggerValue);
+            }
+        }
+
+        return null;
+    }
+
+
+    public Vector<GameEntity> getTriggerEntities(String triggerType, int triggerValue) {
+        if (triggerEntitiesMap.containsKey(triggerType)) {
+            Map<Integer, Vector<GameEntity>> entityMap = triggerEntitiesMap.get(triggerType);
+            if (entityMap.containsKey(triggerValue)) {
+                return entityMap.get(triggerValue);
+            }
+        }
+
+        return null;
+    }
+    
+ 
+  
+    public void triggerEvent(Trigger trigger) {
+        String triggerType = trigger.getTriggerType();
+        int triggerValue = trigger.getTriggerValue();
+
+        if (triggerType.equals("LEVEL")) {
+            level = triggerValue;
+            changeLevel = true;
+        }
+        else if (triggerType.equals("SPAWN")) {
+            
+            
+        }
+        else if (triggerType.equals("BOSSBATTLE")) {
+            // showBossBattleText("The Don has entered the building!");
+            this.showBossHealthBar = true;
+            Vector<GameEntity> triggerEntities = getTriggerEntities(trigger);
+
+            if (triggerEntities != null) {
+                for (GameEntity entity : triggerEntities) {
+                    if (entity instanceof Wall)
+                        entity.setVisible(true);
+                    else if(entity.getX() > 2090)
+                        continue;
+                    else if (entity instanceof TheDon)
+                        entity.setLocation(4064, 1264);
+                    else if (entity instanceof Enemy)
+                        entity.setX((int) (Math.random() * 1000 + 2090));
+                }
+            }
+        }
+    }
+
+
+    public void resetTriggerEvents() {
+        if (level == 2) {
+            this.showBossHealthBar = false;
+            Vector<GameEntity> triggerEntities = getTriggerEntities("BOSSBATTLE", 1);
+            
+            if (triggerEntities != null) {
+                for (GameEntity entity : triggerEntities){
+                    if (entity instanceof Wall)
+                        entity.setVisible(false);
+                }
+            }
+        }
+    }
+
+
     public void level2() {
         levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
         levelSound.play();
@@ -539,14 +635,23 @@ public class LevelManager {
         new Wall(1980, 0, 2080 - 1980, 800 + (1190 - 800 - player.getHeight())); // dojo top left wall
         new Wall(1980, 1410 + 15, 2080 - 1980, 2160 - 1410 - 5); // dojo bottom left wall
         new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
-        new Wall(1980, 2000 + 90, 4680 - 1980, 25) ;
+        new Wall(1980, 2000 + 90, 4680 - 1980, 25) ; //dojo floor
 
-        bossWall = new Wall(1980, 800 + (1190 - 800 - player.getHeight()), 2080 - 1980, 1420 - 1110);
+        Trigger bossWallTrigger = new Trigger(player.getWidth()/2 + 2060, 1110, 2140 - 2060, 1404 - 1110 + 15, "BOSSBATTLE", 1, true);
+        
+        addTriggerEntity(bossWallTrigger, new TheDon(player, 4064, 1264));
+        addTriggerEntity(bossWallTrigger, new Assassin(player, 4064, 1200));
+        addTriggerEntity(bossWallTrigger, new Henchman(player, 4064, 1300));
+        addTriggerEntity(bossWallTrigger, new Grunt(player, 4064, 1400));
+        addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1500));
+        addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1600));
+
+        Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger);
+        for (GameEntity entity : enemies) 
+            ((Enemy) entity).setVisible(true);
+
+        GameEntity bossWall = new Wall(1980, (1190 - player.getHeight()), 2080 - 1980, 1425 - 1190 + player.getHeight(), Color.RED);
         bossWall.setVisible(false);
-        new TheDon(player, 4064, 1264).setVisible(true);
-        new Henchman(player, 4064, 1264).setVisible(true);
-        new Henchman(player, 4064, 1264).setVisible(true);
-
-        new Trigger(2060, 1110, 2140, 1404, "BOSSBATTLE", 1, true);
+        addTriggerEntity(bossWallTrigger, bossWall);
     }
 }
