@@ -6,7 +6,7 @@ public class Grunt extends Enemy {
     private Animation gruntAnim;
 
     public Grunt(Player player, int x, int y) {
-        super(player, x, y, 60, 60, 40, 5, 6, 6, 20);
+        super(player, x, y, 60, 60, 40, 3, 6, 6, 20);
         t = 0;
         atk_t = -1;
         gruntAnim = new Animation(this, "images/GruntSpriteSheet.gif", 3, 5, 60);
