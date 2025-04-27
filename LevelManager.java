@@ -812,10 +812,13 @@ public class LevelManager {
         
         addTriggerEntity(bossWallTrigger, new TheDon(player, 4064, 1264));
         addTriggerEntity(bossWallTrigger, new Assassin(player, 4064, 1200));
-        addTriggerEntity(bossWallTrigger, new Henchman(player, 4064, 1300));
+        addTriggerEntity(bossWallTrigger, new Assassin(player, 4064, 1300));
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4064, 1400));
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1500));
-        addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1600));
+        addTriggerEntity(bossWallTrigger, new Henchman(player, 4000, 500));
+        addTriggerEntity(bossWallTrigger, new Assassin(player, 3000, 2000));
+        addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 2100));
+        addTriggerEntity(bossWallTrigger, new Henchman(player, 6000, 2600));
 
         Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger); //making the enemies visible when level is generated. THis is intentional
         for (GameEntity entity : enemies) 
