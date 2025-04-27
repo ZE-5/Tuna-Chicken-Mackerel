@@ -23,7 +23,7 @@ public class Assassin extends Enemy {
     private State state;
 
     public Assassin(Player player, int x, int y) {
-        super(player, x, y, 150, 150, 100, 20, 2, 2, 40);
+        super(player, x, y, 150, 150, 100, 20, 4, 4, 40);
         t = 0;
         atk_t = -1;
         state = State.STALK;

@@ -17,7 +17,7 @@ public class Henchman extends Enemy {
     private Animation anim;
     private Sound[] hit;
     public Henchman(Player player, int x, int y) {
-        super(player, x, y, 200, 200, 175, -1, 1, 1, 80);
+        super(player, x, y, 200, 200, 175, -1, 3, 3, 80);
         t = 0;
         atk_t = -1;
         state = State.APPROACH;
