@@ -15,15 +15,6 @@ public abstract class Enemy extends Character {
 
 
     public void moveToPlayer() {
-        
-        if (getX() < player.getX())
-            move("RIGHT");
-        else if (getX() > player.getX())
-            move("LEFT");
-
-        if (getY() < player.getY())
-            move("DOWN");
-        else if (getY() > player.getY())
-            move("UP");
+        target(player.getX(), player.getY());
     }
 }

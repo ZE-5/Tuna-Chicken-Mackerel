@@ -5,14 +5,14 @@ public class PoolPlayer extends Player {
     private Sound[] hit;
     public PoolPlayer(int x, int y) {
         super(x, y, 200, 150, 100, 25, 7, 7);
-        COOLDOWN = 50;
-        INPUT_GRACE = 60;
+        COOLDOWN = 20;
+        INPUT_GRACE = 50;
         numAtk = 3;
         hit = new Sound[5];
         for (int i = 0; i < 5; i++) {
             hit[i] = new Sound("sounds/punch.wav", false, 0.7f);
         }
-        anim = new Animation(this, "images/PoolPlayerSpriteSheet.gif", 5, 8);
+        anim = new Animation(this, "images/PoolPlayerSpriteSheet.gif", 5, 8, 60);
         anim.rowAnim("DEFAULT", 0);
         anim.rowAnim("WALK", 1);
         anim.rowAnim("ATK0", 2);
@@ -47,9 +47,9 @@ public class PoolPlayer extends Player {
 
         }
         if (atkCount == numAtk - 1) {
-            COOLDOWN = 60;
+            COOLDOWN = 30;
         } else {
-            COOLDOWN = 50;
+            COOLDOWN = 20;
         }
 
         if (atkCount == numAtk - 2) {

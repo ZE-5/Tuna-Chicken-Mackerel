@@ -11,7 +11,7 @@ public class TheDon extends Enemy {
     private EnemyProjectile[] mortarPool;
     private Treadmill[] treadPool;
     private final int SWITCH = 500;
-    private final int MAX_LEFT = 200, MAX_RIGHT = 800, CENTER_X = 600, CENTER_Y = 600;
+    private int MAX_LEFT, MAX_RIGHT, CENTER_X, CENTER_Y;
     private final int NUM_PROJECTILES = 50, SHOOT_CHARGE = 10, MORTAR_CHARGE = 100, BIG_SHOOT_CHARGE = 25,
             NUM_LANES = 8;
     private final int NUM_TREADS = 4, TREAD_HEIGHT = 125, TREAD_WIDTH = 650, TREAD_LANE_OFFSET = 10, TREAD_CHARGE = 30;
@@ -46,6 +46,11 @@ public class TheDon extends Enemy {
         MELEE_CHARGE = 40;
         meleeCount = 0;
         res = 0;
+        int[] mapBoundaries = levelManager.getMapBoundaries();
+        MAX_LEFT = mapBoundaries[0];
+        MAX_RIGHT = mapBoundaries[2] - width;
+        CENTER_X = mapBoundaries[2] / 2 - width;
+        CENTER_Y = mapBoundaries[3] / 2 - height;
         state = rand.nextInt() % 2 == 0 ? State.PUNCH : State.SHOOT;
         shot = new Sound[15];
         bomb = new Sound("sounds/bomb.wav", false, 0.7f);
@@ -150,12 +155,7 @@ public class TheDon extends Enemy {
                 break;
             case SHOOT:
                 res = 0.5f;
-                if (x > MAX_LEFT) {
-                    t = 0;
-                    bossAnim.setLoop(true);
-                    bossAnim.setState("WALK");
-                    move("LEFT");
-                } else {
+                if (targetX(MAX_LEFT)) {
                     facePlayer();
                     t++;
                     if (t == SHOOT_CHARGE) {
@@ -167,20 +167,15 @@ public class TheDon extends Enemy {
                     if (inRange()) {
                         state = State.PUNCH;
                     }
+                } else {
+                    t = 0;
+                    bossAnim.setLoop(true);
+                    bossAnim.setState("WALK");
                 }
                 break;
             case TREAD:
                 res = 1;
-                if (x < MAX_RIGHT) {
-                    move("RIGHT");
-                }
-                if (y < CENTER_Y) {
-                    move("DOWN");
-                }
-                if (y > CENTER_Y) {
-                    move("UP");
-                }
-                if (x == MAX_RIGHT && y == CENTER_Y) {
+                if (target(MAX_RIGHT, CENTER_Y)) {
                     t++;
                     facePlayer();
                     bossAnim.setLoop(true);
@@ -203,19 +198,7 @@ public class TheDon extends Enemy {
                 break;
             case MORTAR:
                 res = 0.15f;
-                if (x < CENTER_X) {
-                    move("RIGHT");
-                }
-                if (x > CENTER_X) {
-                    move("LEFT");
-                }
-                if (y < CENTER_Y) {
-                    move("DOWN");
-                }
-                if (y > CENTER_Y) {
-                    move("UP");
-                }
-                if (x == CENTER_X && y == CENTER_Y) {
+                if (target(CENTER_X, CENTER_Y)) {
                     t++;
                     bossAnim.setLoop(true);
                     bossAnim.setState(current.value);
