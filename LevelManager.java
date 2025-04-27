@@ -284,7 +284,7 @@ public class LevelManager {
             drawWinScreen(buffer);
 
         //TODO: Remove
-        if (drawDebug) {
+        if (drawDebug()) {
             buffer.setColor(Color.WHITE);
             buffer.drawString("X: " + (int) (player.getBoundingBox().getX()) + " Y: " + (int) (player.getBoundingBox().getY()), (int) player.getBoundingBox().getX(), (int) player.getBoundingBox().getY());
         }
@@ -462,18 +462,6 @@ public class LevelManager {
 
     public void moveScreen(int x, int y) {
         moveScreenPosition = true;
-
-        //Constraints the right corner associated edges have not been tested.
-        // if (x < mapBoundaries[0] + gamePanel.getWidth()/2)
-        //     x = mapBoundaries[0] + gamePanel.getWidth()/2;
-        // else if (x > mapBoundaries[2] - gamePanel.getWidth()/2)
-        //     x = mapBoundaries[2] - gamePanel.getWidth() * 3/2;
-        
-        // if (y < mapBoundaries[1] + gamePanel.getHeight()/2)
-        //     y = mapBoundaries[1] + gamePanel.getHeight()/2;
-        // else if (y > mapBoundaries[3] - gamePanel.getHeight()/2)
-        //     y = mapBoundaries[3] - gamePanel.getHeight()* 3/2;
-
         screenX = -1*(x - gamePanel.getWidth()/2);
         screenY = -1*(y - gamePanel.getHeight()/2);
     }
@@ -571,7 +559,7 @@ public class LevelManager {
         new StrengthPickup(100, 100);
         // new ExampleEnemy(player, 5000, 5000, 0);
         new ExampleEnemy(player, 500, 500, 100);
-        new Trigger(100, 1000, 50, 50, "LEVEL", 2, true);
+        new Trigger(100, 1000, 50, 50, "LEVEL", 2);
         // new Wall(200, 100, 50, 50);
         new Wall(400, 100, 50, 50);
         new ExampleEnemy(player, 200, 100, 10000);
@@ -616,14 +604,14 @@ public class LevelManager {
         Trigger trigger;
         //Spawn triggers
         //Top street
-        trigger = new Trigger(800, 0, defaultSize, 1220, "SPAWN", 1, true);
+        trigger = new Trigger(800, 0, defaultSize, 1220, "SPAWN", 1);
         addTriggerEntity(trigger, new Grunt(player, 970, 300));
         addTriggerEntity(trigger, new Grunt(player, 610, 310));
         addTriggerEntity(trigger, new Grunt(player, 700, 1000));
         addTriggerEntity(trigger, new Grunt(player, 1000, 900));
 
         //Vertical street
-        trigger = new Trigger(1465, 2400, 3025 - 1465, defaultSize, "SPAWN", 2, true);
+        trigger = new Trigger(1465, 2400, 3025 - 1465, defaultSize, "SPAWN", 2);
         addTriggerEntity(trigger, new Grunt(player, 1630, 1925));
         addTriggerEntity(trigger, new Grunt(player, 2734, 2093));
         addTriggerEntity(trigger, new Henchman(player, 2400, 1973));
@@ -639,12 +627,12 @@ public class LevelManager {
         addTriggerEntity(trigger, new Henchman(player, 1561, 4019));
         addTriggerEntity(trigger, new Henchman(player, 2200, 4019));
         addTriggerEntity(trigger, new Henchman(player, 2857, 4019));
-
+        
         //Block level switch
-        trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1, true);
-        addTriggerEntity(trigger, new Wall(3000 + defaultSize, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), Color.RED));
+        trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1);
+        addTriggerEntity(trigger, new Wall(3000 + defaultSize, 3263, defaultSize, 4370 - 3265 + 17, Color.black));
         //Level switch
-        new Trigger(3595, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL", 2, true);
+        new Trigger(3595, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL", 2);
     }
 
 
@@ -815,7 +803,7 @@ public class LevelManager {
         new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
         new Wall(1980, 2000 + 90, 4680 - 1980, 25) ; //dojo floor
 
-        Trigger bossWallTrigger = new Trigger((int) (player.getWidth()/2 + 2060), 1110, 2140 - 2060, 1404 - 1110 + 15, "BOSSBATTLE", 1, true);
+        Trigger bossWallTrigger = new Trigger((int) (player.getWidth()/2 + 2060), 1110, 2140 - 2060, 1404 - 1110 + 15, "BOSSBATTLE", 1);
         
         addTriggerEntity(bossWallTrigger, new TheDon(player, 4064, 1264));
         addTriggerEntity(bossWallTrigger, new Assassin(player, 4064, 1200));
@@ -824,11 +812,12 @@ public class LevelManager {
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1500));
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 1600));
 
-        Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger);
+        Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger); //making the enemies visible when level is generated. THis is intentional
         for (GameEntity entity : enemies) 
             ((Enemy) entity).setVisible(true);
 
-        GameEntity bossWall = new Wall(1980, (int) (1190 - player.getBoundingBox().getHeight()), 2080 - 1980, (int) (1425 - 1190 + player.getBoundingBox().getHeight()), Color.RED);
+        // GameEntity bossWall = new Wall(2080, (int) (1190 - player.getBoundingBox().getHeight()), -21, (int) (1425 - 1190 + player.getBoundingBox().getHeight()), new Color(147, 70, 49)); //rgb(147, 70, 49)
+        GameEntity bossWall = new Wall(2080, 700, -21, 1430 - 700, new Color(147, 70, 49)); //rgb(147, 70, 49)
         bossWall.setVisible(false);
         addTriggerEntity(bossWallTrigger, bossWall);
     }

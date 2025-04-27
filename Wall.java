@@ -14,7 +14,9 @@ public class Wall extends GameEntity{
 
 
     public Wall(int x, int y, int width, int height) {
-        this(x, y, width, height, Color.PINK);
+        this(x, y, width, height, null);
+        if (LevelManager.getInstance().drawDebug())
+            this.colour = Color.PINK;
     }
 
 

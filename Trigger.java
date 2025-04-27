@@ -32,13 +32,7 @@ public class Trigger extends GameEntity {
         isActive = true;
         drawBehindPlayer = true;
         isVisible = true;
-        show = false;
-    }
-
-
-    public Trigger(int x, int y, int width, int height, String triggerType, int triggerValue, boolean show)  {
-        this(x, y, width, height, triggerType, triggerValue);
-        this.show = show;
+        show = LevelManager.getInstance().drawDebug();
     }
 
     public void setTriggerType(String triggerType) {
