@@ -46,12 +46,12 @@ public class LevelManager {
         gameEntities = new Vector<GameEntity>();
 
 
-        drawDebug = false;
+        drawDebug = true;
     }
 
 
     public void initialize() {
-        level = 1;
+        level = 2;
 
         String fileContents = "null";
         try{
@@ -802,6 +802,11 @@ public class LevelManager {
         new Wall(1980, 1410 + 15, 2080 - 1980, 2160 - 1410 - 5); // dojo bottom left wall
         new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
         new Wall(1980, 2000 + 90, 4680 - 1980, 25) ; //dojo floor
+
+        new HealthPickup(260, (int) (1220 + player.getBoundingBox().getHeight()*3/4));
+        new HealthPickup(1180, (int) (1220 + player.getBoundingBox().getHeight()*3/4));
+        new HealthPickup(2150, 1020);
+        new HealthPickup(2150, 1500);
 
         Trigger bossWallTrigger = new Trigger((int) (player.getWidth()/2 + 2060), 1110, 2140 - 2060, 1404 - 1110 + 15, "BOSSBATTLE", 1);
         
