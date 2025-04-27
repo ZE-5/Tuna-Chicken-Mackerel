@@ -118,13 +118,13 @@ public class LevelManager {
     public void setPlayerStartingPosition(int x, int y) {
         if (x < mapBoundaries[0])
             x = mapBoundaries[0];
-        else if (x > mapBoundaries[2] - player.getWidth())
-            x = mapBoundaries[2] - player.getWidth();
+        else if (x > mapBoundaries[2] - player.getBoundingBox().getWidth())
+            x = (int) (mapBoundaries[2] - player.getBoundingBox().getWidth());
 
         if (y < mapBoundaries[1])
             y = mapBoundaries[1];
-        else if (y > mapBoundaries[3] - player.getHeight())
-            y = mapBoundaries[3] - player.getHeight();
+        else if (y > mapBoundaries[3] - player.getBoundingBox().getHeight())
+            y = (int) (mapBoundaries[3] - player.getBoundingBox().getHeight());
 
         setRespawnPosition(x, y);
         player.setLocation(x, y);
@@ -177,12 +177,12 @@ public class LevelManager {
     private void restrictToMapBoundaries(GameEntity entity) {
         if (entity.getX() < mapBoundaries[0])
             entity.setX(mapBoundaries[0]);
-        else if (entity.getX() + entity.getWidth() > mapBoundaries[2])
+        else if (entity.getX() + entity.getBoundingBox().getWidth() > mapBoundaries[2])
             entity.setX((int) (mapBoundaries[2] - entity.getBoundingBox().getWidth()));
 
         if (entity.getY() < mapBoundaries[1])
             entity.setY(mapBoundaries[1]);
-        else if (entity.getY() + entity.getHeight() > mapBoundaries[3])
+        else if (entity.getY() + entity.getBoundingBox().getHeight() > mapBoundaries[3])
             entity.setY((int) (mapBoundaries[3] - entity.getBoundingBox().getHeight()));
     }
 
@@ -285,7 +285,7 @@ public class LevelManager {
         {
             player.move("RIGHT");
             if (player.getX() >= mapBoundaries[2])
-                player.setX(mapBoundaries[2] - player.getWidth());
+                player.setX((int) (mapBoundaries[2] - player.getBoundingBox().getWidth()));
         }
 
         if (keys[2])
@@ -299,7 +299,7 @@ public class LevelManager {
         {
             player.move("DOWN");
             if (player.getY() >= mapBoundaries[3])
-                player.setY(mapBoundaries[3] - player.getHeight());
+                player.setY((int) (mapBoundaries[3] - player.getBoundingBox().getHeight()));
         }
     }
 
@@ -328,7 +328,7 @@ public class LevelManager {
         if (moveScreenPosition)
             return false;
 
-        if (player.getX() + player.getWidth()/2 < mapBoundaries[0] + gamePanel.getWidth()/2 || player.getX() > mapBoundaries[2] - gamePanel.getWidth()/2)
+        if (player.getX() + player.getBoundingBox().getWidth()/2 < mapBoundaries[0] + gamePanel.getWidth()/2 || player.getX() > mapBoundaries[2] - gamePanel.getWidth()/2)
             return true;
         
         return false;        
@@ -340,7 +340,7 @@ public class LevelManager {
         if (moveScreenPosition)
             return false;
         
-        if (player.getY() + player.getHeight()/2 < mapBoundaries[1] + gamePanel.getHeight()/2 || player.getY() > mapBoundaries[3] - gamePanel.getHeight()/2)
+        if (player.getY() + player.getBoundingBox().getHeight()/2 < mapBoundaries[1] + gamePanel.getHeight()/2 || player.getY() > mapBoundaries[3] - gamePanel.getHeight()/2)
             return true;
         
         return false;        
@@ -358,7 +358,7 @@ public class LevelManager {
             }
             return gamePanel.getX();
         }
-        return -1 * (player.getX() + player.getWidth()/2 - gamePanel.getWidth()/2);
+        return (int) (-1 * (player.getX() + player.getBoundingBox().getWidth()/2 - gamePanel.getWidth()/2));
     }
 
 
@@ -373,7 +373,7 @@ public class LevelManager {
             }
             return gamePanel.getY();
         }
-        return -1 * (player.getY() + player.getHeight()/2 - gamePanel.getHeight()/2);
+        return (int) (-1 * (player.getY() + player.getBoundingBox().getHeight()/2 - gamePanel.getHeight()/2));
     }
 
 
@@ -401,19 +401,19 @@ public class LevelManager {
         moveScreenPosition = false;
 
         int x, y;
-        if (player.getX() + player.getWidth()/2 < mapBoundaries[0] + gamePanel.getWidth()/2)
+        if (player.getX() + player.getBoundingBox().getWidth()/2 < mapBoundaries[0] + gamePanel.getWidth()/2)
             x = mapBoundaries[0] + gamePanel.getWidth()/2;
         else if (player.getX() > mapBoundaries[2] - gamePanel.getWidth()/2)
             x = mapBoundaries[2] - gamePanel.getWidth()/2;
         else
-            x = player.getX() + player.getWidth()/2;
+            x = (int) (player.getX() + player.getBoundingBox().getWidth()/2);
         
-        if (player.getY() + player.getHeight()/2 < mapBoundaries[1] + gamePanel.getHeight()/2)
+        if (player.getY() + player.getBoundingBox().getHeight()/2 < mapBoundaries[1] + gamePanel.getHeight()/2)
             y = mapBoundaries[1] + gamePanel.getHeight()/2;
         else if (player.getY() > mapBoundaries[3] - gamePanel.getHeight()/2)
             y = mapBoundaries[3] - gamePanel.getHeight()/2;
         else
-            y = player.getY() + player.getHeight()/2;
+            y = (int) (player.getY() + player.getBoundingBox().getHeight()/2);
 
 
         gamePanel.setX(-1*(x - gamePanel.getWidth()/2));
@@ -636,16 +636,16 @@ public class LevelManager {
         setPlayerStartingPosition(10, 1220);
         player.setFacingRight(true);
 
-        new Wall(0, 800, 2080, 1190 - 800 - player.getHeight()); //starting roof
+        new Wall(0, 800, 2080, (int) (1190 - 800 - player.getBoundingBox().getHeight())); //starting roof
         new Wall(0, 1410 + 15, 2080, 25);
 
-        new Wall(1980, 0, 4680 - 1980, 280 - player.getHeight()); // dojo roof
-        new Wall(1980, 0, 2080 - 1980, 800 + (1190 - 800 - player.getHeight())); // dojo top left wall
+        new Wall(1980, 0, 4680 - 1980, (int) (280 - player.getBoundingBox().getHeight())); // dojo roof
+        new Wall(1980, 0, 2080 - 1980, (int) (800 + (1190 - 800 - player.getBoundingBox().getHeight()))); // dojo top left wall
         new Wall(1980, 1410 + 15, 2080 - 1980, 2160 - 1410 - 5); // dojo bottom left wall
         new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
         new Wall(1980, 2000 + 90, 4680 - 1980, 25) ; //dojo floor
 
-        Trigger bossWallTrigger = new Trigger(player.getWidth()/2 + 2060, 1110, 2140 - 2060, 1404 - 1110 + 15, "BOSSBATTLE", 1, true);
+        Trigger bossWallTrigger = new Trigger((int) (player.getWidth()/2 + 2060), 1110, 2140 - 2060, 1404 - 1110 + 15, "BOSSBATTLE", 1, true);
         
         addTriggerEntity(bossWallTrigger, new TheDon(player, 4064, 1264));
         addTriggerEntity(bossWallTrigger, new Assassin(player, 4064, 1200));
@@ -658,7 +658,7 @@ public class LevelManager {
         for (GameEntity entity : enemies) 
             ((Enemy) entity).setVisible(true);
 
-        GameEntity bossWall = new Wall(1980, (1190 - player.getHeight()), 2080 - 1980, 1425 - 1190 + player.getHeight(), Color.RED);
+        GameEntity bossWall = new Wall(1980, (int) (1190 - player.getBoundingBox().getHeight()), 2080 - 1980, (int) (1425 - 1190 + player.getBoundingBox().getHeight()), Color.RED);
         bossWall.setVisible(false);
         addTriggerEntity(bossWallTrigger, bossWall);
     }
