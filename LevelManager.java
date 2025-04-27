@@ -2,13 +2,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
 public class LevelManager {
     private static LevelManager instance = null;
     private GamePanel gamePanel;
     private Vector<GameEntity> gameEntities;
+    private Map<Integer, Vector<GameEntity>> triggerSpawnMap;
     private Player player;
     private boolean moveScreenPosition;
     private int screenX, screenY;
@@ -18,14 +21,18 @@ public class LevelManager {
     private int level;
     private boolean changeLevel;
     private int[] mapBoundaries; //left corner (x, y) to right corner (x, y) | Imagine a rectangle, inside of which is the playable area
+    private boolean showBossHealthBar;
+    private Wall bossWall;
     
 
     private LevelManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         moveScreenPosition = false;
         changeLevel = false;
+        showBossHealthBar = false;
         mapBoundaries = new int[4];
-        
+
+        triggerSpawnMap = new HashMap<>();
         gameEntities = new Vector<GameEntity>();
         setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
                 
@@ -233,6 +240,9 @@ public class LevelManager {
 
 
     private void drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(Graphics2D buffer, TheDon theDon) {
+        if (!showBossHealthBar)
+            return;
+
         int height = 30;
         int width = 700;
         int healthX = -1 * gamePanel.getX() + gamePanel.getWidth()/2 - width/2; //+ offset
@@ -421,7 +431,17 @@ public class LevelManager {
             changeLevel = true;
         }
         else if (triggerType.equals("SPAWN")) {
-
+            
+            
+        }
+        else if (triggerType.equals("BOSSBATTLE")) {
+            // new TheDon(player, 4064, 1264).setVisible(true);
+            // new Henchman(player, 4064, 1264).setVisible(true);
+            // new Henchman(player, 4064, 1264).setVisible(true);
+            // new Trigger(2060, 1110, 2140, 1404, "BOSSBATTLE", 1, true);
+            // showBossBattleText("The Don has entered the building!");
+            this.showBossHealthBar = true;
+            this.bossWall.setVisible(true);
         }
     }
 
@@ -504,6 +524,8 @@ public class LevelManager {
     }
 
     public void level2() {
+        levelSound = new Sound("sounds/test 2.wav", true, 0.8f);
+        levelSound.play();
         gamePanel.setBackground("images/Level2Extended.gif", 4680, 2600);
         setMapBoundaries(0, 0, 4680 - 50, 2160 - 100);
 
@@ -519,6 +541,12 @@ public class LevelManager {
         new Wall(4545, 0, 160, mapBoundaries[3] + 55); //dojo right wall       
         new Wall(1980, 2000 + 90, 4680 - 1980, 25) ;
 
-        
+        bossWall = new Wall(1980, 800 + (1190 - 800 - player.getHeight()), 2080 - 1980, 1420 - 1110);
+        bossWall.setVisible(false);
+        new TheDon(player, 4064, 1264).setVisible(true);
+        new Henchman(player, 4064, 1264).setVisible(true);
+        new Henchman(player, 4064, 1264).setVisible(true);
+
+        new Trigger(2060, 1110, 2140, 1404, "BOSSBATTLE", 1, true);
     }
 }
