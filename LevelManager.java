@@ -28,7 +28,6 @@ public class LevelManager {
         mapBoundaries = new int[4];
         
         gameEntities = new Vector<GameEntity>();
-        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
                 
         collisionManager = new CollisionManager(player, gameEntities);
 
@@ -38,6 +37,8 @@ public class LevelManager {
 
     public void initialize() {
         level = 2;
+        setPlayerCharacter(gamePanel.getGameWindow().selectCharacter(false));
+        collisionManager = new CollisionManager(player, gameEntities);
         setLevel(level);        
     }
 
