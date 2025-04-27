@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.Vector;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 
 public class LevelManager {
     private static LevelManager instance = null;
@@ -44,7 +45,7 @@ public class LevelManager {
 
 
     public void initialize() {
-        level = 1;
+        level = 2;
         String fileContents = "null";
 
         try{
@@ -175,6 +176,11 @@ public class LevelManager {
 
             if (entity instanceof Enemy && ((Enemy) entity).isDead()) {
                 ((Enemy) entity).dropPickup();
+
+                if (entity instanceof TheDon) {
+                    gameWon();
+                }
+
                 iterator.remove();
             }
             
@@ -188,6 +194,22 @@ public class LevelManager {
                     restrictToMapBoundaries((entity));
             }
         }
+    }
+
+
+    public void gameWon() {
+        try {
+            File file = new File("SavedData.txt");
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write("HIDDEN");
+            writer.close();
+        }
+        catch (Exception e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+
+        System.out.println("You won the game!");
     }
 
 
