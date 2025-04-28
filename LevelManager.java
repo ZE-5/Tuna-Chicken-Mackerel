@@ -331,7 +331,7 @@ public class LevelManager {
     }
 
     private void drawXX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_XxHealthBar(Graphics2D buffer, TheDon theDon) {
-        if (!showBossHealthBar)
+        if (!theDon.isDamaged() && !showBossHealthBar)
             return;
 
         int height = 30;
@@ -347,7 +347,7 @@ public class LevelManager {
         String donString = "xX_Big_Man_Gang_Leader_Don_Honcho_Kingpin_the_OG_Xx";
         int stringWidth = metrics.stringWidth(donString);
         buffer.setFont(font);
-        buffer.setColor(Color.black);
+        buffer.setColor(Color.BLACK);
         buffer.drawString(donString, healthX + (width - stringWidth)/2, healthY + metrics.getAscent());
         
     }
