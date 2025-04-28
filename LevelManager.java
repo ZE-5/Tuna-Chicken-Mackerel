@@ -51,7 +51,7 @@ public class LevelManager {
 
 
     public void initialize() {
-        level = 1;
+        level = 2;
 
         String fileContents = "null";
         try{
@@ -817,7 +817,7 @@ public class LevelManager {
         addTriggerEntity(bossWallTrigger, new Henchman(player, 4000, 500));
         addTriggerEntity(bossWallTrigger, new Assassin(player, 3000, 2000));
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 2100));
-        addTriggerEntity(bossWallTrigger, new Henchman(player, 6000, 2600));
+        addTriggerEntity(bossWallTrigger, new Henchman(player, 3000, 700));
 
         Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger); //making the enemies visible when level is generated. THis is intentional
         for (GameEntity entity : enemies) 
