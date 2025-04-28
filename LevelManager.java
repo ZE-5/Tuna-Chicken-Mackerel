@@ -46,7 +46,7 @@ public class LevelManager {
         gameEntities = new Vector<GameEntity>();
 
 
-        drawDebug = true;
+        drawDebug = false;
     }
 
 
@@ -585,8 +585,6 @@ public class LevelManager {
         setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);
         setPlayerStartingPosition(30, 630);
 
-        // setPlayerStartingPosition(2570, 3659);
-
         int defaultSize = 50;
 
         new Wall(0, 0, 3020, (int) (100 - player.getBoundingBox().getHeight())); //top wall
@@ -627,7 +625,6 @@ public class LevelManager {
         addTriggerEntity(trigger, new Henchman(player, 2200, 4019));
         addTriggerEntity(trigger, new Henchman(player, 2857, 4019));
         
-        setPlayerStartingPosition(3000 - 50, 3000 - 50); //set player starting position to the middle of the map
         //Block level switch
         // trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1);
         trigger = new Trigger(1465, 3160, 3004 + 50 - 1465, 4279 - 3160, "LEVEL BARRICADE", 1);
