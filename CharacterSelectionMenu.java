@@ -89,7 +89,7 @@ public class CharacterSelectionMenu extends JPanel {
         buffer.drawString(text, x, y);
 
         if (showHidden) {
-            text = "Hidden";
+            text = "The Gun";
             x = xOffset + 2 * distanceBetween + (characterFrameLength - metrics.stringWidth(text)) / 2;
             buffer.drawString(text, x, y);
         }
