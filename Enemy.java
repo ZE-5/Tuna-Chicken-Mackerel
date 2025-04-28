@@ -33,8 +33,13 @@ public abstract class Enemy extends Character {
             return;
 
         for (Pickup pickup : pickups) {
-            pickup.setX(getX());
-            pickup.setY(getY());
+            pickup.setX((int) (getBoundingBox().getX() + getBoundingBox().getWidth() / 2 - pickup.getWidth() / 2));
+            pickup.setY((int) (getBoundingBox().getY() + getBoundingBox().getHeight() - pickup.getHeight() - 10));
+            if (pickup instanceof HealthPickup) {
+                setX(getX() - 4);
+            } else if (pickup instanceof StrengthPickup) {
+                setX(getX() + 4);
+            }
             pickup.setVisible(true);
         }
     }

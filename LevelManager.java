@@ -558,7 +558,7 @@ public class LevelManager {
         new StrengthPickup(100, 100);
         // new ExampleEnemy(player, 5000, 5000, 0);
         new ExampleEnemy(player, 500, 500, 100);
-        new Trigger(100, 1000, 50, 50, "LEVEL", 2);
+        new Trigger(100, 1000, 50, 50, "LEVEL", 1);
         // new Wall(200, 100, 50, 50);
         new Wall(400, 100, 50, 50);
         new ExampleEnemy(player, 200, 100, 10000);
@@ -584,8 +584,6 @@ public class LevelManager {
         gamePanel.setBackground("images/Level1.png", 4500, 4500);
         setMapBoundaries(0, 0, 4500 - 50, 4500 - 100);
         setPlayerStartingPosition(30, 630);
-
-        // setPlayerStartingPosition(2570, 3659);
 
         int defaultSize = 50;
 
@@ -628,7 +626,8 @@ public class LevelManager {
         addTriggerEntity(trigger, new Henchman(player, 2857, 4019));
         
         //Block level switch
-        trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1);
+        // trigger = new Trigger(3000, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL BARRICADE", 1);
+        trigger = new Trigger(1465, 3160, 3004 + 50 - 1465, 4279 - 3160, "LEVEL BARRICADE", 1);
         addTriggerEntity(trigger, new Wall(3000 + defaultSize, 3263, defaultSize, 4370 - 3265 + 17, Color.black));
         //Level switch
         new Trigger(3595, (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), defaultSize, 4370 - (int) (3290 - player.getBoundingBox().getHeight() - defaultSize), "LEVEL", 2);
@@ -817,7 +816,7 @@ public class LevelManager {
         addTriggerEntity(bossWallTrigger, new Henchman(player, 4000, 500));
         addTriggerEntity(bossWallTrigger, new Assassin(player, 3000, 2000));
         addTriggerEntity(bossWallTrigger, new Grunt(player, 4000, 2100));
-        addTriggerEntity(bossWallTrigger, new Henchman(player, 6000, 2600));
+        addTriggerEntity(bossWallTrigger, new Henchman(player, 3000, 700));
 
         Vector<GameEntity> enemies = getTriggerEntities(bossWallTrigger); //making the enemies visible when level is generated. THis is intentional
         for (GameEntity entity : enemies) 

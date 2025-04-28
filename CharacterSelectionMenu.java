@@ -89,12 +89,12 @@ public class CharacterSelectionMenu extends JPanel {
         buffer.drawString(text, x, y);
 
         if (showHidden) {
-            text = "Hidden";
+            text = "The Gun";
             x = xOffset + 2 * distanceBetween + (characterFrameLength - metrics.stringWidth(text)) / 2;
             buffer.drawString(text, x, y);
         }
         
-        text = "Press Enter to select character";
+        text = "Press Enter or Space to select character";
         x = (bufferedImage.getWidth() - metrics.stringWidth(text)) / 2;
         y = bufferedImage.getHeight() - 20;
         buffer.setColor(Color.white);
