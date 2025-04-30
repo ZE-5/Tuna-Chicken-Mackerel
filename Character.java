@@ -45,6 +45,11 @@ public abstract class Character extends GameEntity {
     }
 
 
+    public boolean isDamaged() { //returns if character has less than max health
+        return health < maxHealth;
+    }
+
+
     public int getMaxHealth() {
         return maxHealth;
     }

@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -72,6 +74,31 @@ public class CharacterSelectionMenu extends JPanel {
         } else if (showHidden && currentSelection == 2) {
             buffer.drawRect(xOffset + 2 * distanceBetween - 1, yOffset - 1, characterFrameLength + 1, characterFrameHeight + 1);
         }
+
+        Font font = new Font("Arial", Font.BOLD, 20);
+        buffer.setFont(font);
+        FontMetrics metrics = buffer.getFontMetrics();
+        String text = "Knife";
+        int x = xOffset + (characterFrameLength - metrics.stringWidth(text)) / 2;
+        int y = yOffset + characterFrameHeight + 20 + 10;
+        buffer.setColor(Color.white);
+        buffer.drawString(text, x, y);
+
+        text = "Pool";
+        x = xOffset + distanceBetween + (characterFrameLength - metrics.stringWidth(text)) / 2;
+        buffer.drawString(text, x, y);
+
+        if (showHidden) {
+            text = "The Gun";
+            x = xOffset + 2 * distanceBetween + (characterFrameLength - metrics.stringWidth(text)) / 2;
+            buffer.drawString(text, x, y);
+        }
+        
+        text = "Press Enter or Space to select character";
+        x = (bufferedImage.getWidth() - metrics.stringWidth(text)) / 2;
+        y = bufferedImage.getHeight() - 20;
+        buffer.setColor(Color.white);
+        buffer.drawString(text, x, y);
 
         Graphics2D g2 = (Graphics2D) this.getGraphics();
         g2.drawImage(bufferedImage, 0, 0, null);
