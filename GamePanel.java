@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements Runnable {
         config = device.getDefaultConfiguration();
         bufferedImage = config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
         try {
-            BufferedImage in = ImageIO.read(new File(path));
+            BufferedImage in = ImageIO.read(getClass().getClassLoader().getResource(path));
             background = config.createCompatibleImage(width, height);
             Graphics2D b2 = (Graphics2D) background.getGraphics();
             b2.drawImage(in, 0, 0, width, height, null);
